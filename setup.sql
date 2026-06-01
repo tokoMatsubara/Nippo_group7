@@ -6,7 +6,7 @@ CREATE USER general_user WITH PASSWORD 'pass123';
 \c dailymanagement_db
 
 -- 権限設定
-GRANT CONNECT ON DATABASE dailymanagement_db general_user;--3. スキーマレベルの権限
+GRANT CONNECT ON DATABASE dailymanagement_db TO general_user;--3. スキーマレベルの権限
 GRANT USAGE, CREATE ON SCHEMA public TO general_user;--4. 既存オブジェクトへの一括権限
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO general_user;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO general_user;--5. 今後作成されるオブジェクトへの自動権限設定
