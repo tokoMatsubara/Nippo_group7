@@ -1,4 +1,5 @@
 package com.daily_app.demo.Entity;
+
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CollectionId;
@@ -11,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="dailies")
+@Table(name = "dailies")
 public class Daily {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,37 +23,39 @@ public class Daily {
     private Integer userId;
 
     @Column(name = "created_at")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private LocalDateTime updatedAt;
 
-    ////constructer======================================
+    //// constructer======================================
 
-    public Daily(){}
+    public Daily() {
+    }
 
-    public Daily(Integer userId){
+    public Daily(Integer userId) {
         this.userId = userId;
     }
 
-    //getter======================================
+    // getter======================================
 
     public Integer getDailyId() {
         return dailyId;
     }
+
     public Integer getUserId() {
         return userId;
     }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    //setter======================================
+    // setter======================================
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
