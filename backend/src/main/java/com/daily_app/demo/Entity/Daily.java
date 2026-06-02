@@ -1,13 +1,16 @@
 package com.daily_app.demo.Entity;
 import java.time.LocalDateTime;
+import java.util.List;
 
-import org.hibernate.annotations.CollectionId;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,8 +21,9 @@ public class Daily {
     @Column(name = "dailies")
     private Integer dailyId;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "created_at")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +33,15 @@ public class Daily {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private LocalDateTime updatedAt;
 
-    ////constructer======================================
+    @OneToMany(mappedBy = "daily_details", cascade = CascadeType.ALL)
+    List<DailyDetail> dailyDetails;
+
+    //constructer======================================
 
     public Daily(){}
 
-    public Daily(Integer userId){
-        this.userId = userId;
+    public Daily(User user){
+        this.user = user;
     }
 
     //getter======================================
@@ -42,8 +49,8 @@ public class Daily {
     public Integer getDailyId() {
         return dailyId;
     }
-    public Integer getUserId() {
-        return userId;
+    public User getUserId() {
+        return user;
     }
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -56,5 +63,8 @@ public class Daily {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 }
