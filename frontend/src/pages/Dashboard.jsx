@@ -1,10 +1,13 @@
 import "../styles/Dashboard.css";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
     const [weeks, setWeeks] = useState([]);
     const [reminder, setReminder] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchData();
@@ -44,9 +47,19 @@ export default function Dashboard() {
     return (
         <div className="dashboardContainer">
 
-            <h1 className="dashboardTitle">ダッシュボード</h1>
+            <div className="dashboardHeader">
 
-            {/* リマインド */}
+                <h1 className="dashboardTitle">ダッシュボード</h1>
+
+                <button
+                    className="remindButton"
+                    onClick={() => navigate("/remind")}
+                >
+                    🔔リマインダー
+                </button>
+
+            </div>
+
             <section className="section card">
 
                 <h2 className="remindTitle">明日の目標と課題</h2>
@@ -58,7 +71,7 @@ export default function Dashboard() {
                         ))}
                     </ul>
                 ) : (
-                    <p>リマインドなし</p>
+                    <p></p>
                 )}
             </section>
 
