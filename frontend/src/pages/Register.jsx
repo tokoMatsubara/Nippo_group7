@@ -1,33 +1,31 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Login() {
-    const [email, setEmail] = useState("");
+export default function Register() {
+    const [emailaddress, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch("/api/login", {
+            const res = await fetch("/api/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    email,
+                    emailaddress,
                     password
                 })
             });
 
             const data = await res.json();
 
-            console.log("ログイン成功:", data);
+            console.log("登録成功:", data);
 
-            // JWTなしなので user_id を保存
-            localStorage.setItem("user_id", data.user_id);
-
-            window.location.href = "/dashboard";
+            alert("登録完了");
+            window.location.href = "/login";
 
         } catch (err) {
             console.error(err);
@@ -36,12 +34,13 @@ export default function Login() {
 
     return (
         <div>
-            <h1>ログイン</h1>
+            <h1>新規登録</h1>
 
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSubmit}>
+
                 <input
                     placeholder="メール"
-                    value={email}
+                    value={emailaddress}
                     onChange={(e) => setEmail(e.target.value)}
                 />
 
@@ -52,11 +51,12 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
-                <button type="submit">ログイン</button>
+                <button type="submit">登録</button>
             </form>
             <p>
-                <Link to="/register">新規登録</Link>
+                <Link to="/login">ログイン</Link>
             </p>
+
         </div>
     );
 }
