@@ -1,3 +1,4 @@
+// 松原作成
 import { useState } from "react";
 
 function DailyCreate() {
