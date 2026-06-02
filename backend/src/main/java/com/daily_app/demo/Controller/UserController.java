@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
+import com.daily_app.demo.Dto.Request.LoginRequestDto; 
 
 @RestController
 @RequestMapping("/api")
@@ -37,10 +38,13 @@ public class UserController {
      * URL: POST /api/login
      */
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login() {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequestDto requestDto) {
         System.out.println("ログイン認証が呼び出されました");
 
         Map<String, Object> response = new HashMap<>();
+        System.out.println("メールアドレス: " + requestDto.getMailAddress());
+        System.out.println("パスワード: " + requestDto.password());
+
         response.put("status", "success");
         response.put("token", "dummy-jwt-token-xyz789");
         response.put("user_id", 12345);
