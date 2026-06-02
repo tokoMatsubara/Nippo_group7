@@ -1,0 +1,79 @@
+.dashboardContainer {
+    padding: 20px;
+    font-family: sans-serif;
+    background: #f7f8fa;
+    min-height: 100vh;
+}
+
+/* タイトル */
+.dashboardTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* セクション */
+.section {
+    margin-bottom: 20px;
+}
+
+/* カード共通 */
+.card {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* リマインド */
+.remindTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* リスト */
+.list {
+    padding-left: 18px;
+}
+
+/* ボタン */
+.primaryButton {
+    padding: 10px 14px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.primaryButton:hover {
+    background: #1d4ed8;
+}
+
+/* 週カード */
+.weekCard {
+    background: white;
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.weekCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.weekTitle {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.weekSummary {
+    color: #666;
+}
