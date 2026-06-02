@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 // @SpringBootApplication
 @SpringBootApplication(exclude = {
     DataSourceAutoConfiguration.class,
-    SecurityAutoConfiguration.class
 })
 public class DemoApplication {
 
