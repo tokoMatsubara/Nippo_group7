@@ -1,4 +1,4 @@
-package com.daily_app.demo.controller; // パッケージ名をお手元の環境（例: com.daily_app.demo.controller など）に合わせてください
+package com.daily_app.demo.Controller; // パッケージ名をお手元の環境（例: com.daily_app.demo.controller など）に合わせてください
 
 import com.daily_app.demo.Dto.Request.UserCreateRequestDto; // 松原さんのDTOをインポート
 import org.springframework.http.ResponseEntity;
