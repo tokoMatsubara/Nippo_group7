@@ -27,17 +27,9 @@ public class User {
     @Column(name = "mail_address")
     private String mailAddress;
 
-<<<<<<< HEAD
-    @GeneratedValue(strategy = GenerationType.IDENTITY)// 💡 @GeneratedValue を削除していいかも
     @Column(name = "remind_status")
     private boolean remindStatus;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)// 💡 @GeneratedValue を削除していいかも
-=======
-    @Column(name = "remind_status")
-    private boolean remindStatus;
-
->>>>>>> 66bebb8f3530495b406748372764f67a9db11f8b
     @Column(name = "remind_time")
     private LocalTime remindTime;
 
