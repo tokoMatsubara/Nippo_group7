@@ -13,7 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,15 +29,13 @@ public class User {
     @Column(name = "mail_address")
     private String mailAddress;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "remind_status")
     private boolean remindStatus;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "remind_time")
     private LocalTime remindTime;
 
-    @OneToMany(mappedBy = "daily", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Daily> dailies;
 
 
@@ -45,7 +43,7 @@ public class User {
 
     public User(){}
 
-    public User(String userName, String password, String mailAddress, boolean remindStatus, LocalTime remindTime){
+    public User(String userName, String password, String mailAddress, boolean remindStatus, LocalTime remindTime) {
         this.userName = userName;
         this.password = password;
         this.mailAddress = mailAddress;
@@ -56,18 +54,23 @@ public class User {
     public Integer getUserId() {
         return userId;
     }
+
     public String getUserName() {
         return userName;
     }
+
     public String getPassword() {
         return password;
     }
+
     public String getMailAddress() {
         return mailAddress;
     }
-    public boolean getRemindStatus(){
+
+    public boolean getRemindStatus() {
         return remindStatus;
     }
+
     public LocalTime getRemindTime() {
         return remindTime;
     }
@@ -77,17 +80,21 @@ public class User {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
     }
+
     public void setRemindStatus(boolean remindStatus) {
         this.remindStatus = remindStatus;
     }
+
     public void setRemindTime(LocalTime remindTime) {
         this.remindTime = remindTime;
     }
-    
+
 }
