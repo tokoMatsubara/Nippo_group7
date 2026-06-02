@@ -17,10 +17,11 @@ public class UserController {
      */
     @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserCreateRequestDto requestDto) {
-        // 松原さんのDTOの項目名に合わせて中身をログ出力して確認
+        
         System.out.println("--- ユーザー登録モック受付 ---");
         System.out.println("名前: " + requestDto.getUserName());
         System.out.println("メール: " + requestDto.getMailAddress());
+        System.out.println("パスワード: " + requestDto.getPassword());
 
         // ダミーのレスポンスデータを作成
         Map<String, Object> response = new HashMap<>();
