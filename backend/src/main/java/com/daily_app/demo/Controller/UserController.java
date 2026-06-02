@@ -1,7 +1,9 @@
 // 松原編集
 package com.daily_app.demo.Controller;
 
-import com.daily_app.demo.Dto.Request.UserCreateRequestDto; 
+import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
+import com.daily_app.demo.Dto.Response.LoginResponseDto;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
@@ -38,19 +40,18 @@ public class UserController {
      * URL: POST /api/login
      */
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequestDto requestDto) {
-        System.out.println("ログイン認証が呼び出されました");
-
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
+        
+        System.out.println("--- ログイン認証モック受付 ---");
         System.out.println("メールアドレス: " + requestDto.getMailAddress());
-        System.out.println("パスワード: " + requestDto.password());
 
-        response.put("status", "success");
-        response.put("token", "dummy-jwt-token-xyz789");
-        response.put("user_id", 12345);
+        // ダミーのレスポンスデータとして、作成したLoginResponseDtoを返します
+        // パターン1（record）の場合の作り方：
+        LoginResponseDto response = new LoginResponseDto(true, "ログインに成功しました（モック）");
 
         return ResponseEntity.ok(response);
     }
+
 
     /**
      * API-009: リマインド設定登録
@@ -66,4 +67,6 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
+    
 }
