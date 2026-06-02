@@ -1,7 +1,13 @@
 // 松原作成
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/CreateReport.css";
+
 
 function DailyCreate() {
+
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     learned: "",
     goodPoint: "",
@@ -37,18 +43,23 @@ function DailyCreate() {
     <div className="daily-page">
       <header className="header">
         <div>
-          <div className="page-label">日報作成</div>
+          <div className="page-label"></div>
           <h1>{today} の日報</h1>
         </div>
 
         <div className="header-actions">
-          <span className="user-name">開発演習</span>
 
-          <button className="header-btn">
+          <button
+            className="header-btn"
+            onClick={() => navigate("/dashboard")}
+          >
             ダッシュボードへ戻る
           </button>
 
-          <button className="header-btn">
+          <button
+            className="header-btn"
+            onClick={() => navigate("/login")}
+          >
             ログアウト
           </button>
         </div>
@@ -111,16 +122,42 @@ function DailyCreate() {
       <div className="section-card">
         <h3>8. 体調・気持ち</h3>
 
-        <select
-          className="select-box"
-          name="condition"
-          value={form.condition}
-          onChange={handleChange}
-        >
-          <option value="不調">不調</option>
-          <option value="普通">普通</option>
-          <option value="良好">良好</option>
-        </select>
+        <div className="radio-group">
+
+          <label>
+            <input
+              type="radio"
+              name="condition"
+              value="良好"
+              checked={form.condition === "良好"}
+              onChange={handleChange}
+            />
+            良好
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="condition"
+              value="普通"
+              checked={form.condition === "普通"}
+              onChange={handleChange}
+            />
+            普通
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="condition"
+              value="不調"
+              checked={form.condition === "不調"}
+              onChange={handleChange}
+            />
+            不調
+          </label>
+
+        </div>
       </div>
 
       <Section
