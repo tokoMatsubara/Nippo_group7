@@ -3,6 +3,7 @@ package com.daily_app.demo.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
+import com.daily_app.demo.Dto.Request.ReportUpdateRequestDto;
 import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
@@ -73,6 +74,20 @@ public class DailyController {
         return Map.of(
                 "status", "success",
                 "message", "日報登録成功（モック）");
+    }
+
+    @PutMapping("/update/{dailyId}")
+    public Map<String, Object> updateReport(
+            @PathVariable Long dailyId,
+            @RequestBody ReportUpdateRequestDto request) {
+
+        System.out.println("dailyId: " + dailyId);
+        System.out.println("date: " + request.getDate());
+        System.out.println("contents size: " + request.getContents().size());
+
+        return Map.of(
+                "status", "success",
+                "message", "日報更新成功（モック）");
     }
 
 }
