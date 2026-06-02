@@ -76,18 +76,29 @@ public class DailyController {
                 "message", "日報登録成功（モック）");
     }
 
-    @PutMapping("/update/{dailyId}")
+    @PutMapping("/update/{daily_id}")
     public Map<String, Object> updateReport(
-            @PathVariable Long dailyId,
+            @PathVariable Long daily_id,
             @RequestBody ReportUpdateRequestDto request) {
 
-        System.out.println("dailyId: " + dailyId);
+        System.out.println("daily_id: " + daily_id);
         System.out.println("date: " + request.getDate());
         System.out.println("contents size: " + request.getContents().size());
 
         return Map.of(
                 "status", "success",
                 "message", "日報更新成功（モック）");
+    }
+
+    @DeleteMapping("/delete/{daily_id}")
+    public Map<String, Object> deleteReport(
+            @PathVariable Long daily_id) {
+
+        System.out.println("削除対象 daily_id: " + daily_id);
+
+        return Map.of(
+                "status", "success",
+                "message", "日報削除成功（モック）");
     }
 
 }
