@@ -1,4 +1,5 @@
-package com.daily_app.demo.Entity;
+// 松原編集
+package com.daily_app.demo.Entity; 
 
 import java.time.LocalTime;
 
