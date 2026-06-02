@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.daily_app.demo.Dto.DailiesQueryDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto.SummaryDto;
@@ -31,7 +32,7 @@ public class DailyCrudService {
     //dailyReponse=============================================================
 
     public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate){
-        dailyDetails
+        List<DailiesQueryDto> dailiesOriginalList = dailyDetailrepository.dailiesContentList(userId, startDate, endDate);
     }
 
     
