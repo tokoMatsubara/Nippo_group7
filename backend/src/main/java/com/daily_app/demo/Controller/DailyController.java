@@ -2,7 +2,7 @@ package com.daily_app.demo.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.daily_app.demo.Dto.Response.CategoryDto;
+import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
@@ -46,14 +46,14 @@ public class DailyController {
         DailyDto monday = new DailyDto(
                 start,
                 List.of(
-                        new CategoryDto(1, "学び", "設計を実施"),
-                        new CategoryDto(2, "課題点", "API作成")));
+                        new ContentDto(1, "学び", "設計を実施"),
+                        new ContentDto(2, "課題点", "API作成")));
 
         DailyDto tuesday = new DailyDto(
                 start.plusDays(1),
                 List.of(
-                        new CategoryDto(1, "学び", "フロント接続"),
-                        new CategoryDto(2, "課題点", "バグ修正")));
+                        new ContentDto(1, "学び", "フロント接続"),
+                        new ContentDto(2, "課題点", "バグ修正")));
 
         return new DailyResponseDto(
                 start,

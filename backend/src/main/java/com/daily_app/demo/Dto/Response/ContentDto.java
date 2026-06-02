@@ -1,6 +1,6 @@
 package com.daily_app.demo.Dto.Response;
 
-public class CategoryDto {
+public class ContentDto {
 
     private Integer categoryId;
 
@@ -8,10 +8,10 @@ public class CategoryDto {
 
     private String content;
 
-    public CategoryDto() {
+    public ContentDto() {
     }
 
-    public CategoryDto(Integer categoryId, String categoryName, String content) {
+    public ContentDto(Integer categoryId, String categoryName, String content) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.content = content;

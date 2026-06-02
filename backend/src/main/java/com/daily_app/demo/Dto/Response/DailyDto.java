@@ -7,12 +7,12 @@ public class DailyDto {
 
     private LocalDate date;
 
-    private List<CategoryDto> categories;
+    private List<ContentDto> categories;
 
     public DailyDto() {
     }
 
-    public DailyDto(LocalDate date, List<CategoryDto> categories) {
+    public DailyDto(LocalDate date, List<ContentDto> categories) {
         this.date = date;
         this.categories = categories;
     }
@@ -25,11 +25,11 @@ public class DailyDto {
         this.date = date;
     }
 
-    public List<CategoryDto> getCategories() {
+    public List<ContentDto> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<CategoryDto> categories) {
+    public void setCategories(List<ContentDto> categories) {
         this.categories = categories;
     }
 }
