@@ -36,7 +36,7 @@ export default function Dashboard() {
     };
 
     const handleCreateReport = () => {
-        window.location.href = "/reports/new";
+        window.location.href = "/create-report";
     };
 
     if (loading) return <h2>Loading...</h2>;
