@@ -2,7 +2,10 @@ package com.daily_app.demo.Dto.Response;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.daily_app.demo.Entity.WeeklySummary;
 
 public class WeeklyListResponseDto {
 
@@ -15,12 +18,31 @@ public class WeeklyListResponseDto {
         this.summaries = summaries;
     }
 
+    public static WeeklyListResponseDto EntityToResponseDto(List<WeeklySummary> summaries){
+        return weeklyListResponse(summaries);
+    }
+
     public List<SummaryDto> getSummaries() {
         return summaries;
     }
 
     public void setSummaries(List<SummaryDto> summaries) {
         this.summaries = summaries;
+    }
+
+    private static SummaryDto weeklySummaryEntityToDto(WeeklySummary weeklySummary){
+        LocalDate startDate = weeklySummary.getWeekStartDate();
+        LocalDate endDate = weeklySummary.getWeekEndDate();
+        String content = weeklySummary.getWeeklySummaryContent();
+
+        return new SummaryDto(startDate, endDate, content);
+    }
+    private static WeeklyListResponseDto weeklyListResponse(List<WeeklySummary> summaries){
+        List<SummaryDto> dtos = new ArrayList<SummaryDto>();
+        for (WeeklySummary summary : summaries) {
+            dtos.add(weeklySummaryEntityToDto(summary));
+        }
+        return new WeeklyListResponseDto(dtos);
     }
 
     public static class SummaryDto {

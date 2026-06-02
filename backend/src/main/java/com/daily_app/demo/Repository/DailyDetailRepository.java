@@ -30,5 +30,5 @@ public interface DailyDetailRepository extends JpaRepository<DailyDetail, Long> 
             WHERE u.user_id = :userId
             AND d.created_at BETWEEN :startDate AND :endDate
             """)
-        List<DailiesQueryDto> dailiesContentList(Integer userId, LocalDate startDate, LocalDate endDate)
+        List<DailiesQueryDto> dailiesContentList(Integer userId, LocalDate startDate, LocalDate endDate);
 }
