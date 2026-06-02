@@ -2,6 +2,7 @@ package com.daily_app.demo.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import com.daily_app.demo.Dto.Request.ReportRequestDto;
 import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
@@ -10,6 +11,7 @@ import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -60,4 +62,17 @@ public class DailyController {
                 end,
                 List.of(monday, tuesday));
     }
+
+    @PostMapping("/report")
+    public Map<String, Object> createReport(@RequestBody ReportRequestDto request) {
+
+        System.out.println("userId: " + request.getUserId());
+        System.out.println("date: " + request.getDate());
+        System.out.println("contents: " + request.getContents().size());
+
+        return Map.of(
+                "status", "success",
+                "message", "日報登録成功（モック）");
+    }
+
 }
