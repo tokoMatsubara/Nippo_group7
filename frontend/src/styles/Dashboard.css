@@ -77,3 +77,22 @@
 .weekSummary {
     color: #666;
 }
+
+.dashboardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.remindButton {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.remindButton:hover {
+    background: #f3f4f6;
+}
