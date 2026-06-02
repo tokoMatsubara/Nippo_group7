@@ -1,9 +1,13 @@
+import "../styles/Dashboard.css";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
     const [weeks, setWeeks] = useState([]);
     const [reminder, setReminder] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchData();
@@ -12,13 +16,11 @@ export default function Dashboard() {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const USER_ID = 1; // 仮
+            const USER_ID = 1;
 
-            // ① 週一覧取得
             const weekRes = await fetch(`/api/weekly-list/${USER_ID}`);
             const weekData = await weekRes.json();
 
-            // ② リマインド取得
             const reminderRes = await fetch(`/api/remind/${USER_ID}`);
             const reminderData = await reminderRes.json();
 
@@ -26,7 +28,7 @@ export default function Dashboard() {
             setReminder(reminderData);
 
         } catch (err) {
-            console.error("Dashboard error:", err);
+            console.error(err);
         } finally {
             setLoading(false);
         }
@@ -37,50 +39,68 @@ export default function Dashboard() {
     };
 
     const handleCreateReport = () => {
-        window.location.href = "/reports/new";
+        window.location.href = "/create-report";
     };
 
     if (loading) return <h2>Loading...</h2>;
 
     return (
-        <div>
+        <div className="dashboardContainer">
 
-            <h1>ダッシュボード</h1>
+            <div className="dashboardHeader">
 
-            {/* リマインド */}
-            <section>
-                <h2>明日の目標と課題</h2>
+                <h1 className="dashboardTitle">ダッシュボード</h1>
+
+                <button
+                    className="remindButton"
+                    onClick={() => navigate("/remind")}
+                >
+                    🔔リマインダー
+                </button>
+
+            </div>
+
+            <section className="section card">
+
+                <h2 className="remindTitle">明日の目標と課題</h2>
 
                 {reminder?.insights?.nextActions?.length ? (
-                    <ul>
+                    <ul className="list">
                         {reminder.insights.nextActions.map((item, i) => (
                             <li key={i}>{item}</li>
                         ))}
                     </ul>
                 ) : (
-                    <p>リマインドなし</p>
+                    <p></p>
                 )}
             </section>
 
             {/* ボタン */}
-            <button onClick={handleCreateReport}>
+            <button
+                className="primaryButton"
+                onClick={handleCreateReport}
+            >
                 新規日報作成
             </button>
 
             {/* 週一覧 */}
-            <section>
+            <section className="section">
+
                 <h2>週一覧</h2>
 
                 {weeks.map((week) => (
                     <div
                         key={week.startDate}
+                        className="weekCard"
                         onClick={() => handleWeekClick(week)}
-                        style={{ cursor: "pointer", border: "1px solid #ccc", margin: "10px", padding: "10px" }}
                     >
-                        <h3>
+                        <div className="weekTitle">
                             {week.startDate} ~ {week.endDate}
-                        </h3>
-                        <p>{week.summary}</p>
+                        </div>
+
+                        <div className="weekSummary">
+                            {week.summary}
+                        </div>
                     </div>
                 ))}
             </section>

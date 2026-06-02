@@ -1,5 +1,7 @@
 //　今藤
 
+import "../styles/DailyList.css";
+
 import React, { useState } from "react";
 
 const mockWeekData = {
@@ -44,7 +46,7 @@ export default function DailyList() {
         weekData.dailies.some((d) => d.day === day);
 
     return (
-        <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
+        <div className="container">
 
             {/* ① 週表示 */}
             <h2>
@@ -52,23 +54,16 @@ export default function DailyList() {
             </h2>
 
             {/* ② 週要約 */}
-            <p style={{ color: "#555" }}>
+            <p className="weekly-summary">
                 {weekData.weekly_summary_content}
             </p>
 
             {/* ③ 曜日ボタン */}
-            <div style={{ display: "flex", gap: "10px", marginBottom: "20px" }}>
+            <div className="dayButtons">
                 {days.map((day) => (
                     <button
-                        key={day}
+                        className={`dayButton ${selectedDay === day ? "active" : ""}`}
                         onClick={() => setSelectedDay(day)}
-                        style={{
-                            padding: "6px 12px",
-                            background: selectedDay === day ? "#007bff" : "#eee",
-                            color: selectedDay === day ? "#fff" : "#000",
-                            border: "none",
-                            borderRadius: "4px",
-                        }}
                     >
                         {day} {hasDaily(day) ? "●" : "○"}
                     </button>
@@ -76,7 +71,7 @@ export default function DailyList() {
             </div>
 
             {/* ④ 日報ヘッダー */}
-            <div style={{ marginBottom: "20px" }}>
+            <div className="card">
                 {!selectedDaily ? (
                     <p>日報はありません</p>
                 ) : (
@@ -86,17 +81,22 @@ export default function DailyList() {
                             {selectedDaily.daily_summary_content}
                         </p>
 
-                        <div style={{ display: "flex", gap: "10px" }}>
-                            <button>編集</button>
-                            <button style={{ color: "red" }}>削除</button>
+                        <div className="actions">
+                            <button className="editBtn">編集</button>
+                            <button className="deleteBtn">削除</button>
                         </div>
 
                         {/* ⑤ 詳細 */}
-                        <div style={{ marginTop: "20px" }}>
+                        <div className="section">
                             {selectedDaily.details.map((item) => (
-                                <div key={item.category_id} style={{ marginBottom: "12px" }}>
-                                    <strong>{item.category_name}</strong>
-                                    <p style={{ margin: "4px 0" }}>{item.content}</p>
+                                <div key={item.category_id} className="sectionItem">
+                                    <strong className="sectionTitle">
+                                        {item.category_name}
+                                    </strong>
+
+                                    <p className="sectionValue">
+                                        {item.content}
+                                    </p>
                                 </div>
                             ))}
                         </div>
