@@ -1,5 +1,7 @@
 -- daily database setup
 
+DROP DATABASE dailymanagement_db;
+
 CREATE DATABASE dailymanagement_db;
 CREATE USER general_user WITH PASSWORD 'pass123';
 
