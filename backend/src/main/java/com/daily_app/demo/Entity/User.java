@@ -27,11 +27,11 @@ public class User {
     @Column(name = "mail_address")
     private String mailAddress;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)// 💡 @GeneratedValue を削除していいかも
     @Column(name = "remind_status")
     private boolean remindStatus;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)// 💡 @GeneratedValue を削除していいかも
     @Column(name = "remind_time")
     private LocalTime remindTime;
 
@@ -41,6 +41,9 @@ public class User {
         this.userName = userName;
         this.password = password;
         this.mailAddress = mailAddress;
+        // 💡 以下の2行を追記し、引数の値がちゃんと代入されるようにしました
+        this.remindStatus = remindStatus;
+        this.remindTime = remindTime;
     }
 
     public Integer getUserId() {
