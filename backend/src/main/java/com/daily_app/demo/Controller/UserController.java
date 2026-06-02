@@ -44,6 +44,7 @@ public class UserController {
         
         System.out.println("--- ログイン認証モック受付 ---");
         System.out.println("メールアドレス: " + requestDto.getMailAddress());
+        System.out.println("パスワード: " + requestDto.getPassword());
 
         // ダミーのレスポンスデータとして、作成したLoginResponseDtoを返します
         // パターン1（record）の場合の作り方：
