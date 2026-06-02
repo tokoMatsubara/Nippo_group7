@@ -1,6 +1,7 @@
-package com.daily_app.demo.Controller; // パッケージ名をお手元の環境（例: com.daily_app.demo.controller など）に合わせてください
+// 松原編集
+package com.daily_app.demo.Controller;
 
-import com.daily_app.demo.Dto.Request.UserCreateRequestDto; // 松原さんのDTOをインポート
+import com.daily_app.demo.Dto.Request.UserCreateRequestDto; 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
