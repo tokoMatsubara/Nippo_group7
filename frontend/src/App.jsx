@@ -1,18 +1,26 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import CreateReport from "./pages/CreateReport";
 import Remind from "./pages/Remind";
 
 function App() {
   return (
-    <>
-      {/* 日報作成画面 */}
-      {/* <CreateReport /> */}
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/create-report"
+          element={<CreateReport />}
+        />
 
-      {/* リマインダー画面 */}
-      <Remind />
-    </>
+        <Route
+          path="/remind"
+          element={<Remind />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
+
 
 export default App;
