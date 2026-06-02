@@ -69,7 +69,12 @@ public class DailyController {
 
         System.out.println("userId: " + request.getUserId());
         System.out.println("date: " + request.getDate());
-        System.out.println("contents: " + request.getContents().size());
+        System.out.println("contents size: " + request.getContents().size());
+
+        for (ReportRequestDto.ContentDto c : request.getContents()) {
+            System.out.println("categoryId: " + c.getCategoryId());
+            System.out.println("content: " + c.getContent());
+        }
 
         return Map.of(
                 "status", "success",
