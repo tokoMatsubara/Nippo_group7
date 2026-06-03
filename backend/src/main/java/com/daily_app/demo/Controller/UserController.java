@@ -12,6 +12,7 @@ import com.daily_app.demo.Dto.Request.LoginRequestDto;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     /**
