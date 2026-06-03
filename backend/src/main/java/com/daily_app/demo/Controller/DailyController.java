@@ -83,13 +83,11 @@ public class DailyController {
                                 "message", "日報登録成功（モック）");
         }
 
-        @PutMapping("/update/{daily_id}")
+        @PutMapping("/update")
         public Map<String, Object> updateReport(
-                        @PathVariable Long daily_id,
                         @RequestBody ReportUpdateRequestDto request) {
 
-                System.out.println("daily_id: " + daily_id);
-                System.out.println("date: " + request.getDate());
+                System.out.println("daily_id: " + request.getDailyId());
                 System.out.println("contents size: " + request.getContents().size());
 
                 return Map.of(
