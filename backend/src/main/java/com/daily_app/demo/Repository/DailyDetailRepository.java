@@ -1,10 +1,12 @@
 package com.daily_app.demo.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.daily_app.demo.Dto.Internal.DailyQueryDto;
@@ -13,26 +15,25 @@ import com.daily_app.demo.Entity.DailyDetail;
 @Repository
 public interface DailyDetailRepository extends JpaRepository<DailyDetail, Long> {
 
-    @Query(value = """
-            SELECT 
-                d.daily_id,
-                d.created_at,
-                ds.daily_summary_content,
-                c.category_id,
-                c.category_name,
-                dd.content
-            FROM dailies AS d
-            JOIN daily_summaries AS ds
-            ON ds.daily_id = d.daily_id
-            JOIN daily_details AS dd
-            ON d.daily_id = dd.daily_id
-            JOIN categories AS c 
-            ON c.category_id = dd.category_id
-            JOIN users AS u
-            ON u.user_id = d.user_id
-            WHERE u.user_id = :userId
-            AND d.created_at BETWEEN :startDate AND :endDate
-            """,
-        nativeQuery = true)
-        List<DailyQueryDto> dailiesContentList(Integer userId, LocalDate startDate, LocalDate endDate);
+    @Query("""
+        SELECT new com.daily_app.demo.Dto.Internal.DailyQueryDto(
+            d.dailyId,
+            d.createdAt,
+            ds.dailySummaryContent,
+            c.categoryId,
+            c.categoryName,
+            dd.content
+        )
+        FROM Daily d
+        JOIN d.dailyDetails dd
+        JOIN dd.category c
+        JOIN DailySummary ds ON ds.daily = d
+        WHERE d.user.userId = :userId
+        AND d.createdAt BETWEEN :startDate AND :endDate
+        """)
+    List<DailyQueryDto> dailiesContentList(
+        @Param("userId") Integer userId,
+        @Param("startDate") LocalDateTime startDate,
+        @Param("endDate") LocalDateTime endDate
+    );
 }

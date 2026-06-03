@@ -10,7 +10,21 @@ public class DailyQueryDto {
     private String categoryName;
     private String content;
 
-    public DailyQueryDto(){}
+    public DailyQueryDto(
+        Integer dailyId,
+        LocalDateTime createdAt,
+        String dailySummaryContent,
+        Integer categoryId,
+        String categoryName,
+        String content
+    ){
+        this.dailyId = dailyId;
+        this.createdAt = createdAt;
+        this.dailySummaryContent = dailySummaryContent;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.content = content;
+    }
     
     public Integer getDailyId() {
         return dailyId;

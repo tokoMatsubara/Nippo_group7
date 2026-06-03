@@ -28,11 +28,11 @@ public class DailyDto {
         this.date = date;
     }
 
-    public List<ContentDto> getCategories() {
+    public List<ContentDto> getContents() {
         return contents;
     }
 
-    public void setCategories(List<ContentDto> contents) {
+    public void setContents(List<ContentDto> contents) {
         this.contents = contents;
     }
 

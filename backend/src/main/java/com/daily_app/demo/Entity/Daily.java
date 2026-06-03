@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 public class Daily {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dailies")
+    @Column(name = "daily_id")
     private Integer dailyId;
 
     @ManyToOne

@@ -44,32 +44,37 @@ public class DailyController {
 
         @GetMapping("/daily/{userId}/{startDate}/{endDate}")
         public DailyResponseDto getDaily(
-                        @PathVariable int userId,
-                        @PathVariable String startDate,
-                        @PathVariable String endDate) {
+                @PathVariable Integer userId,
+                @PathVariable LocalDate startDate,
+                @PathVariable LocalDate endDate) {
 
-                LocalDate start = LocalDate.parse(startDate);
-                LocalDate end = LocalDate.parse(endDate);
+                System.out.println("userId : " + userId);
+                System.out.println("startDate : " + startDate);
+                System.out.println("endDate : " + endDate);
+                return dailyCrud.dailyResponse(userId, startDate, endDate);
 
-                // --- モックデータ ---
-                DailyDto monday = new DailyDto(
-                                start,
-                                List.of(
-                                                new ContentDto(1, "学び", "設計を実施"),
-                                                new ContentDto(2, "課題点", "API作成")),
-                                "設計とAPI作成の基本構造を理解し実装を開始");
+                // LocalDate start = LocalDate.parse(startDate);
+                // LocalDate end = LocalDate.parse(endDate);
 
-                DailyDto tuesday = new DailyDto(
-                                start.plusDays(1),
-                                List.of(
-                                                new ContentDto(1, "学び", "フロント接続"),
-                                                new ContentDto(2, "課題点", "バグ修正")),
-                                "フロントとAPIの接続確認と不具合修正を実施");
+                // // --- モックデータ ---
+                // DailyDto monday = new DailyDto(
+                //                 start,
+                //                 List.of(
+                //                                 new ContentDto(1, "学び", "設計を実施"),
+                //                                 new ContentDto(2, "課題点", "API作成")),
+                //                 "設計とAPI作成の基本構造を理解し実装を開始");
 
-                return new DailyResponseDto(
-                                start,
-                                end,
-                                List.of(monday, tuesday));
+                // DailyDto tuesday = new DailyDto(
+                //                 start.plusDays(1),
+                //                 List.of(
+                //                                 new ContentDto(1, "学び", "フロント接続"),
+                //                                 new ContentDto(2, "課題点", "バグ修正")),
+                //                 "フロントとAPIの接続確認と不具合修正を実施");
+
+                // return new DailyResponseDto(
+                //                 start,
+                //                 end,
+                //                 List.of(monday, tuesday));
         }
 
         @PostMapping("/report")
