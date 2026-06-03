@@ -4,20 +4,18 @@ import "../styles/Header.css";
 export default function Header() {
     const navigate = useNavigate();
 
-    // ユーザー名取得（なければnull）
-    const userName = localStorage.getItem("user_name");
+    const userId = localStorage.getItem("user_id");
 
-    // ログアウト処理
+    const userName = userId ? "ユーザー" : "ゲスト";
+
     const handleLogout = () => {
         localStorage.removeItem("user_id");
-        localStorage.removeItem("user_name");
         navigate("/login");
     };
 
     return (
         <header className="appHeader">
 
-            {/* 左：アプリ名 */}
             <div
                 className="logo"
                 onClick={() => navigate("/dashboard")}
@@ -25,11 +23,10 @@ export default function Header() {
                 日報アプリ
             </div>
 
-            {/* 右：ユーザー情報 */}
             <div className="headerRight">
 
                 <span className="userName">
-                    {userName || "ゲスト"}
+                    {userName}
                 </span>
 
                 <button
