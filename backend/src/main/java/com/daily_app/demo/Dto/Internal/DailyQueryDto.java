@@ -2,7 +2,7 @@ package com.daily_app.demo.Dto.Internal;
 
 import java.time.LocalDateTime;
 
-public class DailiesQueryDto {
+public class DailyQueryDto {
     private Integer dailyId;
     private LocalDateTime createdAt;
     private String dailySummaryContent;
@@ -10,7 +10,7 @@ public class DailiesQueryDto {
     private String categoryName;
     private String content;
 
-    public DailiesQueryDto(){}
+    public DailyQueryDto(){}
     
     public Integer getDailyId() {
         return dailyId;
@@ -21,7 +21,7 @@ public class DailiesQueryDto {
     public String getDailySummaryContent() {
         return dailySummaryContent;
     }
-    
+
     public Integer getCategoryId() {
         return categoryId;
     }

@@ -7,20 +7,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.daily_app.demo.Dto.Internal.DailiesQueryDto;
+import com.daily_app.demo.Dto.Internal.DailyQueryDto;
 import com.daily_app.demo.Entity.DailyDetail;
 
 @Repository
 public interface DailyDetailRepository extends JpaRepository<DailyDetail, Long> {
 
-    @Query("""
+    @Query(value = """
             SELECT 
                 d.daily_id,
                 d.created_at,
-                ds.daily_summary_content
+                ds.daily_summary_content,
                 c.category_id,
                 c.category_name,
-                dd.content,
+                dd.content
             FROM dailies AS d
             JOIN daily_summaries AS ds
             ON ds.daily_id = d.daily_id
@@ -32,6 +32,7 @@ public interface DailyDetailRepository extends JpaRepository<DailyDetail, Long> 
             ON u.user_id = d.user_id
             WHERE u.user_id = :userId
             AND d.created_at BETWEEN :startDate AND :endDate
-            """)
-        List<DailiesQueryDto> dailiesContentList(Integer userId, LocalDate startDate, LocalDate endDate);
+            """,
+        nativeQuery = true)
+        List<DailyQueryDto> dailiesContentList(Integer userId, LocalDate startDate, LocalDate endDate);
 }

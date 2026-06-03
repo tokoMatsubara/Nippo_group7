@@ -24,94 +24,92 @@ public class DailyController {
     @Autowired
     DailyCrudService dailyCrud;
 
+        @GetMapping("/weekly_list/{user_id}")
+        public WeeklyListResponseDto getWeeklyList(@PathVariable Integer user_id) {
+            return dailyCrud.weeklyListResponse(user_id);
 
-    @GetMapping("/weekly_list/")
-    public WeeklyListResponseDto getWeeklyList(@PathVariable Long user_id) {
-        return dailyCrud.weeklyListResponse(1);
+            // List<WeeklyListResponseDto.SummaryDto> list = new ArrayList<>();
 
-        // List<WeeklyListResponseDto.SummaryDto> list = new ArrayList<>();
+            // list.add(new WeeklyListResponseDto.SummaryDto(
+            //                 LocalDate.of(2026, 6, 1),
+            //                 LocalDate.of(2026, 6, 7),
+            //                 "ログイン機能・日報一覧を実装"));
 
-        // list.add(new WeeklyListResponseDto.SummaryDto(
-        //                 LocalDate.of(2026, 6, 1),
-        //                 LocalDate.of(2026, 6, 7),
-        //                 "ログイン機能・日報一覧を実装"));
+            // list.add(new WeeklyListResponseDto.SummaryDto(
+            //                 LocalDate.of(2026, 6, 8),
+            //                 LocalDate.of(2026, 6, 14),
+            //                 "ダッシュボード・リマインド機能を実装"));
+            // return new WeeklyListResponseDto(list);
+        }
 
-        // list.add(new WeeklyListResponseDto.SummaryDto(
-        //                 LocalDate.of(2026, 6, 8),
-        //                 LocalDate.of(2026, 6, 14),
-        //                 "ダッシュボード・リマインド機能を実装"));
+        @GetMapping("/daily/{userId}/{startDate}/{endDate}")
+        public DailyResponseDto getDaily(
+                        @PathVariable int userId,
+                        @PathVariable String startDate,
+                        @PathVariable String endDate) {
 
-        //return new WeeklyListResponseDto(list);
-    }
+                LocalDate start = LocalDate.parse(startDate);
+                LocalDate end = LocalDate.parse(endDate);
 
-    @GetMapping("/daily/{userId}/{startDate}/{endDate}")
-    public DailyResponseDto getDaily(
-                    @PathVariable int userId,
-                    @PathVariable String startDate,
-                    @PathVariable String endDate) {
+                // --- モックデータ ---
+                DailyDto monday = new DailyDto(
+                                start,
+                                List.of(
+                                                new ContentDto(1, "学び", "設計を実施"),
+                                                new ContentDto(2, "課題点", "API作成")),
+                                "設計とAPI作成の基本構造を理解し実装を開始");
 
-            LocalDate start = LocalDate.parse(startDate);
-            LocalDate end = LocalDate.parse(endDate);
+                DailyDto tuesday = new DailyDto(
+                                start.plusDays(1),
+                                List.of(
+                                                new ContentDto(1, "学び", "フロント接続"),
+                                                new ContentDto(2, "課題点", "バグ修正")),
+                                "フロントとAPIの接続確認と不具合修正を実施");
 
-            // --- モックデータ ---
-            DailyDto monday = new DailyDto(
-                            start,
-                            List.of(
-                                            new ContentDto(1, "学び", "設計を実施"),
-                                            new ContentDto(2, "課題点", "API作成")),
-                            "設計とAPI作成の基本構造を理解し実装を開始");
+                return new DailyResponseDto(
+                                start,
+                                end,
+                                List.of(monday, tuesday));
+        }
 
-            DailyDto tuesday = new DailyDto(
-                            start.plusDays(1),
-                            List.of(
-                                            new ContentDto(1, "学び", "フロント接続"),
-                                            new ContentDto(2, "課題点", "バグ修正")),
-                            "フロントとAPIの接続確認と不具合修正を実施");
+        @PostMapping("/report")
+        public Map<String, Object> createReport(@RequestBody ReportRequestDto request) {
 
-            return new DailyResponseDto(
-                            start,
-                            end,
-                            List.of(monday, tuesday));
-    }
+                System.out.println("userId: " + request.getUserId());
+                System.out.println("date: " + request.getDate());
+                System.out.println("contents size: " + request.getContents().size());
 
-    @PostMapping("/report")
-    public Map<String, Object> createReport(@RequestBody ReportRequestDto request) {
+                for (ReportRequestDto.ContentDto c : request.getContents()) {
+                        System.out.println("categoryId: " + c.getCategoryId());
+                        System.out.println("content: " + c.getContent());
+                }
 
-            System.out.println("userId: " + request.getUserId());
-            System.out.println("date: " + request.getDate());
-            System.out.println("contents size: " + request.getContents().size());
+                return Map.of(
+                                "status", "success",
+                                "message", "日報登録成功（モック）");
+        }
 
-            for (ReportRequestDto.ContentDto c : request.getContents()) {
-                    System.out.println("categoryId: " + c.getCategoryId());
-                    System.out.println("content: " + c.getContent());
-            }
+        @PutMapping("/update")
+        public Map<String, Object> updateReport(
+                        @RequestBody ReportUpdateRequestDto request) {
 
-            return Map.of(
-                            "status", "success",
-                            "message", "日報登録成功（モック）");
-    }
+                System.out.println("daily_id: " + request.getDailyId());
+                System.out.println("contents size: " + request.getContents().size());
 
-    @PutMapping("/update")
-    public Map<String, Object> updateReport(
-                    @RequestBody ReportUpdateRequestDto request) {
+                return Map.of(
+                                "status", "success",
+                                "message", "日報更新成功（モック）");
+        }
 
-            System.out.println("daily_id: " + request.getDailyId());
-            System.out.println("contents size: " + request.getContents().size());
+        @DeleteMapping("/delete/{daily_id}")
+        public Map<String, Object> deleteReport(
+                        @PathVariable Long daily_id) {
 
-            return Map.of(
-                            "status", "success",
-                            "message", "日報更新成功（モック）");
-    }
+                System.out.println("削除対象 daily_id: " + daily_id);
 
-    @DeleteMapping("/delete/{daily_id}")
-    public Map<String, Object> deleteReport(
-                    @PathVariable Long daily_id) {
-
-            System.out.println("削除対象 daily_id: " + daily_id);
-
-            return Map.of(
-                            "status", "success",
-                            "message", "日報削除成功（モック）");
-    }
+                return Map.of(
+                                "status", "success",
+                                "message", "日報削除成功（モック）");
+        }
 
 }
