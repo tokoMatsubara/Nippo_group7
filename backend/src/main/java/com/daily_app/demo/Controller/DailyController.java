@@ -9,8 +9,7 @@ import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
-
-
+import com.daily_app.demo.Service.DailyCrudService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class DailyController {
 
         // Serviceに読み込み
         @Autowired
-        private com.daily_app.demo.Service.DailyCrudService dailyCrudService;
+        private DailyCrudService dailyCrudService;
 
         @GetMapping("/weekly_list/{user_id}")
         public WeeklyListResponseDto getWeeklyList(@PathVariable Long user_id) {
