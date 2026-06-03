@@ -9,12 +9,15 @@ public class DailyDto {
 
     private List<ContentDto> contents;
 
+    private String summary;
+
     public DailyDto() {
     }
 
-    public DailyDto(LocalDate date, List<ContentDto> contents) {
+    public DailyDto(LocalDate date, List<ContentDto> contents, String summary) {
         this.date = date;
         this.contents = contents;
+        this.summary = summary;
     }
 
     public LocalDate getDate() {
@@ -31,5 +34,13 @@ public class DailyDto {
 
     public void setCategories(List<ContentDto> contents) {
         this.contents = contents;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }
