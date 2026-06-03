@@ -3,11 +3,12 @@
 
 import "../styles/Login.css";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -24,7 +25,7 @@ export default function Login() {
                 })
             });
 
-            if(!res.ok){
+            if (!res.ok) {
                 const errorData = await res.json().catch(() => ({}));
                 alert(errorData.message || "ログインに失敗しました");
                 return;
@@ -34,8 +35,8 @@ export default function Login() {
 
             console.log("ログイン成功:", data);
 
-            localStorage.setItem("user_id", data.user_id);
-            window.location.href = "/dashboard";
+            localStorage.setItem("user", JSON.stringify(data));
+            navigate("/dashboard");
 
         } catch (err) {
             console.error(err);
