@@ -62,7 +62,7 @@ function Remind() {
         <h1 className="remindTitle">🔔 リマインダー</h1>
 
         <button className="closeBtn" onClick={handleClose}>
-          ✕
+          ダッシュボードへ戻る
         </button>
       </div>
 
