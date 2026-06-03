@@ -47,6 +47,7 @@ public class DailyController {
 
                 // --- モックデータ ---
                 DailyDto monday = new DailyDto(
+                                1, // ← dailyId
                                 start,
                                 List.of(
                                                 new ContentDto(1, "学び", "設計を実施"),
@@ -54,12 +55,12 @@ public class DailyController {
                                 "設計とAPI作成の基本構造を理解し実装を開始");
 
                 DailyDto tuesday = new DailyDto(
+                                2, // ← dailyId
                                 start.plusDays(1),
                                 List.of(
                                                 new ContentDto(1, "学び", "フロント接続"),
                                                 new ContentDto(2, "課題点", "バグ修正")),
                                 "フロントとAPIの接続確認と不具合修正を実施");
-
                 return new DailyResponseDto(
                                 start,
                                 end,
@@ -90,6 +91,15 @@ public class DailyController {
                 System.out.println("daily_id: " + request.getDailyId());
                 System.out.println("contents size: " + request.getContents().size());
 
+                if (request.getContents() != null) {
+                        request.getContents().forEach(c -> {
+                                System.out.println(
+                                                "categoryId: " + c.getCategoryId()
+                                                                + " / content: " + c.getContent());
+                        });
+                } else {
+                        System.out.println("contents is null");
+                }
                 return Map.of(
                                 "status", "success",
                                 "message", "日報更新成功（モック）");
