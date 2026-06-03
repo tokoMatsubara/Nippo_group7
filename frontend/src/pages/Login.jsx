@@ -1,5 +1,7 @@
-//松原です！テストで書いただけなので、全部消しちゃってください！
+// ログイン画面　
+// 雛形(松原)→css適用(今藤)
 
+import "../styles/Login.css";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -32,7 +34,6 @@ export default function Login() {
 
             console.log("ログイン成功:", data);
 
-            // JWTなしなので user_id を保存
             localStorage.setItem("user_id", data.user_id);
             window.location.href = "/dashboard";
 
@@ -42,28 +43,41 @@ export default function Login() {
     };
 
     return (
-        <div>
-            <h1>ログイン</h1>
+        <div className="loginContainer">
 
-            <form onSubmit={handleLogin}>
-                <input
-                    placeholder="メール"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+            <div className="loginBox">
 
-                <input
-                    type="password"
-                    placeholder="パスワード"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <h1 className="loginTitle">ログイン</h1>
 
-                <button type="submit">ログイン</button>
-            </form>
-            <p>
-                <Link to="/register">新規登録</Link>
-            </p>
+                <form className="loginForm" onSubmit={handleLogin}>
+
+                    <input
+                        className="loginInput"
+                        placeholder="メール"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+
+                    <input
+                        className="loginInput"
+                        type="password"
+                        placeholder="パスワード"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    <button className="loginButton" type="submit">
+                        ログイン
+                    </button>
+
+                </form>
+
+                <p className="loginLink">
+                    <Link to="/register">新規登録</Link>
+                </p>
+
+            </div>
+
         </div>
     );
 }

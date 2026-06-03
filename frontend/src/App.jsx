@@ -1,8 +1,6 @@
-//松原です！テストで書いただけなので、全部消しちゃってください!!
-
 import "./App.css";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import Header from "./components/Header";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -11,9 +9,28 @@ import CreateReport from "./pages/CreateReport";
 //import DailyList from "./pages/DailyList";
 import Remind from "./pages/Remind";
 
-function App() {
+function AppWrapper() {
   return (
     <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+}
+
+function App() {
+  const location = useLocation();
+
+  const hideHeader =
+    location.pathname === "/" ||
+    location.pathname === "/login" ||
+    location.pathname === "/register";
+
+  return (
+    <>
+      {/* ヘッダー（ログイン・登録時は非表示） */}
+      {!hideHeader && <Header />}
+
+      {/* ルーティング */}
       <Routes>
         <Route
           path="/create-report"
@@ -44,10 +61,8 @@ function App() {
         <Route path="*" element={<Login />} />
 
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 
-
-export default App;
-
+export default AppWrapper;
