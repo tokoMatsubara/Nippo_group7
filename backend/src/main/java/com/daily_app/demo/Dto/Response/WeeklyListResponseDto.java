@@ -1,6 +1,6 @@
 package com.daily_app.demo.Dto.Response;
 
-
+import java.time.LocalDate;
 import java.util.List;
 
 public class WeeklyListResponseDto {
@@ -27,12 +27,12 @@ public class WeeklyListResponseDto {
         /**
          * 週の初めの日付
          */
-        private String startDate;
+        private LocalDate startDate;
 
         /**
          * 週の終わりの日付
          */
-        private String endDate;
+        private LocalDate endDate;
 
         /**
          * 週の要約内容
@@ -42,25 +42,25 @@ public class WeeklyListResponseDto {
         public SummaryDto() {
         }
 
-        public SummaryDto(String startDate, String endDate, String content) {
+        public SummaryDto(LocalDate startDate, LocalDate endDate, String content) {
             this.startDate = startDate;
             this.endDate = endDate;
             this.content = content;
         }
 
-        public String getStartDate() {
+        public LocalDate getStartDate() {
             return startDate;
         }
 
-        public void setStartDate(String startDate) {
+        public void setStartDate(LocalDate startDate) {
             this.startDate = startDate;
         }
 
-        public String getEndDate() {
+        public LocalDate getEndDate() {
             return endDate;
         }
 
-        public void setEndDate(String endDate) {
+        public void setEndDate(LocalDate endDate) {
             this.endDate = endDate;
         }
 
