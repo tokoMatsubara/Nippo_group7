@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.daily_app.demo.Dto.DailiesQueryDto;
+import com.daily_app.demo.Dto.Internal.DailiesQueryDto;
 import com.daily_app.demo.Entity.DailyDetail;
 
 @Repository
@@ -17,10 +17,13 @@ public interface DailyDetailRepository extends JpaRepository<DailyDetail, Long> 
             SELECT 
                 d.daily_id,
                 d.created_at,
+                ds.daily_summary_content
                 c.category_id,
                 c.category_name,
                 dd.content,
             FROM dailies AS d
+            JOIN daily_summaries AS ds
+            ON ds.daily_id = d.daily_id
             JOIN daily_details AS dd
             ON d.daily_id = dd.daily_id
             JOIN categories AS c 
