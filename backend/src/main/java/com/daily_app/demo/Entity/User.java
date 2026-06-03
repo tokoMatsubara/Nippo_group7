@@ -1,4 +1,5 @@
-package com.daily_app.demo.Entity;
+// 松原編集
+package com.daily_app.demo.Entity; 
 
 import java.time.LocalTime;
 import java.util.List;
@@ -47,6 +48,9 @@ public class User {
         this.userName = userName;
         this.password = password;
         this.mailAddress = mailAddress;
+        // 💡 以下の2行を追記し、引数の値がちゃんと代入されるようにしました
+        this.remindStatus = remindStatus;
+        this.remindTime = remindTime;
     }
 
     //getter======================================

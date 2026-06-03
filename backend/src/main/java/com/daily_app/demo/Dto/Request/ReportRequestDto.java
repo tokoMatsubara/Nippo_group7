@@ -1,69 +1,38 @@
 package com.daily_app.demo.Dto.Request;
 
+import java.time.LocalDate;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ReportRequestDto {
 
-    /**
-     * ユーザーのID
-     */
-    private Long userId;
+    private Integer userId;
 
-    /**
-     * それぞれのカテゴリ別の日報の内容
-     */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
+
     private List<ContentDto> contents;
-
-    public ReportRequestDto() {
-    }
-
-    public ReportRequestDto(Long userId, List<ContentDto> contents) {
-        this.userId = userId;
-        this.contents = contents;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public List<ContentDto> getContents() {
-        return contents;
-    }
-
-    public void setContents(List<ContentDto> contents) {
-        this.contents = contents;
-    }
 
     public static class ContentDto {
 
-        /**
-         * 内容一つのカテゴリ
-         */
-        private String category;
-
-        /**
-         * カテゴリに該当する内容
-         */
+        private int categoryId;
         private String content;
 
         public ContentDto() {
         }
 
-        public ContentDto(String category, String content) {
-            this.category = category;
+        public ContentDto(int categoryId, String content) {
+            this.categoryId = categoryId;
             this.content = content;
         }
 
-        public String getCategory() {
-            return category;
+        public int getCategoryId() {
+            return categoryId;
         }
 
-        public void setCategory(String category) {
-            this.category = category;
+        public void setCategoryId(int categoryId) {
+            this.categoryId = categoryId;
         }
 
         public String getContent() {
@@ -73,5 +42,32 @@ public class ReportRequestDto {
         public void setContent(String content) {
             this.content = content;
         }
+    }
+
+    public ReportRequestDto() {
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public List<ContentDto> getContents() {
+        return contents;
+    }
+
+    public void setContents(List<ContentDto> contents) {
+        this.contents = contents;
     }
 }
