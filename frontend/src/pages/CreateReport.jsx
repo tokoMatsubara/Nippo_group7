@@ -166,7 +166,7 @@ function DailyCreate() {
           className="submit-btn"
           onClick={() => {
             alert("作成しました");
-            navigate("/dashboard");
+            navigate("/daily-list");
           }}
         >
           作成
