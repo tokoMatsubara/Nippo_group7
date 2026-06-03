@@ -56,12 +56,6 @@ function DailyCreate() {
             ダッシュボードへ戻る
           </button>
 
-          <button
-            className="header-btn"
-            onClick={() => navigate("/login")}
-          >
-            ログアウト
-          </button>
         </div>
       </header>
 
