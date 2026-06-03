@@ -3,7 +3,7 @@ package com.daily_app.demo.Dto.Response;
 
 
 /**
- * ログインレスポンス用のDTO（通常のクラス版）
+ * ログインレスポンス用のDTO
  */
 public class LoginResponseDto {
 

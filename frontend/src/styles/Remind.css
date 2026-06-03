@@ -1,0 +1,139 @@
+.remindContainer {
+    padding: 20px;
+    font-family: sans-serif;
+    background: #f7f8fa;
+    min-height: 100vh;
+}
+
+/* ヘッダー */
+.remindHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.remindTitle {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* カード共通 */
+.card {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    margin-bottom: 16px;
+}
+
+/* セクションタイトル */
+.card h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* ボタン */
+.closeBtn {
+    border: none;
+    background: #e5e7eb;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.closeBtn:hover {
+    background: #d1d5db;
+}
+
+.saveBtn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.saveBtn:hover {
+    background: #1d4ed8;
+}
+
+/* フォーム */
+.formRow {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    cursor: pointer;
+}
+
+.formLabel {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.timeSelect {
+    width: 60px;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+}
+
+.timeSelect:focus {
+    border-color: #2563eb;
+    outline: none;
+}
+
+.timeGroup {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.timeUnit {
+    font-weight: bold;
+    margin: 0 4px;
+}
+
+/* 削除ボタン */
+.deleteBtn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.deleteBtn:hover {
+    background: #dc2626;
+}
+
+/* 追加ボタン */
+.addBtn {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.addBtn:hover {
+    background: #059669;
+}

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ReportUpdateRequestDto {
 
-    private Integer daily_id;
+    private Integer dailyId;
 
     /**
      * 日報の内容リスト
@@ -14,17 +14,17 @@ public class ReportUpdateRequestDto {
     public ReportUpdateRequestDto() {
     }
 
-    public ReportUpdateRequestDto(Integer daily_id, List<ContentDto> contents) {
-        this.daily_id = daily_id;
+    public ReportUpdateRequestDto(Integer dailyId, List<ContentDto> contents) {
+        this.dailyId = dailyId;
         this.contents = contents;
     }
 
     public Integer getDailyId() {
-        return daily_id;
+        return dailyId;
     }
 
-    public void setDailyId(Integer daily_id) {
-        this.daily_id = daily_id;
+    public void setDailyId(Integer dailyId) {
+        this.dailyId = dailyId;
     }
 
     public List<ContentDto> getContents() {
