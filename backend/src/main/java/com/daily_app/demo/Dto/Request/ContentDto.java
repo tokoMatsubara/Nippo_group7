@@ -2,22 +2,22 @@ package com.daily_app.demo.Dto.Request;
 
 public class ContentDto {
 
-    private int categoryId;
+    private Integer categoryId;
     private String content;
 
     public ContentDto() {
     }
 
-    public ContentDto(int categoryId, String content) {
+    public ContentDto(Integer categoryId, String content) {
         this.categoryId = categoryId;
         this.content = content;
     }
 
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 

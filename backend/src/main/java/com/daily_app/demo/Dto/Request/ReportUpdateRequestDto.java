@@ -1,14 +1,10 @@
 package com.daily_app.demo.Dto.Request;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class ReportUpdateRequestDto {
 
-    /**
-     * 対象の日付（変更したい場合のみ使用）
-     */
-    private LocalDate date;
+    private Integer daily_id;
 
     /**
      * 日報の内容リスト
@@ -18,17 +14,17 @@ public class ReportUpdateRequestDto {
     public ReportUpdateRequestDto() {
     }
 
-    public ReportUpdateRequestDto(LocalDate date, List<ContentDto> contents) {
-        this.date = date;
+    public ReportUpdateRequestDto(Integer daily_id, List<ContentDto> contents) {
+        this.daily_id = daily_id;
         this.contents = contents;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public Integer getDailyId() {
+        return daily_id;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDailyId(Integer daily_id) {
+        this.daily_id = daily_id;
     }
 
     public List<ContentDto> getContents() {
