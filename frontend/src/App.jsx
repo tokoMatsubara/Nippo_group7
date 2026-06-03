@@ -20,6 +20,7 @@ function App() {
   const location = useLocation();
 
   const hideHeader =
+    location.pathname === "/" ||
     location.pathname === "/login" ||
     location.pathname === "/register";
 
