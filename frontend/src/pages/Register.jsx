@@ -9,16 +9,23 @@ export default function Register() {
         e.preventDefault();
 
         try {
-            const res = await fetch("/api/register", {
+            const res = await fetch("http://localhost:8080/api/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    emailaddress,
-                    password
+                    user_name: "新規ユーザー",
+                    mail_address: emailaddress,
+                    password: password
                 })
             });
+
+            if(!res.ok){
+                const errorData = await res.json().catch(() => ({}));
+                alert(errorData.message || "登録に失敗しました");
+                return;
+            }
 
             const data = await res.json();
 
