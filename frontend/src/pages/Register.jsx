@@ -16,7 +16,7 @@ export default function Register() {
                 },
                 body: JSON.stringify({
                     userName: "新規ユーザー",
-                    emailaddress: emailaddress,
+                    mailAddress: emailaddress,
                     password: password
                 })
             });

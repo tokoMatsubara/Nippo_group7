@@ -49,7 +49,7 @@ public class UserController {
             requestDto.getPassword(), // ※将来的に暗号化推奨
             requestDto.getMailAddress(),
             false,
-            null
+            java.time.LocalTime.of(9, 0)
         );
 
         // 3. データベースに保存！
