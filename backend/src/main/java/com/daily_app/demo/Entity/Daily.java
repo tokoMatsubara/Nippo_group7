@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 public class Daily {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dailies")
+    @Column(name = "daily_id")
     private Integer dailyId;
 
     @Column(name = "user_id")
@@ -58,5 +58,9 @@ public class Daily {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

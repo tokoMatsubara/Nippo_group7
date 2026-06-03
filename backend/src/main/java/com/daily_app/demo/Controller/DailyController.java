@@ -9,6 +9,7 @@ import com.daily_app.demo.Dto.Response.DailyDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:5173")
 public class DailyController {
+
+        // Serviceに読み込み
+        @org.springframework.beans.factory.annotation.Autowired
+        private com.daily_app.demo.Service.DailyCrudService dailyCrudService;
 
         @GetMapping("/weekly_list/{user_id}")
         public WeeklyListResponseDto getWeeklyList(@PathVariable Long user_id) {
@@ -78,6 +83,9 @@ public class DailyController {
                         System.out.println("content: " + c.getContent());
                 }
 
+                // 「日報保存＆要約生成」をdailyCrudServiceに丸投げ
+                dailyCrudService.createReportWithSummary(request);
+
                 return Map.of(
                                 "status", "success",
                                 "message", "日報登録成功（モック）");
@@ -105,5 +113,6 @@ public class DailyController {
                                 "status", "success",
                                 "message", "日報削除成功（モック）");
         }
+        
 
 }

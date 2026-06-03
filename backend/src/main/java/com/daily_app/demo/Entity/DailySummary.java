@@ -12,13 +12,13 @@ public class DailySummary {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "daily_summaries")
+    @Column(name = "daily_summary_id")
     private Integer dailySummaryId;
 
     @Column(name = "daily_id")
     private Integer dailyId;
 
-    @Column(name = "daily_summary_conent")
+    @Column(name = "daily_summary_content")
     private String dailySummaryContent;
 
     public DailySummary(){}
