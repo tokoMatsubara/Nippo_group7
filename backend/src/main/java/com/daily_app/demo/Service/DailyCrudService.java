@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.daily_app.demo.Dto.Internal.DailiesQueryDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
@@ -14,6 +15,7 @@ import com.daily_app.demo.Entity.WeeklySummary;
 import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
 
+@Service
 public class DailyCrudService {
 
     @Autowired
