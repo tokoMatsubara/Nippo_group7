@@ -1,5 +1,6 @@
 package com.daily_app.demo.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
@@ -8,6 +9,7 @@ import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
+
 
 
 import java.time.LocalDate;
@@ -21,7 +23,7 @@ import java.util.Map;
 public class DailyController {
 
         // Serviceに読み込み
-        @org.springframework.beans.factory.annotation.Autowired
+        @Autowired
         private com.daily_app.demo.Service.DailyCrudService dailyCrudService;
 
         @GetMapping("/weekly_list/{user_id}")
