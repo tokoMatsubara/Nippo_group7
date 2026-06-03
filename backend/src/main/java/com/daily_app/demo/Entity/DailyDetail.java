@@ -33,7 +33,7 @@ public class DailyDetail {
 
     public DailyDetail(Daily daily, Category category, String content){
         this.daily = daily;
-        this. category = category;
+        this.category = category;
         this.content = content;
     }
 

@@ -1,0 +1,8 @@
+{
+  "daily_id": 6,
+  "contents": [
+    { "categoryId": 1, "content": "朝のミーティングで進捗を共有した" },
+    { "categoryId": 2, "content": "認証機能のリファクタリングを実施" },
+    { "categoryId": 3, "content": "1時間ランニングした" }
+  ]
+}

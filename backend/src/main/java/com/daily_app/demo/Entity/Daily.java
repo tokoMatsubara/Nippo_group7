@@ -1,7 +1,10 @@
 package com.daily_app.demo.Entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -26,14 +29,16 @@ public class Daily {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @CreationTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "daily", cascade = CascadeType.ALL)
-    List<DailyDetail> dailyDetails;
+    private List<DailyDetail> dailyDetails;
 
     //constructer======================================
 
@@ -42,6 +47,7 @@ public class Daily {
 
     public Daily(User user){
         this.user = user;
+        dailyDetails = new ArrayList<>();
     }
 
     // getter======================================
@@ -60,6 +66,9 @@ public class Daily {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+    public List<DailyDetail> getDailyDetails() {
+        return dailyDetails;
+    }
 
     // setter======================================
 
@@ -68,5 +77,8 @@ public class Daily {
     }
     public void setUser(User user) {
         this.user = user;
+    }
+    public void setDailyDetails(List<DailyDetail> dailyDetails) {
+        this.dailyDetails = dailyDetails;
     }
 }
