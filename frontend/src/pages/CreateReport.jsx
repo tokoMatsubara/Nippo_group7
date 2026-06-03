@@ -1,165 +1,122 @@
-// 松原作成
-import { useState } from "react";
+//動作確認用　宮田拓海
+import React, { useState } from "react";
 
-function DailyCreate() {
-  const [form, setForm] = useState({
-    learned: "",
-    goodPoint: "",
-    goodReason: "",
-    issue: "",
-    issueReason: "",
-    action: "",
-    tomorrowGoal: "",
-    condition: "普通",
-    comment: "",
-  });
+const API_BASE = "http://localhost:8080/api";
 
-  const today = new Date().toLocaleDateString("ja-JP", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    weekday: "short",
-  });
+const CreateReport = () => {
+  const [date, setDate] = useState("2026-04-01");
 
-  const yesterdayGoal =
-    "昨日設定した目標がここに表示されます";
+  const [contents, setContents] = useState([
+    { categoryId: 1, content: "" },
+  ]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-    setForm({
-      ...form,
-      [name]: value,
-    });
+  // ■ 内容変更
+  const handleChangeContent = (index, field, value) => {
+    const newContents = [...contents];
+    newContents[index][field] = value;
+    setContents(newContents);
+  };
+
+  // ■ 行追加
+  const addRow = () => {
+    setContents([...contents, { categoryId: 1, content: "" }]);
+  };
+
+  // ■ 送信
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+
+      const payload = {
+        userId: 1,
+        date: date,
+        contents: contents
+      };
+
+      console.log("送信データ:", payload);
+
+      const res = await fetch(`${API_BASE}/report`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      console.log("レスポンス:", data);
+
+      setResult(data);
+
+    } catch (err) {
+      console.error(err);
+      setResult({ status: "error" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="daily-page">
-      <header className="header">
-        <div>
-          <div className="page-label">日報作成</div>
-          <h1>{today} の日報</h1>
+    <div style={{ padding: 20 }}>
+      <h2>日報登録フォーム</h2>
+
+      {/* 日付 */}
+      <div>
+        <label>日付：</label>
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
+      </div>
+
+      <hr />
+
+      {/* 入力リスト */}
+      <h3>内容</h3>
+
+      {contents.map((item, index) => (
+        <div key={index} style={{ marginBottom: 10 }}>
+          <input
+            type="number"
+            placeholder="カテゴリID"
+            value={item.categoryId}
+            onChange={(e) =>
+              handleChangeContent(index, "categoryId", Number(e.target.value))
+            }
+            style={{ width: 120 }}
+          />
+
+          <input
+            type="text"
+            placeholder="内容"
+            value={item.content}
+            onChange={(e) =>
+              handleChangeContent(index, "content", e.target.value)
+            }
+            style={{ marginLeft: 10, width: 300 }}
+          />
         </div>
+      ))}
 
-        <div className="header-actions">
-          <span className="user-name">開発演習</span>
+      <button onClick={addRow}>＋追加</button>
 
-          <button className="header-btn">
-            ダッシュボードへ戻る
-          </button>
+      <hr />
 
-          <button className="header-btn">
-            ログアウト
-          </button>
-        </div>
-      </header>
+      {/* 送信 */}
+      <button onClick={handleSubmit} disabled={loading}>
+        {loading ? "送信中..." : "登録"}
+      </button>
 
-      <div className="goal-card">
-        <h3>昨日立てた今日の目標</h3>
-        <p>{yesterdayGoal}</p>
-      </div>
-
-      <Section
-        title="1. 今日学んだこと"
-        name="learned"
-        value={form.learned}
-        onChange={handleChange}
-      />
-
-      <Section
-        title="2. よかった点・できたこと"
-        name="goodPoint"
-        value={form.goodPoint}
-        onChange={handleChange}
-      />
-
-      <Section
-        title="3. その理由"
-        name="goodReason"
-        value={form.goodReason}
-        onChange={handleChange}
-      />
-
-      <Section
-        title="4. 課題・改善点"
-        name="issue"
-        value={form.issue}
-        onChange={handleChange}
-      />
-
-      <Section
-        title="5. その理由"
-        name="issueReason"
-        value={form.issueReason}
-        onChange={handleChange}
-      />
-
-      <Section
-        title="6. 改善するための行動"
-        name="action"
-        value={form.action}
-        onChange={handleChange}
-      />
-
-      <Section
-        title="7. 明日の目標"
-        name="tomorrowGoal"
-        value={form.tomorrowGoal}
-        onChange={handleChange}
-      />
-
-      <div className="section-card">
-        <h3>8. 体調・気持ち</h3>
-
-        <select
-          className="select-box"
-          name="condition"
-          value={form.condition}
-          onChange={handleChange}
-        >
-          <option value="不調">不調</option>
-          <option value="普通">普通</option>
-          <option value="良好">良好</option>
-        </select>
-      </div>
-
-      <Section
-        title="9. コメント"
-        name="comment"
-        value={form.comment}
-        onChange={handleChange}
-      />
-
-      <div className="submit-area">
-        <button
-          className="submit-btn"
-          onClick={() => alert("作成ボタン押下")}
-        >
-          作成
-        </button>
-      </div>
+      {/* 結果 */}
+      <pre style={{ marginTop: 20 }}>
+        {JSON.stringify(result, null, 2)}
+      </pre>
     </div>
   );
-}
+};
 
-function Section({
-  title,
-  name,
-  value,
-  onChange,
-}) {
-  return (
-    <div className="section-card">
-      <h3>{title}</h3>
-
-      <textarea
-        name={name}
-        value={value}
-        onChange={onChange}
-        rows="5"
-      />
-    </div>
-  );
-}
-
-export default DailyCreate;
+export default CreateReport;
