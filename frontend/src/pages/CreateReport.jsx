@@ -164,7 +164,10 @@ function DailyCreate() {
       <div className="submit-area">
         <button
           className="submit-btn"
-          onClick={() => alert("作成ボタン押下")}
+          onClick={() => {
+            alert("作成しました");
+            navigate("/dashboard");
+          }}
         >
           作成
         </button>
