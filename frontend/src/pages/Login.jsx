@@ -13,23 +13,28 @@ export default function Login() {
         e.preventDefault();
 
         try {
-            const res = await fetch("/api/login", {
+            const res = await fetch("http://localhost:8080/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    email,
-                    password
+                    mail_address: email,
+                    password: password
                 })
             });
+
+            if(!res.ok){
+                const errorData = await res.json().catch(() => ({}));
+                alert(errorData.message || "ログインに失敗しました");
+                return;
+            }
 
             const data = await res.json();
 
             console.log("ログイン成功:", data);
 
             localStorage.setItem("user_id", data.user_id);
-
             window.location.href = "/dashboard";
 
         } catch (err) {
