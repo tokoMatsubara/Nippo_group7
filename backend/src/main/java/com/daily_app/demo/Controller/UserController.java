@@ -1,4 +1,4 @@
-// 松原 編集した（DB保存ロジック合流版）
+// 松原 編集
 package com.daily_app.demo.Controller;
 
 import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
