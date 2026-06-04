@@ -1,6 +1,7 @@
 package com.daily_app.demo.Service;
 
 import com.daily_app.demo.Repository.DailyRepository;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -41,6 +42,9 @@ public class DailyCrudService {
     private UserRepository userRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private DailySummaryService dailySummaryService;
 
     DailyCrudService(DailyRepository dailyRepository) {
         this.dailyRepository = dailyRepository;
@@ -144,6 +148,7 @@ public class DailyCrudService {
         }catch(DataIntegrityViolationException e){
             return Map.of("status", "failed", "message", "日報の登録に失敗しました");
         }
+        dailySummaryService.generateSummary(daily, reportRequest);
 
         return Map.of("status", "success", "message", "日報の登録に成功しました");
     }

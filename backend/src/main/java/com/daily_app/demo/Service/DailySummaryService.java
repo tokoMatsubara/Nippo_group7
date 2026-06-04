@@ -2,30 +2,47 @@
 package com.daily_app.demo.Service;
 
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
+import com.daily_app.demo.Entity.Daily;
+import com.daily_app.demo.Entity.DailySummary;
+import com.daily_app.demo.Repository.CategoryRepository;
+import com.daily_app.demo.Repository.CategoryRepository;
+import com.daily_app.demo.Repository.DailySummaryRepository;
+
+import jakarta.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;
 
 @Service
 public class DailySummaryService {
 
-    // 1. CallLlmServiceを利用するためにフィールドを定義
-    private final CallLlmService callLlmService;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-    // 2. コンストラクタインジェクションでSpringにCallLlmServiceをいれてもらう
-    DailySummaryService(CallLlmService callLlmService){
-        this.callLlmService = callLlmService;
-    }
+    // 1. CallLlmServiceを利用するためにフィールドを定義
+    @Autowired
+    private CallLlmService callLlmService;
+
+    @Autowired
+    private DailySummaryRepository dailySummaryRepository;
 
     /**
      * ReportRequestDtoを入力として受け取り、LLM用の要約を生成して返すメソッド
      * * @param requestDto 画面から届いた日報データ
      * @return LLMによって生成された要約文字列
      */
-    public String generateSummary(ReportRequestDto requestDto) {
+    
+    @Async
+    @Transactional
+    public void generateSummary(Daily daily, ReportRequestDto requestDto) {
         
         // 1. もし日報の中身（contents）が空っぽだったら、空の文字を返す
         if (requestDto.getContents() == null || requestDto.getContents().isEmpty()) {
-            return "日報の内容がないため、要約を生成できませんでした。";
+            // return "日報の内容がないため、要約を生成できませんでした。";
+            return;
         }
 
         // 2. 伝票(Dto)の中にある複数の日報内容（content）を1つの文章にガッチャンコする
@@ -45,7 +62,18 @@ public class DailySummaryService {
         // 組み立てたプロンプトをCallLlmServiceに渡して結果を受け取る
         String realSummary = callLlmService.chatResponse(prompt);
 
+        DailySummary newSummary = new DailySummary(daily, realSummary);
 
-        return realSummary;
+        try{
+            dailySummaryRepository.save(newSummary);
+        }catch(DataIntegrityViolationException e){
+            System.err.println("==========日報要約のDB登録失敗==========");
+            // return "failed";
+            return;
+        }
+
+        System.err.println("==========日報要約の登録が完了しました==========");
+
+        // return "success";
     }
 }
