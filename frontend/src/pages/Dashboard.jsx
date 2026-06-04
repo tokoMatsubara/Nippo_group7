@@ -1,4 +1,5 @@
 import "../styles/Dashboard.css";
+import "../styles/common.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -53,7 +54,7 @@ export default function Dashboard() {
                 <h1 className="dashboardTitle">ダッシュボード</h1>
 
                 <button
-                    className="btn btn-secondary"
+                    className="primaryButton"
                     onClick={() => navigate("/remind")}
                 >
                     🔔 リマインダー
@@ -79,7 +80,7 @@ export default function Dashboard() {
 
             {/* 新規作成ボタン */}
             <button
-                className="btn btn-primary"
+                className="primaryButton"
                 onClick={handleCreateReport}
             >
                 新規日報作成
