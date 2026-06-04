@@ -1,17 +1,15 @@
-import React from "react";
-import "../styles/common.css";
+// Layout.jsx
 import Header from "./Header";
+import "../styles/common.css";
 
 export default function Layout({ children }) {
     return (
-        <div>
-            {/* 共通ヘッダー */}
+        <div className="appWrapper">
             <Header />
 
-            {/* 画面本体 */}
-            <div className="page-container">
+            <main className="appContent">
                 {children}
-            </div>
+            </main>
         </div>
     );
 }
