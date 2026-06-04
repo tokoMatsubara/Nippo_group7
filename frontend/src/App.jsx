@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "./components/Layout";
 
@@ -19,22 +19,19 @@ function AppWrapper() {
 }
 
 function App() {
-  const location = useLocation();
-
-  // ログイン系はLayoutなし
-  const isAuthPage =
-    location.pathname === "/login" ||
-    location.pathname === "/register" ||
-    location.pathname === "/";
-
   return (
     <Routes>
-      {/* 認証系（Layoutなし） */}
+
+      {/* =====================
+          認証系（Layoutなし）
+      ===================== */}
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* メイン（Layoutあり） */}
+      {/* =====================
+          メイン（Layoutあり）
+      ===================== */}
       <Route
         path="/dashboard"
         element={
@@ -73,6 +70,7 @@ function App() {
 
       {/* デフォルト */}
       <Route path="*" element={<Navigate to="/login" />} />
+
     </Routes>
   );
 }
