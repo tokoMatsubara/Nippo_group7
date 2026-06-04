@@ -49,9 +49,9 @@ export default function Login() {
 
             <div className="loginBox card">
 
-                <h1>ログイン</h1>
+                <h1 className="loginTitle">ログイン</h1>
 
-                <form onSubmit={handleLogin}>
+                <form className="loginForm" onSubmit={handleLogin}>
 
                     <input
                         className="loginInput"

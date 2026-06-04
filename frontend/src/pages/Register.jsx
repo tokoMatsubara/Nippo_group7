@@ -1,3 +1,5 @@
+// 新規登録画面
+
 import "../styles/Register.css";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
