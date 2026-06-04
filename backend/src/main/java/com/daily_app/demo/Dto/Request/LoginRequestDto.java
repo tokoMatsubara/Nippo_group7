@@ -1,12 +1,11 @@
 // 松原編集
 package com.daily_app.demo.Dto.Request;
 
-/**
- * ログインリクエスト用のDTO（通常のクラス版）
- */
+
 public class LoginRequestDto {
 
-    private String mailAddress; // コントローラー側と合わせて「dd」にしています
+    @com.fasterxml.jackson.annotation.JsonProperty("mail_address")
+    private String mailAddress; 
     private String password;
 
     // デフォルトコンストラクタ

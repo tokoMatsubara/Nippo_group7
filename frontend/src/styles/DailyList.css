@@ -1,0 +1,135 @@
+/* DailyListのcssファイル　今藤 */
+
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    padding: 20px;
+    font-family: sans-serif;
+    background: #f7f8fa;
+    min-height: 100vh;
+}
+
+/* =====================
+   週エリア
+===================== */
+.weekHeader {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.weekSummary {
+    color: #555;
+    margin-bottom: 18px;
+}
+
+/* =====================
+   曜日ボタン
+===================== */
+.dayButtons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.dayButton {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    background: #e5e7eb;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 500;
+}
+
+.dayButton:hover {
+    background: #d1d5db;
+}
+
+.dayButton.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* =====================
+   カード（1日分）
+===================== */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 日付 */
+.date {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+/* サマリー */
+.summary {
+    color: #666;
+    margin-bottom: 12px;
+}
+
+/* =====================
+   ボタン
+===================== */
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.editBtn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+}
+
+.editBtn:hover {
+    background: #16a34a;
+}
+
+.deleteBtn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #ef4444;
+    color: white;
+    cursor: pointer;
+}
+
+.deleteBtn:hover {
+    background: #dc2626;
+}
+
+/* =====================
+   詳細（9項目）
+===================== */
+.section {
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.sectionTitle {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.sectionValue {
+    color: #333;
+    white-space: pre-wrap;
+}
+
+.sectionItem {
+    margin-bottom: 12px;
+}

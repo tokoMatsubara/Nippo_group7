@@ -47,5 +47,6 @@ public class DailyController {
         public Map<String, String> deleteReport(@PathVariable Integer daily_id) {
             return dailyCrud.deleteDaily(daily_id);
         }
+        
 
 }

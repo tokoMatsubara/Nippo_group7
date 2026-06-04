@@ -80,5 +80,8 @@ public class Daily {
     }
     public void setDailyDetails(List<DailyDetail> dailyDetails) {
         this.dailyDetails = dailyDetails;
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

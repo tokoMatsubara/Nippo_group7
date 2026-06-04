@@ -5,6 +5,8 @@ import java.util.List;
 
 public class DailyDto {
 
+    private Integer dailyId;
+
     private LocalDate date;
 
     private List<ContentDto> contents;
@@ -14,10 +16,19 @@ public class DailyDto {
     public DailyDto() {
     }
 
-    public DailyDto(LocalDate date, List<ContentDto> contents, String summary) {
+    public DailyDto(Integer dailyId, LocalDate date, List<ContentDto> contents, String summary) {
+        this.dailyId = dailyId;
         this.date = date;
         this.contents = contents;
         this.summary = summary;
+    }
+
+    public Integer getDailyId() {
+        return dailyId;
+    }
+
+    public void setDailyId(Integer dailyId) {
+        this.dailyId = dailyId;
     }
 
     public LocalDate getDate() {
