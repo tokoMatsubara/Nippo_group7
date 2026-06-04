@@ -1,26 +1,73 @@
-.primaryButton {
-    padding: 8px 12px;
-    background-color: #4a6cf7;
+/* =========================
+   Layout全体
+========================= */
+.appLayout {
+    background: #f7f8fa;
+    min-height: 100vh;
+}
+
+/* ヘッダー下のメイン領域 */
+.appMain {
+    padding: 20px;
+    padding-top: 80px;
+    /* Header分の余白 */
+    font-family: sans-serif;
+}
+
+/* =========================
+   カード共通
+========================= */
+.card {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   ボタン共通
+========================= */
+
+/* メインボタン（青） */
+.btn-primary {
+    padding: 10px 14px;
+    background: #2563eb;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
+    font-weight: bold;
+    transition: 0.2s;
 }
 
-.primaryButton:hover {
-    background-color: #3b5bdb;
+.btn-primary:hover {
+    background: #1d4ed8;
 }
 
-.dangerButton {
+/* 危険ボタン（赤） */
+.btn-danger {
     padding: 8px 12px;
-    background-color: #ef4444;
+    background: #ef4444;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+/* サブボタン（グレー） */
+.btn-secondary {
+    padding: 8px 12px;
+    background: #e5e7eb;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
 }
 
-.dangerButton:hover {
-    background-color: #dc2626;
+.btn-secondary:hover {
+    background: #d1d5db;
 }
