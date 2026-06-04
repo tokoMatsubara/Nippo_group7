@@ -1,37 +1,43 @@
 package com.daily_app.demo.Service;
 
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.daily_app.demo.Dto.Response.DailyDto;
 
 @Service
 public class WeeklySummaryService {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final CallLlmService callLlmService;
 
-    private static final String LM_STUDIO_URL = "http://localhost:1234/v1/chat/completions";
+    public WeeklySummaryService(CallLlmService callLlmService) {
+        this.callLlmService = callLlmService;
+    }
 
     /**
-     * 週次要約生成（LM Studio）
+     * 週次要約生成
      */
-    public String generateWeeklySummary(List<DailyDto> dailyList) {
+    @Async
+    public CompletableFuture<String> summarizeWeekly(List<DailyDto> weeklyData) {
 
-        String prompt = buildPrompt(dailyList);
+        String prompt = buildPrompt(weeklyData);
 
-        return callLMStudio(prompt);
+        System.out.println("==== PROMPT ====");
+        System.out.println(prompt);
+
+        String result = callLlmService.chatResponse(prompt);
+
+        return CompletableFuture.completedFuture(result);
     }
 
     /**
      * プロンプト作成
      */
+
     private String buildPrompt(List<DailyDto> dailyList) {
 
         String input = dailyList.stream()
@@ -64,51 +70,5 @@ public class WeeklySummaryService {
         return "日付: " + daily.getDate()
                 + "\n要約: " + daily.getSummary()
                 + "\n内容:\n" + contents;
-    }
-
-    public String summarizeWeekly(List<DailyDto> weeklyData) {
-
-        String prompt = buildPrompt(weeklyData);
-
-        System.out.println("==== PROMPT ====");
-        System.out.println(prompt);
-
-        return callLMStudio(prompt);
-    }
-
-    /**
-     * LM Studio API呼び出し
-     */
-    private String callLMStudio(String prompt) {
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        Map<String, Object> requestBody = Map.of(
-                "model", "local-model",
-                "messages", List.of(
-                        Map.of("role", "user", "content", prompt)),
-                "temperature", 0.7);
-
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
-
-        try {
-            Map response = restTemplate.postForObject(
-                    LM_STUDIO_URL,
-                    request,
-                    Map.class);
-
-            // 返答取り出し
-            List choices = (List) response.get("choices");
-            Map message = (Map) ((Map) choices.get(0)).get("message");
-
-            return (String) message.get("content");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "LLM呼び出し失敗（LM Studio未起動の可能性）";
-        }
     }
 }
