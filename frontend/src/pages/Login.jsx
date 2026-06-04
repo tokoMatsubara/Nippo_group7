@@ -36,7 +36,9 @@ export default function Login() {
 
             console.log("ログイン成功:", data);
 
-            localStorage.setItem("user", JSON.stringify(data));
+            localStorage.setItem("user_id", data.userId);
+            localStorage.setItem("user_name", data.userName);
+
             navigate("/dashboard");
 
         } catch (err) {
