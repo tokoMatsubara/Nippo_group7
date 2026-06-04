@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Register() {
+    const [username, setUsername] = useState("");
     const [emailaddress, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -16,13 +17,13 @@ export default function Register() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    user_name: "新規ユーザー",
+                    user_name: username,
                     mail_address: emailaddress,
                     password: password
                 })
             });
 
-            if(!res.ok){
+            if (!res.ok) {
                 const errorData = await res.json().catch(() => ({}));
                 alert(errorData.message || "登録に失敗しました");
                 return;
@@ -48,6 +49,13 @@ export default function Register() {
                 <h1 className="registerTitle">新規登録</h1>
 
                 <form className="registerForm" onSubmit={handleSubmit}>
+
+                    <input
+                        className="registerInput"
+                        placeholder="ユーザー名"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
 
                     <input
                         className="registerInput"
