@@ -17,7 +17,7 @@ public interface DailyDetailRepository extends JpaRepository<DailyDetail, Long> 
     @Query("""
         SELECT new com.daily_app.demo.Dto.Internal.DailyQueryDto(
             d.dailyId,
-            d.createdAt,
+            d.dailyDate,
             ds.dailySummaryContent,
             c.categoryId,
             c.categoryName,

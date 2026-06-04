@@ -89,7 +89,7 @@ public class DailyCrudService {
                 DailyDto dailyDto = new DailyDto();
 
                 dailyDto.setDate(
-                        query.getCreatedAt().toLocalDate());
+                        query.getDailyDate());
 
                 dailyDto.setSummary(
                         query.getDailySummaryContent());
