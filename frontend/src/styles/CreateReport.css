@@ -1,82 +1,40 @@
+/* =========================
+   CreateReport Layout Only
+========================= */
+
 .daily-page {
     padding: 20px;
-    background: #f7f8fa;
     min-height: 100vh;
-    font-family: sans-serif;
 }
 
-/* ヘッダー */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.page-label {
-    font-size: 12px;
-    color: #666;
-}
-
-.header-actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.user-name {
-    font-weight: bold;
-}
-
-.header-btn {
-    padding: 6px 10px;
-    border: none;
-    border-radius: 6px;
-    background: #e5e7eb;
-    cursor: pointer;
-}
-
-.header-btn:hover {
-    background: #d1d5db;
-}
-
-/* 目標カード */
+/* 目標カード（card前提） */
 .goal-card {
-    background: white;
-    padding: 14px;
-    border-radius: 10px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* 入力カード共通 */
+/* 入力セクション（card前提） */
 .section-card {
-    background: white;
-    padding: 14px;
-    border-radius: 10px;
     margin-bottom: 14px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    text-align: left;
     display: flex;
     flex-direction: column;
 }
 
+/* タイトル */
 .section-card h3 {
     margin: 0 0 8px 0;
-    text-align: left;
 }
 
-/* textarea */
+/* textarea（最低限UI） */
 .section-card textarea {
     width: 100%;
     margin-top: 8px;
     padding: 10px;
+    resize: vertical;
     border-radius: 6px;
     border: 1px solid #ddd;
-    resize: vertical;
 }
 
-/* select */
+/* select（最低限UI） */
 .select-box {
     margin-top: 8px;
     padding: 8px;
@@ -88,18 +46,4 @@
 .submit-area {
     text-align: center;
     margin-top: 20px;
-}
-
-.submit-btn {
-    padding: 10px 18px;
-    background: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.submit-btn:hover {
-    background: #1d4ed8;
 }
