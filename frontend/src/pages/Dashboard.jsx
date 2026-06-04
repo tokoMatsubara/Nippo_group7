@@ -1,110 +1,76 @@
-import "../styles/Dashboard.css";
+//動作確認用　宮田拓海
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
-    const [weeks, setWeeks] = useState([]);
-    const [reminder, setReminder] = useState(null);
-    const [loading, setLoading] = useState(true);
+const API_BASE = "http://localhost:8080/api";
 
-    const navigate = useNavigate();
+const Dashboard = () => {
+    const [weeklyList, setWeeklyList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetchData();
+        const fetchWeeklyList = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const res = await fetch(`${API_BASE}/weekly_list/1`);
+                const data = await res.json();
+
+                console.log("weekly API:", data);
+
+                const list = data?.summaries ?? data?.list ?? [];
+
+                setWeeklyList(Array.isArray(list) ? list : []);
+            } catch (err) {
+                console.error(err);
+                setError("週リスト取得に失敗しました");
+                setWeeklyList([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchWeeklyList();
     }, []);
 
-    const fetchData = async () => {
-        try {
-            setLoading(true);
-            const USER_ID = 1;
-
-            const weekRes = await fetch(`/api/weekly-list/${USER_ID}`);
-            const weekData = await weekRes.json();
-
-            const reminderRes = await fetch(`/api/remind/${USER_ID}`);
-            const reminderData = await reminderRes.json();
-
-            setWeeks(weekData);
-            setReminder(reminderData);
-
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleWeekClick = (week) => {
-        window.location.href = `/reports/week/${week.startDate}`;
-    };
-
-    const handleCreateReport = () => {
-        window.location.href = "/create-report";
-    };
-
-    if (loading) return <h2>Loading...</h2>;
-
     return (
-        <div className="dashboardContainer">
+        <div style={{ padding: 20 }}>
+            <h2>ダッシュボード</h2>
 
-            <div className="dashboardHeader">
+            {loading && <p>読み込み中...</p>}
+            {error && <p style={{ color: "red" }}>{error}</p>}
 
-                <h1 className="dashboardTitle">ダッシュボード</h1>
+            <h3>週リスト</h3>
 
-                <button
-                    className="remindButton"
-                    onClick={() => navigate("/remind")}
-                >
-                    🔔リマインダー
-                </button>
+            {!loading && weeklyList.length === 0 && (
+                <p>データがありません</p>
+            )}
 
-            </div>
-
-            <section className="section card">
-
-                <h2 className="remindTitle">明日の目標と課題</h2>
-
-                {reminder?.insights?.nextActions?.length ? (
-                    <ul className="list">
-                        {reminder.insights.nextActions.map((item, i) => (
-                            <li key={i}>{item}</li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p></p>
-                )}
-            </section>
-
-            {/* ボタン */}
-            <button
-                className="primaryButton"
-                onClick={handleCreateReport}
-            >
-                新規日報作成
-            </button>
-
-            {/* 週一覧 */}
-            <section className="section">
-
-                <h2>週一覧</h2>
-
-                {weeks.map((week) => (
+            {Array.isArray(weeklyList) &&
+                weeklyList.map((week, index) => (
                     <div
-                        key={week.startDate}
-                        className="weekCard"
-                        onClick={() => handleWeekClick(week)}
+                        key={index}
+                        style={{
+                            padding: 12,
+                            margin: 8,
+                            border: "1px solid #ccc",
+                            borderRadius: 6,
+                        }}
                     >
-                        <div className="weekTitle">
-                            {week.startDate} ~ {week.endDate}
+                        {/* ■ 週の期間（日付表示） */}
+                        <div style={{ fontWeight: "bold" }}>
+                            {week.startDate} 〜 {week.endDate}
                         </div>
 
-                        <div className="weekSummary">
-                            {week.summary}
+                        {/* ■ 要約 */}
+                        <div style={{ marginTop: 6 }}>
+                            {week.summary ?? week.content}
                         </div>
                     </div>
                 ))}
-            </section>
-
         </div>
     );
-}
+};
+
+export default Dashboard;
