@@ -94,16 +94,6 @@ export default function DailyList() {
                             {selectedDaily.daily_summary_content}
                         </p>
 
-                        {/* 共通ボタン化 */}
-                        <div className="actions">
-                            <button className="primaryButton">
-                                編集
-                            </button>
-
-                            <button className="dangerButton">
-                                削除
-                            </button>
-                        </div>
 
                         {/* 詳細 */}
                         <div className="section">
@@ -118,6 +108,17 @@ export default function DailyList() {
                                     </p>
                                 </div>
                             ))}
+                        </div>
+
+                        {/* 共通ボタン化 */}
+                        <div className="actions">
+                            <button className="primaryButton">
+                                編集
+                            </button>
+
+                            <button className="dangerButton">
+                                削除
+                            </button>
                         </div>
                     </>
                 )}
