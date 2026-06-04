@@ -32,7 +32,6 @@ export default function Login() {
             }
 
             const data = await res.json();
-            console.log("LOGIN RESPONSE:", data);
 
             console.log("ログイン成功:", data);
 
