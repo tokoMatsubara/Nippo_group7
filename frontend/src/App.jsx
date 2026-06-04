@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
-import Header from "./components/Header";
+
+import Layout from "./components/Layout";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -20,40 +21,59 @@ function AppWrapper() {
 function App() {
   const location = useLocation();
 
-  // ヘッダー非表示ページ
-  const hideHeader =
-    location.pathname === "/" ||
+  // ログイン系はLayoutなし
+  const isAuthPage =
     location.pathname === "/login" ||
-    location.pathname === "/register";
+    location.pathname === "/register" ||
+    location.pathname === "/";
 
   return (
-    <>
-      {/* ヘッダー（ログイン・登録時は非表示） */}
-      {!hideHeader && <Header />}
+    <Routes>
+      {/* 認証系（Layoutなし） */}
+      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-      {/* ルーティング */}
-      <Routes>
+      {/* メイン（Layoutあり） */}
+      <Route
+        path="/dashboard"
+        element={
+          <Layout>
+            <Dashboard />
+          </Layout>
+        }
+      />
 
-        {/* 認証系 */}
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+      <Route
+        path="/create-report"
+        element={
+          <Layout>
+            <CreateReport />
+          </Layout>
+        }
+      />
 
-        {/* メイン */}
-        <Route path="/dashboard" element={<Dashboard />} />
+      <Route
+        path="/daily-list"
+        element={
+          <Layout>
+            <DailyList />
+          </Layout>
+        }
+      />
 
-        {/* 日報系 */}
-        <Route path="/create-report" element={<CreateReport />} />
-        <Route path="/daily-list" element={<DailyList />} />
+      <Route
+        path="/remind"
+        element={
+          <Layout>
+            <Remind />
+          </Layout>
+        }
+      />
 
-        {/* リマインド */}
-        <Route path="/remind" element={<Remind />} />
-
-        {/* デフォルト */}
-        <Route path="*" element={<Navigate to="/login" />} />
-
-      </Routes>
-    </>
+      {/* デフォルト */}
+      <Route path="*" element={<Navigate to="/login" />} />
+    </Routes>
   );
 }
 
