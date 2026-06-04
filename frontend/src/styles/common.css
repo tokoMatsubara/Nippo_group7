@@ -30,7 +30,7 @@
     background: #2563eb;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
 }
@@ -41,7 +41,7 @@
 
 /* 戻るボタン（統一） */
 .backButton {
-    padding: 8px 12px;
+    padding: 10px 14px;
     background: #afb4c1;
     color: #000000;
     border: none;
@@ -55,7 +55,7 @@
 
 /* アラートボタン（赤統一）*/
 .dangerButton {
-    padding: 8px 12px;
+    padding: 10px 14px;
     background: #ef4444;
     color: white;
     border: none;
@@ -69,7 +69,7 @@
 
 /* 追加ボタン（緑統一）*/
 .addButton {
-    padding: 8px 12px;
+    padding: 10px 14px;
     background: #22c55e;
     color: white;
     border: none;
