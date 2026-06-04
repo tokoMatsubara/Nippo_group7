@@ -18,6 +18,7 @@
 /* 目標カード（card前提） */
 .goal-card {
     margin-bottom: 16px;
+    text-align: left;
 }
 
 /* 入力セクション（card前提） */
@@ -25,6 +26,7 @@
     margin-bottom: 14px;
     display: flex;
     flex-direction: column;
+    text-align: left;
 }
 
 /* タイトル */
