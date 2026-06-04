@@ -31,7 +31,7 @@ CREATE TABLE reminds (
     is_read BOOLEAN DEFAULT FALSE,
 
     FOREIGN KEY (user_id) REFERENCES users(user_id)
-)
+);
 
 CREATE TABLE dailies (
     daily_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

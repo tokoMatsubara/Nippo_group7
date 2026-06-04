@@ -1,10 +1,9 @@
 // 松原編集
 package com.daily_app.demo.Service;
 
-import com.daily_app.demo.Dto.Request.ReportRequestDto;
+import com.daily_app.demo.Dto.Request.ContentDto;
 import com.daily_app.demo.Entity.Daily;
 import com.daily_app.demo.Entity.DailySummary;
-import com.daily_app.demo.Repository.CategoryRepository;
 import com.daily_app.demo.Repository.CategoryRepository;
 import com.daily_app.demo.Repository.DailySummaryRepository;
 
@@ -14,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,24 +38,17 @@ public class DailySummaryService {
     
     @Async
     @Transactional
-    public void generateSummary(Daily daily, ReportRequestDto requestDto) {
+    public void generateSummary(Daily daily, List<ContentDto> requestDto) {
         
         // 1. もし日報の中身（contents）が空っぽだったら、空の文字を返す
-        if (requestDto.getContents() == null || requestDto.getContents().isEmpty()) {
+        if (requestDto == null || requestDto.isEmpty()) {
             // return "日報の内容がないため、要約を生成できませんでした。";
             return;
         }
 
         // 2. 伝票(Dto)の中にある複数の日報内容（content）を1つの文章にガッチャンコする
         // 例：「〇〇の作業をした」「エラーを解決した」 ➔ 「・〇〇の作業をした\n・エラーを解決した」
-        String combinedContent = requestDto.getContents().stream()
-                .map(com.daily_app.demo.Dto.Request.ContentDto::getContent)
-                .collect(Collectors.joining("\n・", "・", ""));
-
-        // 3. LLMに送るためのプロンプト（命令文）を組み立てる
-        String prompt = "以下の日報内容を、簡潔に3行程度で要約してください。\n\n"
-                      + "[日報内容]\n" 
-                      + combinedContent;
+        String prompt = buildPrompt(requestDto);
 
         System.out.println("--- LLMに送信するプロンプト案 ---\n" + prompt);
 
@@ -62,7 +56,13 @@ public class DailySummaryService {
         // 組み立てたプロンプトをCallLlmServiceに渡して結果を受け取る
         String realSummary = callLlmService.chatResponse(prompt);
 
-        DailySummary newSummary = new DailySummary(daily, realSummary);
+        //新規の日報登録なら新しいdailysummaryを生成、更新ならdailyidから取得
+        DailySummary newSummary = dailySummaryRepository
+            .findByDaily_DailyId(daily.getDailyId())
+            .orElseGet(DailySummary::new);
+        
+        newSummary.setDaily(daily);
+        newSummary.setDailySummaryContent(realSummary);
 
         try{
             dailySummaryRepository.save(newSummary);
@@ -75,5 +75,22 @@ public class DailySummaryService {
         System.err.println("==========日報要約の登録が完了しました==========");
 
         // return "success";
+    }
+
+
+
+    private String buildPrompt(List<ContentDto> requestContent){
+        String combinedContent = requestContent.stream()
+                .map(c -> "[" + c.getCategoryId() + "] " 
+                    + categoryRepository.findById(c.getCategoryId()).get().getCategoryName()
+                    + "\n"
+                    + c.getContent())
+                .collect(Collectors.joining("\n・", "・", ""));
+
+        // 3. LLMに送るためのプロンプト（命令文）を組み立てる
+        String prompt = "以下の日報内容を、簡潔に3行程度で要約してください。\n日報の要約内容以外を絶対に出力しないでください。\n絵文字を出力しないでください\n\n"
+                      + "[日報内容]\n" 
+                      + combinedContent;
+        return prompt;
     }
 }

@@ -148,7 +148,7 @@ public class DailyCrudService {
         }catch(DataIntegrityViolationException e){
             return Map.of("status", "failed", "message", "日報の登録に失敗しました");
         }
-        dailySummaryService.generateSummary(daily, reportRequest);
+        dailySummaryService.generateSummary(daily, reportRequest.getContents());
 
         return Map.of("status", "success", "message", "日報の登録に成功しました");
     }
@@ -176,6 +176,8 @@ public class DailyCrudService {
         }catch(DataIntegrityViolationException e){
             return Map.of("status", "failed", "message", "日報の更新に失敗しました");
         }
+
+        dailySummaryService.generateSummary(daily, updateRequest.getContents());
 
         return Map.of("status", "success", "message", "日報の更新に成功しました");
     }

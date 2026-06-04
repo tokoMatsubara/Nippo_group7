@@ -1,10 +1,12 @@
 // 松原編集
 package com.daily_app.demo.Dto.Request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public class LoginRequestDto {
 
-    @com.fasterxml.jackson.annotation.JsonProperty("mail_address")
+    @JsonProperty("mail_address")
     private String mailAddress; 
     private String password;
 
