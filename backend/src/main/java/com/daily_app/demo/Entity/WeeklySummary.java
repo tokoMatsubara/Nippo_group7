@@ -37,4 +37,14 @@ public class WeeklySummary {
         this.weekStartDate = weekStartDate;
         this.weekEndDate = weekEndDate;
     }
+
+    public LocalDate getWeekStartDate() {
+        return weekStartDate;
+    }
+    public LocalDate getWeekEndDate() {
+        return weekEndDate;
+    }
+    public String getWeeklySummaryContent() {
+        return weeklySummaryContent;
+    }
 }
