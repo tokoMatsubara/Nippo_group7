@@ -24,12 +24,17 @@ public class WeeklySummaryService {
     @Async
     public CompletableFuture<String> summarizeWeekly(List<DailyDto> weeklyData) {
 
+        System.out.println("START: " + Thread.currentThread().getName());
+
         String prompt = buildPrompt(weeklyData);
 
         System.out.println("==== PROMPT ====");
         System.out.println(prompt);
 
         String result = callLlmService.chatResponse(prompt);
+
+        System.out.println(result);
+        System.out.println("END: " + Thread.currentThread().getName());
 
         return CompletableFuture.completedFuture(result);
     }
