@@ -3,6 +3,7 @@
 import "../styles/DailyList.css";
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const mockWeekData = {
     week_start_date: "2026-06-01",
@@ -38,6 +39,8 @@ export default function DailyList() {
 
     const weekData = mockWeekData;
 
+    const navigate = useNavigate();
+
     const selectedDaily = weekData.dailies.find(
         (d) => d.day === selectedDay
     );
@@ -47,6 +50,16 @@ export default function DailyList() {
 
     return (
         <div className="container">
+
+            {/* 戻るボタン */}
+            <dib className="topRight">
+                <button
+                    className="backButton"
+                    onClick={() => navigate("/dashboard")}
+                >
+                    ダッシュボードへ戻る
+                </button>
+            </dib>
 
             {/* ① 週表示 */}
             <h2>
