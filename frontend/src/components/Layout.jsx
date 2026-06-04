@@ -1,13 +1,17 @@
+import React from "react";
+import "../styles/common.css";
 import Header from "./Header";
-import "../styles/layout.css";
 
 export default function Layout({ children }) {
     return (
-        <div className="appLayout">
+        <div>
+            {/* 共通ヘッダー */}
             <Header />
-            <main className="appMain">
+
+            {/* 画面本体 */}
+            <div className="page-container">
                 {children}
-            </main>
+            </div>
         </div>
     );
 }
