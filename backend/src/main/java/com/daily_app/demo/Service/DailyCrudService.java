@@ -92,6 +92,8 @@ public class DailyCrudService {
 
                 dailyDto.setContents(
                         new ArrayList<>());
+                        
+                dailyDto.setDailyId(dailyId);
 
                 dailyMap.put(dailyId, dailyDto);
             }
