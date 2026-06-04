@@ -53,6 +53,14 @@ export default function Dashboard() {
 
                 <h1 className="dashboardTitle">ダッシュボード</h1>
 
+                {/* 新規作成ボタン */}
+                <button
+                    className="addButton"
+                    onClick={handleCreateReport}
+                >
+                    ＋新規日報作成
+                </button>
+
                 <button
                     className="primaryButton"
                     onClick={() => navigate("/remind")}
@@ -77,14 +85,6 @@ export default function Dashboard() {
                     <p>データなし</p>
                 )}
             </section>
-
-            {/* 新規作成ボタン */}
-            <button
-                className="addButton"
-                onClick={handleCreateReport}
-            >
-                新規日報作成
-            </button>
 
             {/* 週一覧 */}
             <section className="section">
