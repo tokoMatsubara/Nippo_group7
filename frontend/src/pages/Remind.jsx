@@ -117,7 +117,7 @@ function Remind() {
           </div>
         ))}
 
-        <button className="primaryButton" onClick={addAlarm}>
+        <button className="addButton" onClick={addAlarm}>
           ＋ 通知時間を追加
         </button>
 

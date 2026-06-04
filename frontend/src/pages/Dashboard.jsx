@@ -80,7 +80,7 @@ export default function Dashboard() {
 
             {/* 新規作成ボタン */}
             <button
-                className="primaryButton"
+                className="addButton"
                 onClick={handleCreateReport}
             >
                 新規日報作成
