@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,11 +16,13 @@ public class DailyDetail {
     @Column(name = "daily_detail_id")
     private Integer dailyDetailId;
 
-    @Column(name = "daily_id")
-    private Integer dailyId;
+    @ManyToOne
+    @JoinColumn(name = "daily_id")
+    private Daily daily;
 
-    @Column(name = "category_id")
-    private Integer categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column(name = "content")
     private String content;
@@ -27,16 +31,19 @@ public class DailyDetail {
 
     public DailyDetail(){}
 
-    public DailyDetail(Integer dailyId, Integer categoryId, String content){
-        this.dailyId = dailyId;
-        this. categoryId = categoryId;
+    public DailyDetail(Daily daily, Category category, String content){
+        this.daily = daily;
+        this.category = category;
         this.content = content;
     }
 
     //getter======================================
-    
-    public Integer getCategoryId() {
-        return categoryId;
+
+    public Daily getDaily(){
+        return daily;
+    }
+    public Category getCategory() {
+        return category;
     }
     public String getContent() {
         return content;

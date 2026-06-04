@@ -66,9 +66,3 @@ CREATE TABLE weekly_summaries (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
--- テストユーザー登録
-INSERT INTO users(user_name, password, mail_address) VALUES (
-    'test_user',
-    'password',
-    'test@example.com'
-)

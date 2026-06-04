@@ -2,7 +2,6 @@
 package com.daily_app.demo.Service;
 
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
-import com.daily_app.demo.Dto.Request.ReportRequestDto.ContentDto;
 import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,7 @@ public class DailySummaryService {
         // 2. 伝票(Dto)の中にある複数の日報内容（content）を1つの文章にガッチャンコする
         // 例：「〇〇の作業をした」「エラーを解決した」 ➔ 「・〇〇の作業をした\n・エラーを解決した」
         String combinedContent = requestDto.getContents().stream()
-                .map(ContentDto::getContent)
+                .map(com.daily_app.demo.Dto.Request.ContentDto::getContent)
                 .collect(Collectors.joining("\n・", "・", ""));
 
         // 3. LLMに送るためのプロンプト（命令文）を組み立てる
