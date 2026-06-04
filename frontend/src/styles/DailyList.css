@@ -1,21 +1,15 @@
-/* DailyListのcssファイル　今藤 */
-
 * {
     box-sizing: border-box;
 }
 
 .container {
-    padding-top: 80px;
     padding: 20px;
     font-family: sans-serif;
     background: #f7f8fa;
     min-height: 100vh;
-    position: relative;
 }
 
-/* =====================
-   週エリア
-===================== */
+/* 週エリア */
 .weekHeader {
     font-size: 22px;
     font-weight: bold;
@@ -27,9 +21,7 @@
     margin-bottom: 18px;
 }
 
-/* =====================
-   曜日ボタン
-===================== */
+/* 曜日ボタン */
 .dayButtons {
     display: flex;
     gap: 10px;
@@ -42,12 +34,6 @@
     border-radius: 8px;
     background: #e5e7eb;
     cursor: pointer;
-    transition: 0.2s;
-    font-weight: 500;
-}
-
-.dayButton:hover {
-    background: #d1d5db;
 }
 
 .dayButton.active {
@@ -55,9 +41,7 @@
     color: white;
 }
 
-/* =====================
-   カード（1日分）
-===================== */
+/* カード */
 .card {
     background: white;
     border-radius: 12px;
@@ -65,72 +49,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* 日付 */
-.date {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 6px;
-}
-
-/* サマリー */
-.summary {
-    color: #666;
-    margin-bottom: 12px;
-}
-
-/* =====================
-   ボタン
-===================== */
-.actions {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 18px;
-}
-
-.editBtn {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    background: #22c55e;
-    color: white;
-    cursor: pointer;
-}
-
-.editBtn:hover {
-    background: #16a34a;
-}
-
-.deleteBtn {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    background: #ef4444;
-    color: white;
-    cursor: pointer;
-}
-
-.topRight {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
-.backButton {
-    padding: 8px 12px;
-    background-color: #4a6cf7;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.deleteBtn:hover {
-    background: #dc2626;
-}
-
-/* =====================
-   詳細（9項目）
-===================== */
+/* 詳細 */
 .section {
     margin-bottom: 14px;
     padding-bottom: 10px;
@@ -139,7 +58,6 @@
 
 .sectionTitle {
     font-weight: bold;
-    margin-bottom: 4px;
 }
 
 .sectionValue {

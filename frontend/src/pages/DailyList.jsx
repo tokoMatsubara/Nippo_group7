@@ -1,7 +1,4 @@
-//　今藤
-
 import "../styles/DailyList.css";
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -36,10 +33,9 @@ const days = ["月", "火", "水", "木", "金"];
 
 export default function DailyList() {
     const [selectedDay, setSelectedDay] = useState("月");
+    const navigate = useNavigate();
 
     const weekData = mockWeekData;
-
-    const navigate = useNavigate();
 
     const selectedDaily = weekData.dailies.find(
         (d) => d.day === selectedDay
@@ -51,30 +47,31 @@ export default function DailyList() {
     return (
         <div className="container">
 
-            {/* 戻るボタン */}
-            <dib className="topRight">
+            {/* 戻るボタン（共通化） */}
+            <div className="topRight">
                 <button
-                    className="backButton"
+                    className="btn-secondary"
                     onClick={() => navigate("/dashboard")}
                 >
                     ダッシュボードへ戻る
                 </button>
-            </dib>
+            </div>
 
-            {/* ① 週表示 */}
-            <h2>
+            {/* 週表示 */}
+            <h2 className="weekHeader">
                 {weekData.week_start_date} ～ {weekData.week_end_date}
             </h2>
 
-            {/* ② 週要約 */}
-            <p className="weekly-summary">
+            {/* 週要約 */}
+            <p className="weekSummary">
                 {weekData.weekly_summary_content}
             </p>
 
-            {/* ③ 曜日ボタン */}
+            {/* 曜日 */}
             <div className="dayButtons">
                 {days.map((day) => (
                     <button
+                        key={day}
                         className={`dayButton ${selectedDay === day ? "active" : ""}`}
                         onClick={() => setSelectedDay(day)}
                     >
@@ -83,23 +80,31 @@ export default function DailyList() {
                 ))}
             </div>
 
-            {/* ④ 日報ヘッダー */}
+            {/* カード */}
             <div className="card">
+
                 {!selectedDaily ? (
                     <p>日報はありません</p>
                 ) : (
                     <>
-                        <h3>{selectedDaily.date}</h3>
-                        <p style={{ color: "#666" }}>
+                        <h3 className="date">{selectedDaily.date}</h3>
+
+                        <p className="summary">
                             {selectedDaily.daily_summary_content}
                         </p>
 
+                        {/* 共通ボタン化 */}
                         <div className="actions">
-                            <button className="editBtn">編集</button>
-                            <button className="deleteBtn">削除</button>
+                            <button className="btn-primary">
+                                編集
+                            </button>
+
+                            <button className="btn-danger">
+                                削除
+                            </button>
                         </div>
 
-                        {/* ⑤ 詳細 */}
+                        {/* 詳細 */}
                         <div className="section">
                             {selectedDaily.details.map((item) => (
                                 <div key={item.category_id} className="sectionItem">
