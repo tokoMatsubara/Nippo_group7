@@ -58,3 +58,22 @@
 .loginLink a:hover {
     text-decoration: underline;
 }
+
+/* ボタン */
+.loginButton {
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    /* ← 角をより丸く */
+    background: #2563eb;
+    /* ← 青 */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.loginButton:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
