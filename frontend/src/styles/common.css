@@ -41,13 +41,26 @@
 /* 戻るボタン（統一） */
 .backButton {
     padding: 8px 12px;
-    background: #2563eb;
-    color: white;
+    background: #afb4c1;
+    color: #000000;
     border: none;
     border-radius: 6px;
     cursor: pointer;
 }
 
 .backButton:hover {
-    background: #1d4ed8;
+    background: #9ca3af;
+}
+
+.dangerButton {
+    padding: 8px 12px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.dangerButton:hover {
+    background: #dc2626;
 }
