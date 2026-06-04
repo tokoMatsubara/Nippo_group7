@@ -28,6 +28,7 @@ import com.daily_app.demo.Repository.CategoryRepository;
 import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.UserRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
+import com.daily_app.demo.Service.WeeklySummaryService;
 
 @Service
 public class DailyCrudService {
@@ -37,31 +38,33 @@ public class DailyCrudService {
     private WeeklySummaryRepository weeklySummaryRepository;
     @Autowired
     private DailyDetailRepository dailyDetailrepository;
-    @Autowired 
+    @Autowired
     private UserRepository userRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private WeeklySummaryService weeklySummaryService;
 
     DailyCrudService(DailyRepository dailyRepository) {
         this.dailyRepository = dailyRepository;
     }
 
-    // weekly response ====================================================================
-    //#region
+    // weekly response
+    // ====================================================================
+    // #region
     @Transactional
-    public WeeklyListResponseDto weeklyListResponse(Integer userId){
+    public WeeklyListResponseDto weeklyListResponse(Integer userId) {
         List<WeeklySummary> weeklySummaries = weeklySummaryRepository.findByUserId(userId);
         return WeeklyListResponseDto.EntityToResponseDto(weeklySummaries);
     }
-    //#endregion
+    // #endregion
 
     // daily reponse=============================================================
-    //#region
+    // #region
     @Transactional
-    public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate){
+    public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate) {
         List<DailyQueryDto> dailiesRawList = dailyDetailrepository.dailiesContentList(
-                userId, startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay()
-        );
+                userId, startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay());
 
         return QueryDtoToResponseDto(dailiesRawList, startDate, endDate);
     }
@@ -100,7 +103,6 @@ public class DailyCrudService {
                     query.getCategoryName(),
                     query.getContent());
 
-
             // DailyDtoへ追加
             dailyMap.get(dailyId)
                     .getContents()
@@ -108,8 +110,7 @@ public class DailyCrudService {
         }
 
         // ResponseDto生成
-        DailyResponseDto responseDto =
-                new DailyResponseDto();
+        DailyResponseDto responseDto = new DailyResponseDto();
 
         responseDto.setWeekStartDate(weekStartDate);
 
@@ -120,45 +121,48 @@ public class DailyCrudService {
 
         return responseDto;
     }
-    //#endregion
-    
-    // create daily report=============================================================
-    //#region
+    // #endregion
+
+    // create daily
+    // report=============================================================
+    // #region
 
     @Transactional
-    public Map<String, String> reportDaily(ReportRequestDto reportRequest){
+    public Map<String, String> reportDaily(ReportRequestDto reportRequest) {
         User user = userRepository.findById(reportRequest.getUserId()).get();
         Daily daily = new Daily(user);
 
         List<DailyDetail> details = new ArrayList<DailyDetail>();
-        
-        for (com.daily_app.demo.Dto.Request.ContentDto dailyDetailContent : reportRequest.getContents()){
+
+        for (com.daily_app.demo.Dto.Request.ContentDto dailyDetailContent : reportRequest.getContents()) {
             Category category = categoryRepository.findById(dailyDetailContent.getCategoryId()).get();
             details.add(new DailyDetail(daily, category, dailyDetailContent.getContent()));
         }
-        
+
         daily.getDailyDetails().addAll(details);
 
-        try{
+        try {
             dailyRepository.save(daily);
-        }catch(DataIntegrityViolationException e){
+
+        } catch (DataIntegrityViolationException e) {
             return Map.of("status", "failed", "message", "日報の登録に失敗しました");
         }
-
+        weeklySummaryService.createWeeklySummary(reportRequest.getUserId());
         return Map.of("status", "success", "message", "日報の登録に成功しました");
     }
-    //#endregion
+    // #endregion
 
-    // update daily report=============================================================
-    //#region
+    // update daily
+    // report=============================================================
+    // #region
     @Transactional
-    public Map<String, String> updateDaily(ReportUpdateRequestDto updateRequest){
+    public Map<String, String> updateDaily(ReportUpdateRequestDto updateRequest) {
         Daily daily = dailyRepository.findById(updateRequest.getDailyId()).get();
         List<DailyDetail> details = daily.getDailyDetails();
 
-        for(DailyDetail detail : details){
-            for(com.daily_app.demo.Dto.Request.ContentDto content : updateRequest.getContents()){
-                if(detail.getCategory().getCategoryId() == content.getCategoryId()){
+        for (DailyDetail detail : details) {
+            for (com.daily_app.demo.Dto.Request.ContentDto content : updateRequest.getContents()) {
+                if (detail.getCategory().getCategoryId() == content.getCategoryId()) {
                     detail.setContent(content.getContent());
                 }
             }
@@ -166,27 +170,28 @@ public class DailyCrudService {
 
         daily.setDailyDetails(details);
 
-        try{
+        try {
             dailyRepository.save(daily);
-        }catch(DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             return Map.of("status", "failed", "message", "日報の更新に失敗しました");
         }
 
         return Map.of("status", "success", "message", "日報の更新に成功しました");
     }
-    //#endregion
+    // #endregion
 
-    // delete daily report=============================================================
-    //#region
+    // delete daily
+    // report=============================================================
+    // #region
     @Transactional
-    public Map<String, String> deleteDaily(Integer dailyId){
-        try{
+    public Map<String, String> deleteDaily(Integer dailyId) {
+        try {
             dailyRepository.deleteById(dailyId);
-        }catch(DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             return Map.of("status", "failed", "message", "日報の削除に失敗しました");
         }
 
         return Map.of("status", "success", "message", "日報の削除に成功しました");
     }
-    //#endregion
+    // #endregion
 }

@@ -1,48 +1,132 @@
 package com.daily_app.demo.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.daily_app.demo.Dto.Internal.DailyQueryDto;
+import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
+import com.daily_app.demo.Dto.Response.DailyResponseDto;
+import com.daily_app.demo.Repository.DailyDetailRepository;
 
 @Service
 public class WeeklySummaryService {
 
-    private final CallLlmService callLlmService;
+    @Autowired
+    private CallLlmService callLlmService;
 
-    public WeeklySummaryService(CallLlmService callLlmService) {
-        this.callLlmService = callLlmService;
+    @Autowired
+    private DailyDetailRepository dailyDetailRepository;
+
+    // =========================================
+    // ① 外から呼ばれるメイン処理
+    // =========================================
+    @Async
+    public void createWeeklySummary(Integer userId) {
+
+        LocalDate today = LocalDate.now();
+
+        // ① DBから生データ取得（raw）
+        List<DailyQueryDto> raw = getWeeklyData(userId, today);
+
+        System.out.println("RAW SIZE = " + raw.size()); // ←ここ
+        raw.forEach(r ->
+            System.out.println("dailyId=" + r.getDailyId() + " content=" + r.getContent())
+        );
+
+        // ② LLM用に整形
+        List<DailyDto> weeklyData = convertToDailyDto(raw);
+
+        System.out.println("GROUPED SIZE = " + weeklyData.size()); // ←ここ
+
+        // ③ 非同期でLLM実行
+        summarizeWeekly(weeklyData)
+            .thenAccept(summary -> {
+                System.out.println("週次要約: " + summary);
+
+                // TODO: DB保存ここに書ける
+                // weeklySummaryRepository.save(...)
+            })
+            .exceptionally(ex -> {
+                System.out.println("エラー: " + ex.getMessage());
+                return null;
+            });
     }
 
-    /**
-     * 週次要約生成
-     */
+    // =========================================
+    // ② DBから取得（raw）
+    // =========================================
+    public List<DailyQueryDto> getWeeklyData(Integer userId, LocalDate today) {
+
+        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = today.with(DayOfWeek.SUNDAY);
+
+        return dailyDetailRepository.dailiesContentList(
+                userId,        startOfWeek.atStartOfDay(),
+                endOfWeek.plusDays(1).atStartOfDay()
+        );
+    }
+
+    // =========================================
+    // ③ raw → LLM用DTO変換
+    // =========================================
+    private List<DailyDto> convertToDailyDto(List<DailyQueryDto> rawList) {
+
+        Map<Integer, DailyDto> map = new LinkedHashMap<>();
+
+        for (DailyQueryDto q : rawList) {
+
+            // 初回だけ日単位DTO作成
+            map.computeIfAbsent(q.getDailyId(), id -> {
+                DailyDto dto = new DailyDto();
+                dto.setDate(q.getCreatedAt().toLocalDate());
+                dto.setSummary(q.getDailySummaryContent());
+                dto.setContents(new ArrayList<>());
+                return dto;
+            });
+
+            // 内容追加
+            map.get(q.getDailyId())
+                .getContents()
+                .add(new ContentDto(
+                        q.getCategoryId(),
+                        q.getCategoryName(),
+                        q.getContent()
+                ));
+        }
+
+        return new ArrayList<>(map.values());
+    }
     @Async
     public CompletableFuture<String> summarizeWeekly(List<DailyDto> weeklyData) {
 
-        System.out.println("START: " + Thread.currentThread().getName());
+        System.out.println("START THREAD: " + Thread.currentThread().getName());
 
         String prompt = buildPrompt(weeklyData);
 
-        System.out.println("==== PROMPT ====");
-        System.out.println(prompt);
-
         String result = callLlmService.chatResponse(prompt);
 
-        System.out.println(result);
-        System.out.println("END: " + Thread.currentThread().getName());
+        System.out.println(prompt);
+
+        System.out.println("END THREAD: " + Thread.currentThread().getName());
+        
 
         return CompletableFuture.completedFuture(result);
     }
 
-    /**
-     * プロンプト作成
-     */
-
+    // =========================================
+    // ⑤ プロンプト生成
+    // =========================================
     private String buildPrompt(List<DailyDto> dailyList) {
 
         String input = dailyList.stream()
@@ -63,9 +147,9 @@ public class WeeklySummaryService {
                 """.formatted(input);
     }
 
-    /**
-     * Daily → text
-     */
+    // =========================================
+    // ⑥ DTO → テキスト変換
+    // =========================================
     private String convertDailyToText(DailyDto daily) {
 
         String contents = daily.getContents().stream()
