@@ -4,9 +4,8 @@
 
 .container {
     padding: 20px;
-    font-family: sans-serif;
-    background: #f7f8fa;
     min-height: 100vh;
+    background: #f7f8fa;
 }
 
 /* 週エリア */
@@ -21,7 +20,7 @@
     margin-bottom: 18px;
 }
 
-/* 曜日ボタン */
+/* 曜日ボタン（画面固有なので残す） */
 .dayButtons {
     display: flex;
     gap: 10px;
@@ -41,12 +40,11 @@
     color: white;
 }
 
-/* カード */
+/* カード（最低限のみ残す） */
 .card {
     background: white;
     border-radius: 12px;
     padding: 18px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* 詳細 */
