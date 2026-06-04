@@ -57,3 +57,22 @@
 .registerLink a:hover {
     text-decoration: underline;
 }
+
+/* ボタン */
+.registerButton {
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    /* ← 角をより丸く */
+    background: #2563eb;
+    /* ← 青 */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.registerButton:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
