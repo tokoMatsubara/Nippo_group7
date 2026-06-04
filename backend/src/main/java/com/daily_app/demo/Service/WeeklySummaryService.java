@@ -17,16 +17,24 @@ import com.daily_app.demo.Dto.Internal.DailyQueryDto;
 import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
+import com.daily_app.demo.Entity.WeeklySummary;
 import com.daily_app.demo.Repository.DailyDetailRepository;
+import com.daily_app.demo.Repository.WeeklySummaryRepository;
 
 @Service
 public class WeeklySummaryService {
+
+    private final WeeklySummaryRepository weeklySummaryRepository;
 
     @Autowired
     private CallLlmService callLlmService;
 
     @Autowired
     private DailyDetailRepository dailyDetailRepository;
+
+    WeeklySummaryService(WeeklySummaryRepository weeklySummaryRepository) {
+        this.weeklySummaryRepository = weeklySummaryRepository;
+    }
 
     // =========================================
     // ① 外から呼ばれるメイン処理
@@ -35,46 +43,43 @@ public class WeeklySummaryService {
     public void createWeeklySummary(Integer userId) {
 
         LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = today.with(DayOfWeek.SUNDAY);
 
         // ① DBから生データ取得（raw）
-        List<DailyQueryDto> raw = getWeeklyData(userId, today);
+        List<DailyQueryDto> raw = getWeeklyData(userId, startOfWeek, endOfWeek);
 
-        System.out.println("RAW SIZE = " + raw.size()); // ←ここ
-        raw.forEach(r ->
-            System.out.println("dailyId=" + r.getDailyId() + " content=" + r.getContent())
-        );
+        raw.forEach(r -> System.out.println("dailyId=" + r.getDailyId() + " content=" + r.getContent()));
 
         // ② LLM用に整形
         List<DailyDto> weeklyData = convertToDailyDto(raw);
 
-        System.out.println("GROUPED SIZE = " + weeklyData.size()); // ←ここ
-
         // ③ 非同期でLLM実行
         summarizeWeekly(weeklyData)
-            .thenAccept(summary -> {
-                System.out.println("週次要約: " + summary);
+                .thenAccept(summary -> {
+                    System.out.println("週次要約: " + summary);
+                    WeeklySummary entity = new WeeklySummary(
+                            userId,
+                            summary,
+                            startOfWeek,
+                            endOfWeek);
+                    weeklySummaryRepository.save(entity);
 
-                // TODO: DB保存ここに書ける
-                // weeklySummaryRepository.save(...)
-            })
-            .exceptionally(ex -> {
-                System.out.println("エラー: " + ex.getMessage());
-                return null;
-            });
+                })
+                .exceptionally(ex -> {
+                    System.out.println("エラー: " + ex.getMessage());
+                    return null;
+                });
     }
 
     // =========================================
     // ② DBから取得（raw）
     // =========================================
-    public List<DailyQueryDto> getWeeklyData(Integer userId, LocalDate today) {
-
-        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = today.with(DayOfWeek.SUNDAY);
+    public List<DailyQueryDto> getWeeklyData(Integer userId, LocalDate startOfWeek, LocalDate endOfWeek) {
 
         return dailyDetailRepository.dailiesContentList(
-                userId,        startOfWeek.atStartOfDay(),
-                endOfWeek.plusDays(1).atStartOfDay()
-        );
+                userId, startOfWeek.atStartOfDay(),
+                endOfWeek.plusDays(1).atStartOfDay());
     }
 
     // =========================================
@@ -97,16 +102,16 @@ public class WeeklySummaryService {
 
             // 内容追加
             map.get(q.getDailyId())
-                .getContents()
-                .add(new ContentDto(
-                        q.getCategoryId(),
-                        q.getCategoryName(),
-                        q.getContent()
-                ));
+                    .getContents()
+                    .add(new ContentDto(
+                            q.getCategoryId(),
+                            q.getCategoryName(),
+                            q.getContent()));
         }
 
         return new ArrayList<>(map.values());
     }
+
     @Async
     public CompletableFuture<String> summarizeWeekly(List<DailyDto> weeklyData) {
 
@@ -119,7 +124,6 @@ public class WeeklySummaryService {
         System.out.println(prompt);
 
         System.out.println("END THREAD: " + Thread.currentThread().getName());
-        
 
         return CompletableFuture.completedFuture(result);
     }
