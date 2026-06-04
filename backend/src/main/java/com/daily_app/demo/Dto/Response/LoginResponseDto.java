@@ -1,6 +1,7 @@
 // 松原編集
-package com.daily_app.demo.Dto.Response;
+// 今藤 ログインレスポンスDTOにユーザーIDとユーザー名を追加
 
+package com.daily_app.demo.Dto.Response;
 
 /**
  * ログインレスポンス用のDTO
@@ -10,14 +11,26 @@ public class LoginResponseDto {
     private Boolean success;
     private String message;
 
+    // ★追加（ユーザー情報）
+    private Long userId;
+    private String userName;
+
     // デフォルトコンストラクタ
     public LoginResponseDto() {
     }
 
-    // 全フィールドを初期化するコンストラクタ
+    // 既存互換用（そのまま維持）
     public LoginResponseDto(Boolean success, String message) {
         this.success = success;
         this.message = message;
+    }
+
+    // ★追加コンストラクタ（推奨）
+    public LoginResponseDto(Boolean success, String message, Long userId, String userName) {
+        this.success = success;
+        this.message = message;
+        this.userId = userId;
+        this.userName = userName;
     }
 
     // Getter / Setter
@@ -35,5 +48,23 @@ public class LoginResponseDto {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    // ★追加
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    // ★追加
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
