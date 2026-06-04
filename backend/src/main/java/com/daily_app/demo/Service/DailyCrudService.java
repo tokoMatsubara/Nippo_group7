@@ -132,7 +132,7 @@ public class DailyCrudService {
     @Transactional
     public Map<String, String> reportDaily(ReportRequestDto reportRequest){
         User user = userRepository.findById(reportRequest.getUserId()).get();
-        Daily daily = new Daily(user);
+        Daily daily = new Daily(user, reportRequest.getDate());
 
         List<DailyDetail> details = new ArrayList<DailyDetail>();
         
