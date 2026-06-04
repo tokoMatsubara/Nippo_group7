@@ -35,11 +35,11 @@ export default function Dashboard() {
     };
 
     const handleWeekClick = (week) => {
-        window.location.href = `/reports/week/${week.startDate}`;
+        navigate(`/reports/week/${week.startDate}`);
     };
 
     const handleCreateReport = () => {
-        window.location.href = "/create-report";
+        navigate("/create-report");
     };
 
     if (loading) return <h2>Loading...</h2>;
@@ -47,19 +47,21 @@ export default function Dashboard() {
     return (
         <div className="dashboardContainer">
 
+            {/* ヘッダー */}
             <div className="dashboardHeader">
 
                 <h1 className="dashboardTitle">ダッシュボード</h1>
 
                 <button
-                    className="remindButton"
+                    className="btn btn-secondary"
                     onClick={() => navigate("/remind")}
                 >
-                    🔔リマインダー
+                    🔔 リマインダー
                 </button>
 
             </div>
 
+            {/* リマインド */}
             <section className="section card">
 
                 <h2 className="remindTitle">明日の目標と課題</h2>
@@ -71,13 +73,13 @@ export default function Dashboard() {
                         ))}
                     </ul>
                 ) : (
-                    <p></p>
+                    <p>データなし</p>
                 )}
             </section>
 
-            {/* ボタン */}
+            {/* 新規作成ボタン */}
             <button
-                className="primaryButton"
+                className="btn btn-primary"
                 onClick={handleCreateReport}
             >
                 新規日報作成
@@ -91,7 +93,7 @@ export default function Dashboard() {
                 {weeks.map((week) => (
                     <div
                         key={week.startDate}
-                        className="weekCard"
+                        className="weekCard card"
                         onClick={() => handleWeekClick(week)}
                     >
                         <div className="weekTitle">
