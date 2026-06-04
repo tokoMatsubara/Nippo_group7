@@ -5,10 +5,12 @@
 }
 
 .container {
+    padding-top: 80px;
     padding: 20px;
     font-family: sans-serif;
     background: #f7f8fa;
     min-height: 100vh;
+    position: relative;
 }
 
 /* =====================
@@ -104,6 +106,21 @@
     border-radius: 6px;
     background: #ef4444;
     color: white;
+    cursor: pointer;
+}
+
+.topRight {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.backButton {
+    padding: 8px 12px;
+    background-color: #4a6cf7;
+    color: white;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
 }
 
