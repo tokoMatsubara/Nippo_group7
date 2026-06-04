@@ -28,7 +28,7 @@ public interface DailyDetailRepository extends JpaRepository<DailyDetail, Long> 
         JOIN dd.category c
         JOIN DailySummary ds ON ds.daily = d
         WHERE d.user.userId = :userId
-        AND d.daily_date BETWEEN :startDate AND :endDate
+        AND d.dailyDate BETWEEN :startDate AND :endDate
         """)
     List<DailyQueryDto> dailiesContentList(
         @Param("userId") Integer userId,
