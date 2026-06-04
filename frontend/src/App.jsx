@@ -22,16 +22,12 @@ function App() {
   return (
     <Routes>
 
-      {/* =====================
-          認証系（Layoutなし）
-      ===================== */}
+      {/* 認証系（Layoutなし） */}
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* =====================
-          メイン（Layoutあり）
-      ===================== */}
+      {/* メイン（Layoutあり） */}
       <Route
         path="/dashboard"
         element={
@@ -68,9 +64,8 @@ function App() {
         }
       />
 
-      {/* デフォルト */}
+      {/* fallback */}
       <Route path="*" element={<Navigate to="/login" />} />
-
     </Routes>
   );
 }
