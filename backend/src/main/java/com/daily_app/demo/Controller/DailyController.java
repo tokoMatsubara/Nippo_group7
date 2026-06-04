@@ -8,8 +8,10 @@ import com.daily_app.demo.Dto.Request.ReportUpdateRequestDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 import com.daily_app.demo.Service.DailyCrudService;
+import com.daily_app.demo.Service.DailySummaryService;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Map;
 
 @RestController
@@ -20,33 +22,42 @@ public class DailyController {
     @Autowired
     private DailyCrudService dailyCrud;
 
-        @GetMapping("/weekly_list/{user_id}")
-        public WeeklyListResponseDto getWeeklyList(@PathVariable Integer user_id) {
-            return dailyCrud.weeklyListResponse(user_id);
-        }
+    @Autowired
+    private DailySummaryService dailySummaryService;
 
-        @GetMapping("/daily/{userId}/{startDate}/{endDate}")
-        public DailyResponseDto getDaily(
-                @PathVariable Integer userId,
-                @PathVariable LocalDate startDate,
-                @PathVariable LocalDate endDate) {
-                return dailyCrud.dailyResponse(userId, startDate, endDate);
-        }
+    @GetMapping("/weekly_list/{user_id}")
+    public WeeklyListResponseDto getWeeklyList(@PathVariable Integer user_id) {
+        return dailyCrud.weeklyListResponse(user_id);
+    }
 
-        @PostMapping("/report")
-        public Map<String, String> createReport(@RequestBody ReportRequestDto request) {
-            return dailyCrud.reportDaily(request);
-        }
+    @GetMapping("/daily/{userId}/{startDate}/{endDate}")
+    public DailyResponseDto getDaily(
+            @PathVariable Integer userId,
+            @PathVariable LocalDate startDate,
+            @PathVariable LocalDate endDate) {
+        return dailyCrud.dailyResponse(userId, startDate, endDate);
+    }
 
-        @PutMapping("/update")
-        public Map<String, String> updateReport(@RequestBody ReportUpdateRequestDto request) {
-            return dailyCrud.updateDaily(request);
-        }
+    @PostMapping("/report")
+    public Map<String, String> createReport(@RequestBody ReportRequestDto request) {
+        return dailyCrud.reportDaily(request);
+    }
 
-        @DeleteMapping("/delete/{daily_id}")
-        public Map<String, String> deleteReport(@PathVariable Integer daily_id) {
-            return dailyCrud.deleteDaily(daily_id);
-        }
-        
+    @PutMapping("/update")
+    public Map<String, String> updateReport(@RequestBody ReportUpdateRequestDto request) {
+        return dailyCrud.updateDaily(request);
+    }
+
+    @DeleteMapping("/delete/{daily_id}")
+    public Map<String, String> deleteReport(@PathVariable Integer daily_id) {
+        return dailyCrud.deleteDaily(daily_id);
+    }
+
+    @PostMapping("/summary")
+    public Map<String, String> generateSummary(@RequestBody ReportRequestDto request) {
+        String summary = dailySummaryService.generateSummary(request);
+        // 他のメソッドに合わせて Map<String, String>（JSON形式）で返却します
+        return Collections.singletonMap("summary", summary);
+    }
 
 }

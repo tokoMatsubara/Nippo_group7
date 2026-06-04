@@ -8,6 +8,14 @@ import java.util.stream.Collectors;
 @Service
 public class DailySummaryService {
 
+    // 1. CallLlmServiceを利用するためにフィールドを定義
+    private final CallLlmService callLlmService;
+
+    // 2. コンストラクタインジェクションでSpringにCallLlmServiceをいれてもらう
+    DailySummaryService(CallLlmService callLlmService){
+        this.callLlmService = callLlmService;
+    }
+
     /**
      * ReportRequestDtoを入力として受け取り、LLM用の要約を生成して返すメソッド
      * * @param requestDto 画面から届いた日報データ
@@ -33,11 +41,11 @@ public class DailySummaryService {
 
         System.out.println("--- LLMに送信するプロンプト案 ---\n" + prompt);
 
-        // 4. 【ここにLLMを呼び出すロジックが入る】
-        // 現時点では、LLMの代わりに「モックの要約文章」を返すようにしておきます
-        String mockSummary = "【AI要約モック】本日行った作業は以下の通りです。\n"
-                           + "複数のタスクが結合され、LLMへ送信する準備が整いました。";
+        // 4. 【本物のLLMを呼び出すロジック】
+        // 組み立てたプロンプトをCallLlmServiceに渡して結果を受け取る
+        String realSummary = callLlmService.chatResponse(prompt);
 
-        return mockSummary;
+
+        return realSummary;
     }
 }
