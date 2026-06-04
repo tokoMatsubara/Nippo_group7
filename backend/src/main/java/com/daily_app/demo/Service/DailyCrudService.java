@@ -10,6 +10,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.daily_app.demo.Dto.Internal.DailyQueryDto;
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
@@ -47,6 +48,7 @@ public class DailyCrudService {
 
     // weekly response ====================================================================
     //#region
+    @Transactional
     public WeeklyListResponseDto weeklyListResponse(Integer userId){
         List<WeeklySummary> weeklySummaries = weeklySummaryRepository.findByUserId(userId);
         return WeeklyListResponseDto.EntityToResponseDto(weeklySummaries);
@@ -55,6 +57,7 @@ public class DailyCrudService {
 
     // daily reponse=============================================================
     //#region
+    @Transactional
     public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate){
         List<DailyQueryDto> dailiesRawList = dailyDetailrepository.dailiesContentList(
                 userId, startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay()
@@ -122,6 +125,7 @@ public class DailyCrudService {
     // create daily report=============================================================
     //#region
 
+    @Transactional
     public Map<String, String> reportDaily(ReportRequestDto reportRequest){
         User user = userRepository.findById(reportRequest.getUserId()).get();
         Daily daily = new Daily(user);
@@ -147,6 +151,7 @@ public class DailyCrudService {
 
     // update daily report=============================================================
     //#region
+    @Transactional
     public Map<String, String> updateDaily(ReportUpdateRequestDto updateRequest){
         Daily daily = dailyRepository.findById(updateRequest.getDailyId()).get();
         List<DailyDetail> details = daily.getDailyDetails();
@@ -173,6 +178,7 @@ public class DailyCrudService {
 
     // delete daily report=============================================================
     //#region
+    @Transactional
     public Map<String, String> deleteDaily(Integer dailyId){
         try{
             dailyRepository.deleteById(dailyId);

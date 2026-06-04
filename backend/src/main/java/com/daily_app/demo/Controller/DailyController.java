@@ -3,7 +3,6 @@ package com.daily_app.demo.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.daily_app.demo.Dto.Request.ContentDto;
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
 import com.daily_app.demo.Dto.Request.ReportUpdateRequestDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
