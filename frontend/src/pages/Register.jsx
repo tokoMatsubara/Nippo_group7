@@ -1,3 +1,4 @@
+import "../styles/Register.css";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -9,16 +10,23 @@ export default function Register() {
         e.preventDefault();
 
         try {
-            const res = await fetch("/api/register", {
+            const res = await fetch("http://localhost:8080/api/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    emailaddress,
-                    password
+                    user_name: "新規ユーザー",
+                    mail_address: emailaddress,
+                    password: password
                 })
             });
+
+            if(!res.ok){
+                const errorData = await res.json().catch(() => ({}));
+                alert(errorData.message || "登録に失敗しました");
+                return;
+            }
 
             const data = await res.json();
 
@@ -33,29 +41,40 @@ export default function Register() {
     };
 
     return (
-        <div>
-            <h1>新規登録</h1>
+        <div className="registerContainer">
 
-            <form onSubmit={handleSubmit}>
+            <div className="registerBox">
 
-                <input
-                    placeholder="メール"
-                    value={emailaddress}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+                <h1 className="registerTitle">新規登録</h1>
 
-                <input
-                    type="password"
-                    placeholder="パスワード"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <form className="registerForm" onSubmit={handleSubmit}>
 
-                <button type="submit">登録</button>
-            </form>
-            <p>
-                <Link to="/login">ログイン</Link>
-            </p>
+                    <input
+                        className="registerInput"
+                        placeholder="メール"
+                        value={emailaddress}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+
+                    <input
+                        className="registerInput"
+                        type="password"
+                        placeholder="パスワード"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    <button className="registerButton" type="submit">
+                        登録
+                    </button>
+
+                </form>
+
+                <p className="registerLink">
+                    <Link to="/login">戻る</Link>
+                </p>
+
+            </div>
 
         </div>
     );

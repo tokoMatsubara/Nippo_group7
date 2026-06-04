@@ -1,4 +1,7 @@
+// 松原編集
 package com.daily_app.demo.Dto.Request;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class UserCreateRequestDto {
@@ -6,11 +9,13 @@ public class UserCreateRequestDto {
     /**
      * ユーザーの名前
      */
+    @JsonProperty("user_name")
     private String userName;
 
     /**
      * ユーザーのメールアドレス
      */
+    @JsonProperty("mail_address")
     private String mailAddress;
 
     /**

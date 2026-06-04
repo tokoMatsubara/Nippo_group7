@@ -1,12 +1,16 @@
-package com.daily_app.demo.Entity;
+// 松原編集　
+package com.daily_app.demo.Entity; 
 
 import java.time.LocalTime;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,14 +36,24 @@ public class User {
     @Column(name = "remind_time")
     private LocalTime remindTime;
 
-    public User() {
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Daily> dailies;
+
+
+    //constructer======================================
+
+    public User(){}
 
     public User(String userName, String password, String mailAddress, boolean remindStatus, LocalTime remindTime) {
         this.userName = userName;
         this.password = password;
         this.mailAddress = mailAddress;
+        // 💡 以下の2行を追記し、引数の値がちゃんと代入されるようにしました
+        this.remindStatus = remindStatus;
+        this.remindTime = remindTime;
     }
+
+    //getter======================================
 
     public Integer getUserId() {
         return userId;
@@ -64,6 +78,8 @@ public class User {
     public LocalTime getRemindTime() {
         return remindTime;
     }
+
+    //setter======================================
 
     public void setUserName(String userName) {
         this.userName = userName;

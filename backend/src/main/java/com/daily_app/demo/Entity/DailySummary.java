@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,20 +14,23 @@ public class DailySummary {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "daily_summaries")
+    @Column(name = "daily_summary_id")
     private Integer dailySummaryId;
 
-    @Column(name = "daily_id")
-    private Integer dailyId;
+    @OneToOne
+    @JoinColumn(name = "daily_id")
+    private Daily daily;
 
-    @Column(name = "daily_summary_conent")
+    @Column(name = "daily_summary_content")
     private String dailySummaryContent;
+
+    //constructer======================================
 
     public DailySummary(){}
 
-    public DailySummary(Integer dailyId, String dailySummaryContent){
-        this.dailyId = dailyId;
+    public DailySummary(Daily daily, String dailySummaryContent){
+        this.daily = daily;
         this.dailySummaryContent = dailySummaryContent;
-        
+
     }
 }
