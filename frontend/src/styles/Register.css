@@ -1,20 +1,22 @@
+/* =========================
+   Register Layout Only
+========================= */
+
 .registerContainer {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #f7f8fa;
-    font-family: sans-serif;
 }
 
+/* カード配置のみ */
 .registerBox {
     width: 360px;
-    background: white;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* タイトル */
 .registerTitle {
     text-align: center;
     font-size: 22px;
@@ -22,12 +24,14 @@
     font-weight: bold;
 }
 
+/* フォーム */
 .registerForm {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
+/* 入力 */
 .registerInput {
     padding: 10px;
     border: 1px solid #ddd;
@@ -39,20 +43,7 @@
     border-color: #2563eb;
 }
 
-.registerButton {
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    background: #2563eb;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.registerButton:hover {
-    background: #1d4ed8;
-}
-
+/* リンク */
 .registerLink {
     text-align: center;
     margin-top: 12px;

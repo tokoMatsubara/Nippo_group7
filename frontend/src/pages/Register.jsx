@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Register() {
     const [username, setUsername] = useState("");
-    const [emailaddress, setEmail] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = async (e) => {
@@ -18,7 +18,7 @@ export default function Register() {
                 },
                 body: JSON.stringify({
                     user_name: username,
-                    mail_address: emailaddress,
+                    mail_address: email,
                     password: password
                 })
             });
@@ -44,7 +44,7 @@ export default function Register() {
     return (
         <div className="registerContainer">
 
-            <div className="registerBox">
+            <div className="registerBox card">
 
                 <h1 className="registerTitle">新規登録</h1>
 
@@ -60,7 +60,7 @@ export default function Register() {
                     <input
                         className="registerInput"
                         placeholder="メール"
-                        value={emailaddress}
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
 
@@ -72,7 +72,7 @@ export default function Register() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <button className="registerButton" type="submit">
+                    <button className="btn btn-primary" type="submit">
                         登録
                     </button>
 
