@@ -1,6 +1,5 @@
 package com.daily_app.demo.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
