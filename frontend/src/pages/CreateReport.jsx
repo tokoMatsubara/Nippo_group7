@@ -1,11 +1,8 @@
-// 松原作成
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/CreateReport.css";
 
-
 function DailyCreate() {
-
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -27,8 +24,7 @@ function DailyCreate() {
     weekday: "short",
   });
 
-  const yesterdayGoal =
-    "昨日設定した目標がここに表示されます";
+  const yesterdayGoal = "昨日設定した目標がここに表示されます";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,35 +37,33 @@ function DailyCreate() {
 
   return (
     <div className="daily-page">
+
+      {/* ヘッダー */}
       <header className="header">
+
         <div>
-          <div className="page-label"></div>
           <h1>{today} の日報</h1>
         </div>
 
         <div className="header-actions">
 
           <button
-            className="header-btn"
+            className="backButton"
             onClick={() => navigate("/dashboard")}
           >
             ダッシュボードへ戻る
           </button>
 
-          <button
-            className="header-btn"
-            onClick={() => navigate("/login")}
-          >
-            ログアウト
-          </button>
         </div>
       </header>
 
-      <div className="goal-card">
+      {/* 目標 */}
+      <div className="goal-card card">
         <h3>昨日立てた今日の目標</h3>
         <p>{yesterdayGoal}</p>
       </div>
 
+      {/* フォーム */}
       <Section
         title="1. 今日学んだこと"
         name="learned"
@@ -119,7 +113,9 @@ function DailyCreate() {
         onChange={handleChange}
       />
 
-      <div className="section-card">
+      {/* 体調 */}
+      <div className="section-card card">
+
         <h3>8. 体調・気持ち</h3>
 
         <div className="radio-group">
@@ -167,26 +163,29 @@ function DailyCreate() {
         onChange={handleChange}
       />
 
+      {/* 送信 */}
       <div className="submit-area">
+
         <button
-          className="submit-btn"
-          onClick={() => alert("作成ボタン押下")}
+          className="primaryButton"
+          onClick={() => {
+            alert("作成しました");
+            navigate("/daily-list");
+          }}
         >
           作成
         </button>
+
       </div>
+
     </div>
   );
 }
 
-function Section({
-  title,
-  name,
-  value,
-  onChange,
-}) {
+/* Sectionコンポーネント */
+function Section({ title, name, value, onChange }) {
   return (
-    <div className="section-card">
+    <div className="section-card card">
       <h3>{title}</h3>
 
       <textarea

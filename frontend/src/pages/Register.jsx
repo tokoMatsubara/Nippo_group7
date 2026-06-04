@@ -1,25 +1,35 @@
+// 新規登録画面
+
 import "../styles/Register.css";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Register() {
-    const [emailaddress, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch("/api/register", {
+            const res = await fetch("http://localhost:8080/api/create", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    emailaddress,
-                    password
+                    user_name: username,
+                    mail_address: email,
+                    password: password
                 })
             });
+
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}));
+                alert(errorData.message || "登録に失敗しました");
+                return;
+            }
 
             const data = await res.json();
 
@@ -36,7 +46,7 @@ export default function Register() {
     return (
         <div className="registerContainer">
 
-            <div className="registerBox">
+            <div className="registerBox card">
 
                 <h1 className="registerTitle">新規登録</h1>
 
@@ -44,8 +54,15 @@ export default function Register() {
 
                     <input
                         className="registerInput"
+                        placeholder="ユーザー名"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+
+                    <input
+                        className="registerInput"
                         placeholder="メール"
-                        value={emailaddress}
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
 

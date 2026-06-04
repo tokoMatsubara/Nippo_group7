@@ -1,11 +1,12 @@
-.remindContainer {
-    padding: 20px;
-    font-family: sans-serif;
-    background: #f7f8fa;
-    min-height: 100vh;
+/* ===== レイアウト依存を削除 ===== */
+
+.headerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-/* ヘッダー */
 .remindHeader {
     display: flex;
     justify-content: space-between;
@@ -13,40 +14,26 @@
     margin-bottom: 20px;
 }
 
+/* タイトル */
 .remindTitle {
     font-size: 22px;
     font-weight: bold;
 }
 
-/* カード共通 */
+/* ===== カード（共通に寄せる） ===== */
 .card {
     background: white;
     padding: 16px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    text-align: left;
 }
 
-/* セクションタイトル */
-.card h2 {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
+/* ===== ボタン統一（重要） ===== */
 
-/* ボタン */
-.closeBtn {
-    border: none;
-    background: #e5e7eb;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.closeBtn:hover {
-    background: #d1d5db;
-}
-
-.saveBtn {
+/* メインボタン（追加・保存共通） */
+.primaryButton {
     background: #2563eb;
     color: white;
     border: none;
@@ -54,28 +41,20 @@
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    margin-top: 10px;
 }
 
-.saveBtn:hover {
+.primaryButton:hover {
     background: #1d4ed8;
 }
 
-/* フォーム */
+/* ===== フォーム系は維持 ===== */
+
 .formRow {
     margin-bottom: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-label {
-    cursor: pointer;
-}
-
-.formLabel {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
 }
 
 .timeSelect {
@@ -89,11 +68,6 @@ label {
     text-align: center;
 }
 
-.timeSelect:focus {
-    border-color: #2563eb;
-    outline: none;
-}
-
 .timeGroup {
     display: flex;
     gap: 8px;
@@ -102,12 +76,7 @@ label {
     margin-bottom: 10px;
 }
 
-.timeUnit {
-    font-weight: bold;
-    margin: 0 4px;
-}
-
-/* 削除ボタン */
+/* 削除だけは危険操作なので残す */
 .deleteBtn {
     background: #ef4444;
     color: white;
@@ -120,20 +89,4 @@ label {
 
 .deleteBtn:hover {
     background: #dc2626;
-}
-
-/* 追加ボタン */
-.addBtn {
-    background: #10b981;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.addBtn:hover {
-    background: #059669;
 }

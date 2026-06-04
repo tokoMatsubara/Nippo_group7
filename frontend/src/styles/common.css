@@ -1,0 +1,82 @@
+/* 全体レイアウト共通 */
+
+.appWrapper {
+    min-height: 100vh;
+    background: #f7f8fa;
+    font-family: sans-serif;
+}
+
+/* Header分の余白確保（超重要） */
+.appContent {
+    padding-top: 70px;
+    /* ← ヘッダー高さ分 */
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+/* 共通カード */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-align: left;
+}
+
+/* 共通ボタン（青統一） */
+.primaryButton {
+    padding: 10px 14px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.primaryButton:hover {
+    background: #1d4ed8;
+}
+
+/* 戻るボタン（統一） */
+.backButton {
+    padding: 10px 14px;
+    background: #afb4c1;
+    color: #000000;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.backButton:hover {
+    background: #9ca3af;
+}
+
+/* アラートボタン（赤統一）*/
+.dangerButton {
+    padding: 10px 14px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.dangerButton:hover {
+    background: #dc2626;
+}
+
+/* 追加ボタン（緑統一）*/
+.addButton {
+    padding: 10px 14px;
+    background: #22c55e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.addButton:hover {
+    background: #16a34a;
+}

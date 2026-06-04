@@ -1,5 +1,7 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Header from "./components/Header";
+import "./App.css";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+import Layout from "./components/Layout";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -17,40 +19,54 @@ function AppWrapper() {
 }
 
 function App() {
-  const location = useLocation();
-
-  const hideHeader =
-    location.pathname === "/" ||
-    location.pathname === "/login" ||
-    location.pathname === "/register";
-
   return (
-    <>
-      {/* ヘッダー（ログイン・登録時は非表示） */}
-      {!hideHeader && <Header />}
+    <Routes>
 
-      {/* ルーティング */}
-      <Routes>
+      {/* 認証系（Layoutなし） */}
+      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-        {/* 認証系 */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+      {/* メイン（Layoutあり） */}
+      <Route
+        path="/dashboard"
+        element={
+          <Layout>
+            <Dashboard />
+          </Layout>
+        }
+      />
 
-        {/* メイン */}
-        <Route path="/dashboard" element={<Dashboard />} />
+      <Route
+        path="/create-report"
+        element={
+          <Layout>
+            <CreateReport />
+          </Layout>
+        }
+      />
 
-        {/* 日報系 */}
-        <Route path="/create-report" element={<CreateReport />} />
-        <Route path="/daily-list" element={<DailyList />} />
+      <Route
+        path="/daily-list"
+        element={
+          <Layout>
+            <DailyList />
+          </Layout>
+        }
+      />
 
-        {/* リマインド */}
-        <Route path="/remind" element={<Remind />} />
+      <Route
+        path="/remind"
+        element={
+          <Layout>
+            <Remind />
+          </Layout>
+        }
+      />
 
-        {/* デフォルト */}
-        <Route path="*" element={<Login />} />
-
-      </Routes>
-    </>
+      {/* fallback */}
+      <Route path="*" element={<Navigate to="/login" />} />
+    </Routes>
   );
 }
 
