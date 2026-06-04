@@ -1,5 +1,4 @@
-// ログイン画面　
-// 雛形(松原)→css適用(今藤)
+// ログイン画面
 
 import "../styles/Login.css";
 import React, { useState } from "react";
@@ -48,11 +47,11 @@ export default function Login() {
     return (
         <div className="loginContainer">
 
-            <div className="loginBox">
+            <div className="loginBox card">
 
-                <h1 className="loginTitle">ログイン</h1>
+                <h1>ログイン</h1>
 
-                <form className="loginForm" onSubmit={handleLogin}>
+                <form onSubmit={handleLogin}>
 
                     <input
                         className="loginInput"
@@ -69,7 +68,7 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <button className="loginButton" type="submit">
+                    <button className="btn btn-primary" type="submit">
                         ログイン
                     </button>
 
