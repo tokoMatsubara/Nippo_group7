@@ -53,11 +53,11 @@ public class DailyController {
         return dailyCrud.deleteDaily(daily_id);
     }
 
-    @PostMapping("/summary")
-    public Map<String, String> generateSummary(@RequestBody ReportRequestDto request) {
-        String summary = dailySummaryService.generateSummary(request);
-        // 他のメソッドに合わせて Map<String, String>（JSON形式）で返却します
-        return Collections.singletonMap("summary", summary);
-    }
+    // @PostMapping("/summary")
+    // public Map<String, String> generateSummary(@RequestBody ReportRequestDto request) {
+    //     String summary = dailySummaryService.generateSummary(request);
+    //     // 他のメソッドに合わせて Map<String, String>（JSON形式）で返却します
+    //     return Collections.singletonMap("summary", summary);
+    // }
 
 }
