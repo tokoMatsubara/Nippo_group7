@@ -24,20 +24,6 @@
 
 /* ===== ボタン統一（重要） ===== */
 
-/* 戻るボタン → 共通化 */
-.backButton {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-.backButton:hover {
-    background: #1d4ed8;
-}
-
 /* メインボタン（追加・保存共通） */
 .primaryButton {
     background: #2563eb;
