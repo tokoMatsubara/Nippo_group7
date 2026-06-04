@@ -8,6 +8,13 @@
     background: #f7f8fa;
 }
 
+/* 戻るボタンを右配置 */
+.topRight {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
 /* 週エリア */
 .weekHeader {
     font-size: 22px;
