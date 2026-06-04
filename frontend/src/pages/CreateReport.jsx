@@ -48,7 +48,7 @@ function DailyCreate() {
         <div className="header-actions">
 
           <button
-            className="btn btn-secondary"
+            className="backButton"
             onClick={() => navigate("/dashboard")}
           >
             ダッシュボードへ戻る
@@ -167,7 +167,7 @@ function DailyCreate() {
       <div className="submit-area">
 
         <button
-          className="btn btn-primary"
+          className="primaryButton"
           onClick={() => {
             alert("作成しました");
             navigate("/daily-list");

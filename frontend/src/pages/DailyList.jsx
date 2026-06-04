@@ -1,4 +1,5 @@
 import "../styles/DailyList.css";
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -50,7 +51,7 @@ export default function DailyList() {
             {/* 戻るボタン（共通化） */}
             <div className="topRight">
                 <button
-                    className="btn-secondary"
+                    className="backButton"
                     onClick={() => navigate("/dashboard")}
                 >
                     ダッシュボードへ戻る
@@ -95,11 +96,11 @@ export default function DailyList() {
 
                         {/* 共通ボタン化 */}
                         <div className="actions">
-                            <button className="btn-primary">
+                            <button className="primaryButton">
                                 編集
                             </button>
 
-                            <button className="btn-danger">
+                            <button className="dangerButton">
                                 削除
                             </button>
                         </div>
