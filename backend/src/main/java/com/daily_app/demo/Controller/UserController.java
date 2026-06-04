@@ -85,7 +85,7 @@ public class UserController {
                 LoginResponseDto response = new LoginResponseDto(
                         true,
                         "ログインに成功しました",
-                        user.getUserId().longValue(),
+                        user.getUserId(),
                         user.getUserName());
                 return ResponseEntity.ok(response);
             }
