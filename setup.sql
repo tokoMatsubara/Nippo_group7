@@ -79,7 +79,6 @@ CREATE TABLE weekly_summaries (
 );
 
 SET client_encoding TO 'UTF8';
-
 -- カテゴリ登録
 INSERT INTO categories(category_name) VALUES 
     ('今日学んだこと'),
