@@ -76,3 +76,4 @@ CREATE TABLE weekly_summaries (
 
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
