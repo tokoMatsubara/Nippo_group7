@@ -1,5 +1,6 @@
 -- daily database setup
 
+
 DROP DATABASE dailymanagement_db;
 
 CREATE DATABASE dailymanagement_db;

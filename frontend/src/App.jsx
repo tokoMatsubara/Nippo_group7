@@ -47,7 +47,7 @@ function App() {
       />
 
       <Route
-        path="/daily-list"
+        path="/daily-list/:startDate/:endDate"
         element={
           <Layout>
             <DailyList />
