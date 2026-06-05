@@ -96,7 +96,7 @@ public class WeeklySummaryService {
             // 初回だけ日単位DTO作成
             map.computeIfAbsent(q.getDailyId(), id -> {
                 DailyDto dto = new DailyDto();
-                dto.setDate(q.getCreatedAt().toLocalDate());
+                dto.setDate(q.getDailyDate());
                 dto.setSummary(q.getDailySummaryContent());
                 dto.setContents(new ArrayList<>());
                 return dto;
