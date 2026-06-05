@@ -42,7 +42,7 @@ function DailyCreate() {
       <header className="header">
 
         <div>
-          <h1>{today} の日報</h1>
+          <h1 className="title">{today} の日報</h1>
         </div>
 
         <div className="header-actions">
