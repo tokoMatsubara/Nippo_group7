@@ -99,3 +99,8 @@
     font-size: 40px;
     font-weight: bold;
 }
+
+.container {
+    padding: 20px;
+    min-height: 100vh;
+}
