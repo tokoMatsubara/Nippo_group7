@@ -8,10 +8,9 @@ import com.daily_app.demo.Dto.Request.ReportUpdateRequestDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 import com.daily_app.demo.Service.DailyCrudService;
-import com.daily_app.demo.Service.DailySummaryService;
+// import com.daily_app.demo.Service.DailySummaryService;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Map;
 
 @RestController
@@ -22,8 +21,8 @@ public class DailyController {
     @Autowired
     private DailyCrudService dailyCrud;
 
-    @Autowired
-    private DailySummaryService dailySummaryService;
+    // @Autowired
+    // private DailySummaryService dailySummaryService;
 
     @GetMapping("/weekly_list/{user_id}")
     public WeeklyListResponseDto getWeeklyList(@PathVariable Integer user_id) {
