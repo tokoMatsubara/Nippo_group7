@@ -40,18 +40,3 @@
     justify-content: center;
     margin-bottom: 10px;
 }
-
-/* 削除だけは危険操作なので残す */
-.deleteBtn {
-    background: #ef4444;
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.deleteBtn:hover {
-    background: #dc2626;
-}
