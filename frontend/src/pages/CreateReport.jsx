@@ -42,7 +42,28 @@ function CreateReport() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const payload = { userId: 1, date, contents, report: form };
+      const storedUserId = localStorage.getItem("user_id");
+      const userId = storedUserId ? Number(storedUserId) : null;
+      if (!userId) {
+        alert("ログインしてください");
+        navigate("/login");
+        return;
+      }
+      const payload = {
+        userId,
+        date,
+        contents: [
+          { categoryId: 1, content: form.learned },
+          { categoryId: 2, content: form.goodPoint },
+          { categoryId: 3, content: form.goodReason },
+          { categoryId: 4, content: form.issue },
+          { categoryId: 5, content: form.issueReason },
+          { categoryId: 6, content: form.action },
+          { categoryId: 7, content: form.tomorrowGoal },
+          { categoryId: 8, content: form.condition },
+          { categoryId: 9, content: form.comment },
+        ],
+      };
       const res = await fetch(`${API_BASE}/report`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -103,12 +124,30 @@ function CreateReport() {
           <p>{yesterdayGoal}</p>
         </div>
 
-        <Section title="1. 今日学んだこと" name="learned" value={form.learned} onChange={handleChange} />
-        <Section title="2. よかった点・できたこと" name="goodPoint" value={form.goodPoint} onChange={handleChange} />
-        <Section title="3. その理由" name="goodReason" value={form.goodReason} onChange={handleChange} />
-        <Section title="4. 課題・改善点" name="issue" value={form.issue} onChange={handleChange} />
-        <Section title="5. その理由" name="issueReason" value={form.issueReason} onChange={handleChange} />
-        <Section title="6. 改善するための行動" name="action" value={form.action} onChange={handleChange} />
+        <div className="section-card card">
+          <h3>1. 今日学んだこと</h3>
+          <textarea name="learned" value={form.learned} onChange={handleChange} rows="5" />
+        </div>
+        <div className="section-card card">
+          <h3>2. よかった点・できたこと</h3>
+          <textarea name="goodPoint" value={form.goodPoint} onChange={handleChange} rows="5" />
+        </div>
+        <div className="section-card card">
+          <h3>3. その理由</h3>
+          <textarea name="goodReason" value={form.goodReason} onChange={handleChange} rows="5" />
+        </div>
+        <div className="section-card card">
+          <h3>4. 課題・改善点</h3>
+          <textarea name="issue" value={form.issue} onChange={handleChange} rows="5" />
+        </div>
+        <div className="section-card card">
+          <h3>5. その理由</h3>
+          <textarea name="issueReason" value={form.issueReason} onChange={handleChange} rows="5" />
+        </div>
+        <div className="section-card card">
+          <h3>6. 改善するための行動</h3>
+          <textarea name="action" value={form.action} onChange={handleChange} rows="5" />
+        </div>
         <Section title="7. 明日の目標" name="tomorrowGoal" value={form.tomorrowGoal} onChange={handleChange} />
 
         <div className="section-card card">
@@ -126,28 +165,23 @@ function CreateReport() {
           </div>
         </div>
 
-        <div className="submit-area">
-          <button className="primaryButton" type="button" onClick={() => { alert("作成しました"); navigate("/daily-list"); }}>
-            作成
-          </button>
-        </div>
-      </div>
+        <Section title="9. コメント" name="comment" value={form.comment} onChange={handleChange} />
 
-      {/* <div className="section-card card">
-        <h3>送信結果</h3>
-        <pre style={{ marginTop: 20 }}>{JSON.stringify(result, null, 2)}</pre>
-      </div> */}
+        <button className="primaryButton" onClick={handleSubmit} disabled={loading}>
+          {loading ? "送信中..." : "保存"}
+        </button>
+      </div>
     </div>
   );
 }
 
-// function Section({ title, name, value, onChange }) {
-//   return (
-//     <div className="section-card card">
-//       <h3>{title}</h3>
-//       <textarea name={name} value={value} onChange={onChange} rows="5" />
-//     </div>
-//   );
-// }
+function Section({ title, name, value, onChange }) {
+  return (
+    <div className="section-card card">
+      <h3>{title}</h3>
+      <textarea name={name} value={value} onChange={onChange} rows="5" />
+    </div>
+  );
+}
 
 export default CreateReport;
