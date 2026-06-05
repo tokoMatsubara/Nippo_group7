@@ -46,7 +46,7 @@ export default function Dashboard() {
     if (loading) return <h2>Loading...</h2>;
 
     return (
-        <div className="dashboardContainer">
+        <div className="container">
 
             {/* ヘッダー */}
             <div className="header">
