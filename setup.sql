@@ -77,3 +77,14 @@ CREATE TABLE weekly_summaries (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+-- カテゴリ登録
+INSERT INTO categories(category_name) VALUES 
+    ('今日学んだこと'),
+    ('良かった点、できたこと'),
+    ('その理由'),
+    ('課題・改善点'),
+    ('その理由'),
+    ('改善するための行動'),
+    ('明日の目標'),
+    ('体調・気持ち'),
+    ('コメント');
