@@ -12,6 +12,7 @@ function Remind() {
     "createAsyncThunkのエラーハンドリングの理解が不足していた";
 
   const [notificationEnabled, setNotificationEnabled] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
 
   const [alarms, setAlarms] = useState([
     { hour: 18, minute: 0 }
@@ -19,21 +20,25 @@ function Remind() {
 
   const addAlarm = () => {
     setAlarms([...alarms, { hour: 0, minute: 0 }]);
+    setIsSaved(false);
   };
 
   const removeAlarm = (index) => {
     setAlarms(alarms.filter((_, i) => i !== index));
+    setIsSaved(false);
   };
 
   const updateAlarm = (index, field, value) => {
     const newAlarms = [...alarms];
     newAlarms[index][field] = value;
     setAlarms(newAlarms);
+    setIsSaved(false);
   };
 
   const handleSave = () => {
     console.log({ notificationEnabled, alarms });
     alert("保存しました");
+    setIsSaved(true);
   };
 
   const handleClose = () => {
@@ -74,7 +79,10 @@ function Remind() {
           <input
             type="checkbox"
             checked={notificationEnabled}
-            onChange={() => setNotificationEnabled(!notificationEnabled)}
+            onChange={() => {
+              setNotificationEnabled(!notificationEnabled);
+              setIsSaved(false);
+            }}
           />
           通知を有効にする
         </label>
@@ -121,8 +129,10 @@ function Remind() {
           ＋ 通知時間を追加
         </button>
 
-        <button className="primaryButton" onClick={handleSave}>
-          保存
+        {' '}
+
+        <button className="primaryButton" onClick={handleSave} disabled={isSaved}>
+          {isSaved ? "保存済み" : "保存"}
         </button>
 
       </div>
