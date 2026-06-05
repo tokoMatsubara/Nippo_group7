@@ -11,7 +11,6 @@ import com.daily_app.demo.Service.DailyCrudService;
 import com.daily_app.demo.Service.DailySummaryService;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Map;
 
 @RestController
