@@ -72,14 +72,16 @@ public class WeeklySummaryService {
                 });
     }
 
+    
+
     // =========================================
     // ② DBから取得（raw）
     // =========================================
     public List<DailyQueryDto> getWeeklyData(Integer userId, LocalDate startOfWeek, LocalDate endOfWeek) {
 
         return dailyDetailRepository.dailiesContentList(
-                userId, startOfWeek.atStartOfDay(),
-                endOfWeek.plusDays(1).atStartOfDay());
+                userId, startOfWeek,
+                endOfWeek.plusDays(1));
     }
 
     // =========================================
@@ -112,7 +114,6 @@ public class WeeklySummaryService {
         return new ArrayList<>(map.values());
     }
 
-    @Async
     public CompletableFuture<String> summarizeWeekly(List<DailyDto> weeklyData) {
 
         System.out.println("START THREAD: " + Thread.currentThread().getName());

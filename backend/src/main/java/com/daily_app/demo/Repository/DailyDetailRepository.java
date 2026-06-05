@@ -33,7 +33,7 @@ public interface DailyDetailRepository extends JpaRepository<DailyDetail, Long> 
         """)
     List<DailyQueryDto> dailiesContentList(
         @Param("userId") Integer userId,
-        @Param("startDate") LocalDateTime startDate,
-        @Param("endDate") LocalDateTime endDate
+        @Param("startDate") LocalDate startDate,
+        @Param("endDate") LocalDate endDate
     );
 }
