@@ -1,51 +1,10 @@
 /* ===== レイアウト依存を削除 ===== */
 
-.headerRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
 .remindHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-}
-
-/* タイトル */
-.remindTitle {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-/* ===== カード（共通に寄せる） ===== */
-.card {
-    background: white;
-    padding: 16px;
-    border-radius: 12px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    text-align: left;
-}
-
-/* ===== ボタン統一（重要） ===== */
-
-/* メインボタン（追加・保存共通） */
-.primaryButton {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.primaryButton:hover {
-    background: #1d4ed8;
 }
 
 /* ===== フォーム系は維持 ===== */
@@ -74,19 +33,4 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
-}
-
-/* 削除だけは危険操作なので残す */
-.deleteBtn {
-    background: #ef4444;
-    color: white;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.deleteBtn:hover {
-    background: #dc2626;
 }

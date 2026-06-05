@@ -2,12 +2,6 @@
     box-sizing: border-box;
 }
 
-.container {
-    padding: 20px;
-    min-height: 100vh;
-    background: #f7f8fa;
-}
-
 /* 戻るボタンを右配置 */
 .topRight {
     display: flex;
@@ -16,11 +10,6 @@
 }
 
 /* 週エリア */
-.weekHeader {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 6px;
-}
 
 .weekSummary {
     color: #555;
@@ -47,12 +36,17 @@
     color: white;
 }
 
-/* カード（最低限のみ残す） */
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 18px;
-    text-align: left;
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.actions button {
+    min-width: 120px;
+    text-align: center;
 }
 
 /* 詳細 */

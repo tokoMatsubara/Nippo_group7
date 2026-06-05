@@ -47,9 +47,9 @@ export default function DailyList() {
 
     return (
         <div className="container">
+            <div className="header">
+                <h1 className="title">日報一覧</h1>
 
-            {/* 戻るボタン（共通化） */}
-            <div className="topRight">
                 <button
                     className="backButton"
                     onClick={() => navigate("/dashboard")}
@@ -59,7 +59,7 @@ export default function DailyList() {
             </div>
 
             {/* 週表示 */}
-            <h2 className="weekHeader">
+            <h2 className="title">
                 {weekData.week_start_date} ～ {weekData.week_end_date}
             </h2>
 
