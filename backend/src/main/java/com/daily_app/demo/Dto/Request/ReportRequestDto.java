@@ -14,7 +14,6 @@ public class ReportRequestDto {
 
     private List<ContentDto> contents;
 
-
     public ReportRequestDto() {
     }
 

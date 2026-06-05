@@ -1,6 +1,7 @@
 package com.daily_app.demo.Service;
 
 import com.daily_app.demo.Repository.DailyRepository;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -45,6 +46,9 @@ public class DailyCrudService {
     @Autowired
     private WeeklySummaryService weeklySummaryService;
 
+    @Autowired
+    private DailySummaryService dailySummaryService;
+
     DailyCrudService(DailyRepository dailyRepository) {
         this.dailyRepository = dailyRepository;
     }
@@ -64,7 +68,10 @@ public class DailyCrudService {
     @Transactional
     public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate) {
         List<DailyQueryDto> dailiesRawList = dailyDetailrepository.dailiesContentList(
-                userId, startDate, endDate.plusDays(1));
+                userId,
+                startDate, 
+                endDate
+        );
 
         return QueryDtoToResponseDto(dailiesRawList, startDate, endDate);
     }
@@ -86,13 +93,15 @@ public class DailyCrudService {
                 DailyDto dailyDto = new DailyDto();
 
                 dailyDto.setDate(
-                        query.getCreatedAt().toLocalDate());
+                        query.getDailyDate());
 
                 dailyDto.setSummary(
                         query.getDailySummaryContent());
 
                 dailyDto.setContents(
                         new ArrayList<>());
+                        
+                dailyDto.setDailyId(dailyId);
 
                 dailyMap.put(dailyId, dailyDto);
             }
@@ -130,7 +139,7 @@ public class DailyCrudService {
     @Transactional
     public Map<String, String> reportDaily(ReportRequestDto reportRequest) {
         User user = userRepository.findById(reportRequest.getUserId()).get();
-        Daily daily = new Daily(user);
+        Daily daily = new Daily(user, reportRequest.getDate());
 
         List<DailyDetail> details = new ArrayList<DailyDetail>();
 
@@ -148,6 +157,8 @@ public class DailyCrudService {
             return Map.of("status", "failed", "message", "日報の登録に失敗しました");
         }
         weeklySummaryService.createWeeklySummary(reportRequest.getUserId());
+        dailySummaryService.generateSummary(daily, reportRequest.getContents());
+
         return Map.of("status", "success", "message", "日報の登録に成功しました");
     }
     // #endregion
@@ -175,6 +186,8 @@ public class DailyCrudService {
         } catch (DataIntegrityViolationException e) {
             return Map.of("status", "failed", "message", "日報の更新に失敗しました");
         }
+
+        dailySummaryService.generateSummary(daily, updateRequest.getContents());
 
         return Map.of("status", "success", "message", "日報の更新に成功しました");
     }
