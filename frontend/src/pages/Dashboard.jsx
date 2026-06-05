@@ -1,5 +1,5 @@
 import "../styles/Dashboard.css";
-import "../styles/common.css";
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -51,7 +51,7 @@ export default function Dashboard() {
             {/* ヘッダー */}
             <div className="header">
 
-                <h1 className="dashboardTitle">ダッシュボード</h1>
+                <h1 className="title">ダッシュボード</h1>
 
                 {/* 新規作成ボタン */}
                 <button
