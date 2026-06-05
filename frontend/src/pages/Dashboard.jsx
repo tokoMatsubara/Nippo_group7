@@ -8,25 +8,32 @@ export default function Dashboard() {
     const [reminder, setReminder] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const userId = localStorage.getItem("user_id");
+
+    const userName = localStorage.getItem("user_name");
     const navigate = useNavigate();
 
     useEffect(() => {
         fetchData();
     }, []);
 
+
     const fetchData = async () => {
         try {
             setLoading(true);
             const USER_ID = 1;
 
-            const weekRes = await fetch(`/api/weekly-list/${USER_ID}`);
+            const weekRes = await fetch(
+                `http://localhost:8080/api/weekly_list/${USER_ID}`
+            );
             const weekData = await weekRes.json();
 
-            const reminderRes = await fetch(`/api/remind/${USER_ID}`);
-            const reminderData = await reminderRes.json();
+            // const reminderRes = await fetch(`/api/remind/${USER_ID}`);
+            // const reminderData = await reminderRes.json();
 
-            setWeeks(weekData);
-            setReminder(reminderData);
+            console.log(JSON.stringify(weekData, null, 2));
+            setWeeks(weekData.summaries);
+            // setReminder(reminderData);
 
         } catch (err) {
             console.error(err);
@@ -36,7 +43,7 @@ export default function Dashboard() {
     };
 
     const handleWeekClick = (week) => {
-        navigate(`/reports/week/${week.startDate}`);
+        navigate(`/daily-list/${week.startDate}/${week.endDate}`);
     };
 
     const handleCreateReport = () => {
@@ -102,7 +109,7 @@ export default function Dashboard() {
                         </div>
 
                         <div className="weekSummary">
-                            {week.summary}
+                            {week.content}
                         </div>
                     </div>
                 ))}
