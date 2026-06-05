@@ -61,7 +61,7 @@ CREATE TABLE daily_details (
 
 CREATE TABLE daily_summaries (
     daily_summary_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    daily_id INTEGER NOT NULL,
+    daily_id INTEGER NOT NULL UNIQUE,
     daily_summary_content TEXT NOT NULL,
 
     FOREIGN KEY (daily_id) REFERENCES dailies(daily_id)
