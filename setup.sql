@@ -33,6 +33,7 @@ CREATE TABLE reminds (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+
 CREATE TABLE dailies (
     daily_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INTEGER NOT NULL,
