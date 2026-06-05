@@ -24,6 +24,16 @@ CREATE TABLE users (
     remind_time TIME NOT NULL DEFAULT '09:30'
 );
 
+CREATE TABLE reminds (
+    remind_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    remind_content TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+
 CREATE TABLE dailies (
     daily_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INTEGER NOT NULL,
