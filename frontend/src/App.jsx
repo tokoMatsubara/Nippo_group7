@@ -1,12 +1,13 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Header from "./components/Header";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+import Layout from "./components/Layout";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-//import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import CreateReport from "./pages/CreateReport";
-//import DailyList from "./pages/DailyList";
+import DailyList from "./pages/DailyList";
 import Remind from "./pages/Remind";
 
 function AppWrapper() {
@@ -18,50 +19,54 @@ function AppWrapper() {
 }
 
 function App() {
-  const location = useLocation();
-
-  const hideHeader =
-    location.pathname === "/" ||
-    location.pathname === "/login" ||
-    location.pathname === "/register";
-
   return (
-    <>
-      {/* ヘッダー（ログイン・登録時は非表示） */}
-      {!hideHeader && <Header />}
+    <Routes>
 
-      {/* ルーティング */}
-      <Routes>
-        <Route
-          path="/create-report"
-          element={<CreateReport />}
-        />
+      {/* 認証系（Layoutなし） */}
+      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-        <Route
-          path="/remind"
-          element={<Remind />}
-        />
+      {/* メイン（Layoutあり） */}
+      <Route
+        path="/dashboard"
+        element={
+          <Layout>
+            <Dashboard />
+          </Layout>
+        }
+      />
 
-        {/* 認証系 */}
-        <Route path="/" element={<Navigate to="/login"/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/register" element={<Register />} />
+      <Route
+        path="/create-report"
+        element={
+          <Layout>
+            <CreateReport />
+          </Layout>
+        }
+      />
 
-        {/* メイン 
-        <Route path="/dashboard" element={<Dashboard />} />*/}
+      <Route
+        path="/daily-list"
+        element={
+          <Layout>
+            <DailyList />
+          </Layout>
+        }
+      />
 
-        {/* 日報系 
-        <Route path="/create-report" element={<CreateReport />} />
-        <Route path="/daily-list" element={<DailyList />} />*/}
+      <Route
+        path="/remind"
+        element={
+          <Layout>
+            <Remind />
+          </Layout>
+        }
+      />
 
-        {/* リマインド */}
-        <Route path="/remind" element={<Remind />} />
-
-        {/* デフォルト */}
-        <Route path="*" element={<Login />} />
-
-      </Routes>
-    </>
+      {/* fallback */}
+      <Route path="*" element={<Navigate to="/login" />} />
+    </Routes>
   );
 }
 

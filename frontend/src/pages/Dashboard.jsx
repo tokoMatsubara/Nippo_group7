@@ -1,4 +1,5 @@
-//動作確認用　宮田拓海
+import "../styles/Dashboard.css";
+
 import React, { useEffect, useState } from "react";
 
 const API_BASE = "http://localhost:8080/api";
@@ -19,6 +20,13 @@ const Dashboard = () => {
 
                 console.log("weekly API:", data);
 
+    const handleWeekClick = (week) => {
+        navigate(`/reports/week/${week.startDate}`);
+    };
+
+    const handleCreateReport = () => {
+        navigate("/create-report");
+    };
                 const list = data?.summaries ?? data?.list ?? [];
 
                 setWeeklyList(Array.isArray(list) ? list : []);
@@ -35,6 +43,27 @@ const Dashboard = () => {
     }, []);
 
     return (
+        <div className="container">
+
+            {/* ヘッダー */}
+            <div className="header">
+
+                <h1 className="title">ダッシュボード</h1>
+
+                {/* 新規作成ボタン */}
+                <button
+                    className="addButton"
+                    onClick={handleCreateReport}
+                >
+                    ＋新規日報作成
+                </button>
+
+                <button
+                    className="primaryButton"
+                    onClick={() => navigate("/remind")}
+                >
+                    🔔 リマインダー
+                </button>
         <div style={{ padding: 20 }}>
             <h2>ダッシュボード</h2>
 
@@ -43,6 +72,32 @@ const Dashboard = () => {
 
             <h3>週リスト</h3>
 
+            {/* リマインド */}
+            <section className="section card">
+
+                <h2 className="remindTitle">明日の目標と課題</h2>
+
+                {reminder?.insights?.nextActions?.length ? (
+                    <ul className="list">
+                        {reminder.insights.nextActions.map((item, i) => (
+                            <li key={i}>{item}</li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>データなし</p>
+                )}
+            </section>
+
+            {/* 週一覧 */}
+            <section className="section">
+
+                <h2>週一覧</h2>
+
+                {weeks.map((week) => (
+                    <div
+                        key={week.startDate}
+                        className="weekCard card"
+                        onClick={() => handleWeekClick(week)}
             {!loading && weeklyList.length === 0 && (
                 <p>データがありません</p>
             )}

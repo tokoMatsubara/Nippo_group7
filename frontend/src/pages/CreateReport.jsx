@@ -1,3 +1,59 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/CreateReport.css";
+
+function DailyCreate() {
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    learned: "",
+    goodPoint: "",
+    goodReason: "",
+    issue: "",
+    issueReason: "",
+    action: "",
+    tomorrowGoal: "",
+    condition: "普通",
+    comment: "",
+  });
+
+  const today = new Date().toLocaleDateString("ja-JP", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    weekday: "short",
+  });
+
+  const yesterdayGoal = "昨日設定した目標がここに表示されます";
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  return (
+    <div className="daily-page">
+
+      {/* ヘッダー */}
+      <header className="header">
+
+        <div>
+          <h1 className="title">{today} の日報</h1>
+        </div>
+
+        <div className="header-actions">
+
+          <button
+            className="backButton"
+            onClick={() => navigate("/dashboard")}
+          >
+            ダッシュボードへ戻る
+          </button>
+
 //動作確認用　宮田拓海
 import React, { useState } from "react";
 
@@ -102,8 +158,14 @@ const CreateReport = () => {
         </div>
       ))}
 
+      {/* 目標 */}
+      <div className="goal-card card">
+        <h3>昨日立てた今日の目標</h3>
+        <p>{yesterdayGoal}</p>
+      </div>
       <button onClick={addRow}>＋追加</button>
 
+      {/* フォーム */}
       <Section
         title="1. 今日学んだこと"
         name="learned"
@@ -153,7 +215,9 @@ const CreateReport = () => {
         onChange={handleChange}
       />
 
-      <div className="section-card">
+      {/* 体調 */}
+      <div className="section-card card">
+
         <h3>8. 体調・気持ち</h3>
 
         <div className="radio-group">
@@ -199,6 +263,37 @@ const CreateReport = () => {
         {loading ? "送信中..." : "登録"}
       </button>
 
+      {/* 送信 */}
+      <div className="submit-area">
+
+        <button
+          className="primaryButton"
+          onClick={() => {
+            alert("作成しました");
+            navigate("/daily-list");
+          }}
+        >
+          作成
+        </button>
+
+      </div>
+
+    </div>
+  );
+}
+
+/* Sectionコンポーネント */
+function Section({ title, name, value, onChange }) {
+  return (
+    <div className="section-card card">
+      <h3>{title}</h3>
+
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        rows="5"
+      />
       {/* 結果 */}
       <pre style={{ marginTop: 20 }}>
         {JSON.stringify(result, null, 2)}
