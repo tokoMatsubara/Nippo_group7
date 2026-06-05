@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.daily_app.demo.Dto.Internal.DailyQueryDto;
 import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
-import com.daily_app.demo.Dto.Response.DailyResponseDto;
+//import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Entity.WeeklySummary;
 import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
