@@ -2,13 +2,16 @@
 package com.daily_app.demo.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.daily_app.demo.Entity.User;
-import com.daily_app.demo.Entity.Remind; // 松原さんが作った保管箱
+import com.daily_app.demo.Entity.Remind; 
 import com.daily_app.demo.Repository.RemindRepository;
+import com.daily_app.demo.Dto.Response.RemindResponseDto;
 
 @Service
 public class RemindService {
@@ -42,12 +45,19 @@ public class RemindService {
     }
 
     /**
-     * 🌟【新しく追加する処理】
-     * 指定されたユーザーIDの通知（リマインド）をDBから全部取ってくる
+     * 🌟【修正】指定されたユーザーIDの通知を、Dtoの形に詰め替えて返す
      */
-    @Transactional(readOnly = true) // 読み込み専用
-    public List<Remind> getRemindsByUserId(Long userId) {
-        // 先ほどRemindRepositoryに作った特注ボタン（findByUser_UserId）をここで呼び出す！
-        return remindRepository.findByUser_UserId(userId);
+    @Transactional(readOnly = true)
+    public List<RemindResponseDto> getRemindsByUserId(Long userId) {
+        // 1. DBから生のデータを取ってくる
+        List<Remind> rawReminds = remindRepository.findByUser_UserId(userId);
+
+        // 2. 生のRemindから、UserIdとContentだけを抜き出してDtoに詰め替える
+        return rawReminds.stream()
+            .map(remind -> new RemindResponseDto(
+                remind.getUser().getUserId(), // UserからIDだけを引っこ抜く
+                remind.getRemindContent()     // メッセージ内容
+            ))
+            .collect(Collectors.toList()); // リストにして返す
     }
 }
