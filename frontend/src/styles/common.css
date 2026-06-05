@@ -32,7 +32,6 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-weight: bold;
 }
 
 .primaryButton:hover {
