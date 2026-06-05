@@ -30,24 +30,6 @@
     text-align: left;
 }
 
-/* ===== ボタン統一（重要） ===== */
-
-/* メインボタン（追加・保存共通） */
-.primaryButton {
-    background: #2563eb;
-    color: white;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.primaryButton:hover {
-    background: #1d4ed8;
-}
-
 /* ===== フォーム系は維持 ===== */
 
 .formRow {
