@@ -126,10 +126,6 @@ function CreateReport() {
           </div>
         </div>
 
-        <button className="primaryButton" onClick={handleSubmit} disabled={loading}>
-          {loading ? "送信中..." : "登録"}
-        </button>
-
         <div className="submit-area">
           <button className="primaryButton" type="button" onClick={() => { alert("作成しました"); navigate("/daily-list"); }}>
             作成
