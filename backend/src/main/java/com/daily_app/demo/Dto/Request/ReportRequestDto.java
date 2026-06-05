@@ -9,8 +9,8 @@ public class ReportRequestDto {
 
     private Integer userId;
 
-    // @JsonFormat(pattern = "yyyy-MM-dd")
-    // private LocalDate date;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
 
     private List<ContentDto> contents;
 
@@ -25,13 +25,13 @@ public class ReportRequestDto {
         this.userId = userId;
     }
 
-    // public LocalDate getDate() {
-    //     return date;
-    // }
+    public LocalDate getDate() {
+        return date;
+    }
 
-    // public void setDate(LocalDate date) {
-    //     this.date = date;
-    // }
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     public List<ContentDto> getContents() {
         return contents;

@@ -21,7 +21,10 @@ INSERT INTO categories(category_name) VALUES
     ('コメント');
 
 -- テスト日報登録
-INSERT INTO dailies(user_id) VALUES (1), (1), (1);
+INSERT INTO dailies(user_id, daily_date) VALUES 
+    (1, '2026-06-01'), 
+    (1, '2026-06-02'), 
+    (1, '2026-06-03');
 
 -- テスト日報詳細登録
 INSERT INTO daily_details(daily_id, category_id, content) VALUES 
