@@ -1,39 +1,24 @@
 import "../styles/Dashboard.css";
 
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
-    const [weeks, setWeeks] = useState([]);
-    const [reminder, setReminder] = useState(null);
-    const [loading, setLoading] = useState(true);
+const API_BASE = "http://localhost:8080/api";
 
-    const navigate = useNavigate();
+const Dashboard = () => {
+    const [weeklyList, setWeeklyList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        const fetchWeeklyList = async () => {
+            try {
+                setLoading(true);
+                setError(null);
 
-    const fetchData = async () => {
-        try {
-            setLoading(true);
-            const USER_ID = 1;
+                const res = await fetch(`${API_BASE}/weekly_list/1`);
+                const data = await res.json();
 
-            const weekRes = await fetch(`/api/weekly-list/${USER_ID}`);
-            const weekData = await weekRes.json();
-
-            const reminderRes = await fetch(`/api/remind/${USER_ID}`);
-            const reminderData = await reminderRes.json();
-
-            setWeeks(weekData);
-            setReminder(reminderData);
-
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
+                console.log("weekly API:", data);
 
     const handleWeekClick = (week) => {
         navigate(`/reports/week/${week.startDate}`);
@@ -42,8 +27,20 @@ export default function Dashboard() {
     const handleCreateReport = () => {
         navigate("/create-report");
     };
+                const list = data?.summaries ?? data?.list ?? [];
 
-    if (loading) return <h2>Loading...</h2>;
+                setWeeklyList(Array.isArray(list) ? list : []);
+            } catch (err) {
+                console.error(err);
+                setError("週リスト取得に失敗しました");
+                setWeeklyList([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchWeeklyList();
+    }, []);
 
     return (
         <div className="container">
@@ -67,8 +64,13 @@ export default function Dashboard() {
                 >
                     🔔 リマインダー
                 </button>
+        <div style={{ padding: 20 }}>
+            <h2>ダッシュボード</h2>
 
-            </div>
+            {loading && <p>読み込み中...</p>}
+            {error && <p style={{ color: "red" }}>{error}</p>}
+
+            <h3>週リスト</h3>
 
             {/* リマインド */}
             <section className="section card">
@@ -96,18 +98,34 @@ export default function Dashboard() {
                         key={week.startDate}
                         className="weekCard card"
                         onClick={() => handleWeekClick(week)}
+            {!loading && weeklyList.length === 0 && (
+                <p>データがありません</p>
+            )}
+
+            {Array.isArray(weeklyList) &&
+                weeklyList.map((week, index) => (
+                    <div
+                        key={index}
+                        style={{
+                            padding: 12,
+                            margin: 8,
+                            border: "1px solid #ccc",
+                            borderRadius: 6,
+                        }}
                     >
-                        <div className="weekTitle">
-                            {week.startDate} ~ {week.endDate}
+                        {/* ■ 週の期間（日付表示） */}
+                        <div style={{ fontWeight: "bold" }}>
+                            {week.startDate} 〜 {week.endDate}
                         </div>
 
-                        <div className="weekSummary">
-                            {week.summary}
+                        {/* ■ 要約 */}
+                        <div style={{ marginTop: 6 }}>
+                            {week.summary ?? week.content}
                         </div>
                     </div>
                 ))}
-            </section>
-
         </div>
     );
-}
+};
+
+export default Dashboard;
