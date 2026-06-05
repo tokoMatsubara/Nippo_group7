@@ -6,6 +6,7 @@
 
 package com.daily_app.demo.Controller;
 
+import com.daily_app.demo.Dto.Response.RemindResponseDto;
 import com.daily_app.demo.Entity.Remind;
 import com.daily_app.demo.Service.RemindService; 
 
@@ -28,10 +29,10 @@ public class RemindController {
      * URL: GET /api/reminds/{user_id}
      */
     @GetMapping("/{user_id}")
-    public ResponseEntity<List<Remind>> getUserReminds(@PathVariable("user_id") Long userId) {
+    public ResponseEntity<List<RemindResponseDto>> getUserReminds(@PathVariable("user_id") Long userId) {
         System.out.println("ユーザーID: " + userId + " が通知を取りにきました。");
 
-        List<Remind> reminds = remindService.getRemindsByUserId(userId);
+        List<RemindResponseDto> reminds = remindService.getRemindsByUserId(userId);
 
         return ResponseEntity.ok(reminds);
     }
