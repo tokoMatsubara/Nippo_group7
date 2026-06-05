@@ -1,10 +1,10 @@
 package com.daily_app.demo.Dto.Internal;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class DailyQueryDto {
     private Integer dailyId;
-    private LocalDateTime createdAt;
+    private LocalDate dailyDate;
     private String dailySummaryContent;
     private Integer categoryId;
     private String categoryName;
@@ -12,14 +12,14 @@ public class DailyQueryDto {
 
     public DailyQueryDto(
         Integer dailyId,
-        LocalDateTime createdAt,
+        LocalDate dailyDate,
         String dailySummaryContent,
         Integer categoryId,
         String categoryName,
         String content
     ){
         this.dailyId = dailyId;
-        this.createdAt = createdAt;
+        this.dailyDate = dailyDate;
         this.dailySummaryContent = dailySummaryContent;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
@@ -29,8 +29,8 @@ public class DailyQueryDto {
     public Integer getDailyId() {
         return dailyId;
     }
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDate getDailyDate() {
+        return dailyDate;
     }
     public String getDailySummaryContent() {
         return dailySummaryContent;

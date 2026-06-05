@@ -1,6 +1,6 @@
 package com.daily_app.demo.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +17,7 @@ public interface DailyDetailRepository extends JpaRepository<DailyDetail, Long> 
     @Query("""
         SELECT new com.daily_app.demo.Dto.Internal.DailyQueryDto(
             d.dailyId,
-            d.createdAt,
+            d.dailyDate,
             ds.dailySummaryContent,
             c.categoryId,
             c.categoryName,
@@ -28,11 +28,11 @@ public interface DailyDetailRepository extends JpaRepository<DailyDetail, Long> 
         JOIN dd.category c
         JOIN DailySummary ds ON ds.daily = d
         WHERE d.user.userId = :userId
-        AND d.createdAt BETWEEN :startDate AND :endDate
+        AND d.dailyDate BETWEEN :startDate AND :endDate
         """)
     List<DailyQueryDto> dailiesContentList(
         @Param("userId") Integer userId,
-        @Param("startDate") LocalDateTime startDate,
-        @Param("endDate") LocalDateTime endDate
+        @Param("startDate") LocalDate startDate,
+        @Param("endDate") LocalDate endDate
     );
 }
