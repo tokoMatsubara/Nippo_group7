@@ -141,13 +141,13 @@ function CreateReport() {
   );
 }
 
-function Section({ title, name, value, onChange }) {
-  return (
-    <div className="section-card card">
-      <h3>{title}</h3>
-      <textarea name={name} value={value} onChange={onChange} rows="5" />
-    </div>
-  );
-}
+// function Section({ title, name, value, onChange }) {
+//   return (
+//     <div className="section-card card">
+//       <h3>{title}</h3>
+//       <textarea name={name} value={value} onChange={onChange} rows="5" />
+//     </div>
+//   );
+// }
 
 export default CreateReport;
