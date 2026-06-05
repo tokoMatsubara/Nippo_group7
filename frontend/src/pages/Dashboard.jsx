@@ -1,76 +1,120 @@
-//動作確認用　宮田拓海
+import "../styles/Dashboard.css";
+
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const API_BASE = "http://localhost:8080/api";
+export default function Dashboard() {
+    const [weeks, setWeeks] = useState([]);
+    const [reminder, setReminder] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-const Dashboard = () => {
-    const [weeklyList, setWeeklyList] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const userId = localStorage.getItem("user_id");
+
+    const userName = localStorage.getItem("user_name");
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchWeeklyList = async () => {
-            try {
-                setLoading(true);
-                setError(null);
-
-                const res = await fetch(`${API_BASE}/weekly_list/1`);
-                const data = await res.json();
-
-                console.log("weekly API:", data);
-
-                const list = data?.summaries ?? data?.list ?? [];
-
-                setWeeklyList(Array.isArray(list) ? list : []);
-            } catch (err) {
-                console.error(err);
-                setError("週リスト取得に失敗しました");
-                setWeeklyList([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchWeeklyList();
+        fetchData();
     }, []);
 
+
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            const USER_ID = 1;
+
+            const weekRes = await fetch(
+                `http://localhost:8080/api/weekly_list/${USER_ID}`
+            );
+            const weekData = await weekRes.json();
+
+            // const reminderRes = await fetch(`/api/remind/${USER_ID}`);
+            // const reminderData = await reminderRes.json();
+
+            console.log(JSON.stringify(weekData, null, 2));
+            setWeeks(weekData.summaries);
+            // setReminder(reminderData);
+
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleWeekClick = (week) => {
+        navigate(`/daily-list/${week.startDate}/${week.endDate}`);
+    };
+
+    const handleCreateReport = () => {
+        navigate("/create-report");
+    };
+
+    if (loading) return <h2>Loading...</h2>;
+
     return (
-        <div style={{ padding: 20 }}>
-            <h2>ダッシュボード</h2>
+        <div className="container">
 
-            {loading && <p>読み込み中...</p>}
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {/* ヘッダー */}
+            <div className="header">
 
-            <h3>週リスト</h3>
+                <h1 className="title">ダッシュボード</h1>
 
-            {!loading && weeklyList.length === 0 && (
-                <p>データがありません</p>
-            )}
+                {/* 新規作成ボタン */}
+                <button
+                    className="addButton"
+                    onClick={handleCreateReport}
+                >
+                    ＋新規日報作成
+                </button>
 
-            {Array.isArray(weeklyList) &&
-                weeklyList.map((week, index) => (
+                <button
+                    className="primaryButton"
+                    onClick={() => navigate("/remind")}
+                >
+                    🔔 リマインダー
+                </button>
+
+            </div>
+
+            {/* リマインド */}
+            <section className="section card">
+
+                <h2 className="remindTitle">明日の目標と課題</h2>
+
+                {reminder?.insights?.nextActions?.length ? (
+                    <ul className="list">
+                        {reminder.insights.nextActions.map((item, i) => (
+                            <li key={i}>{item}</li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>データなし</p>
+                )}
+            </section>
+
+            {/* 週一覧 */}
+            <section className="section">
+
+                <h2>週一覧</h2>
+
+                {weeks.map((week) => (
                     <div
-                        key={index}
-                        style={{
-                            padding: 12,
-                            margin: 8,
-                            border: "1px solid #ccc",
-                            borderRadius: 6,
-                        }}
+                        key={week.startDate}
+                        className="weekCard card"
+                        onClick={() => handleWeekClick(week)}
                     >
-                        {/* ■ 週の期間（日付表示） */}
-                        <div style={{ fontWeight: "bold" }}>
-                            {week.startDate} 〜 {week.endDate}
+                        <div className="weekTitle">
+                            {week.startDate} ~ {week.endDate}
                         </div>
 
-                        {/* ■ 要約 */}
-                        <div style={{ marginTop: 6 }}>
-                            {week.summary ?? week.content}
+                        <div className="weekSummary">
+                            {week.content}
                         </div>
                     </div>
                 ))}
+            </section>
+
         </div>
     );
-};
-
-export default Dashboard;
+}

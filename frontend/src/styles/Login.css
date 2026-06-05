@@ -1,19 +1,19 @@
+/* =========================
+   Login Layout Only
+========================= */
+
 .loginContainer {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #f7f8fa;
-    font-family: sans-serif;
 }
 
-/* 白いカード */
+/* Login Card */
 .loginBox {
     width: 360px;
-    background: #fff;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* タイトル */
@@ -31,7 +31,7 @@
     gap: 12px;
 }
 
-/* 入力 */
+/* 入力フィールド（最低限のみ） */
 .loginInput {
     padding: 10px;
     border: 1px solid #ddd;
@@ -39,23 +39,9 @@
     outline: none;
 }
 
+/* フォーカス */
 .loginInput:focus {
     border-color: #2563eb;
-}
-
-/* ボタン */
-.loginButton {
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    background: #2563eb;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.loginButton:hover {
-    background: #1d4ed8;
 }
 
 /* リンク */
@@ -71,4 +57,23 @@
 
 .loginLink a:hover {
     text-decoration: underline;
+}
+
+/* ボタン */
+.loginButton {
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    /* ← 角をより丸く */
+    background: #2563eb;
+    /* ← 青 */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.loginButton:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
 }

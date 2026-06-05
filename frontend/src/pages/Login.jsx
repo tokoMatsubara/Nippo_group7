@@ -1,13 +1,13 @@
-// ログイン画面　
-// 雛形(松原)→css適用(今藤)
+// ログイン画面
 
 import "../styles/Login.css";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -24,7 +24,7 @@ export default function Login() {
                 })
             });
 
-            if(!res.ok){
+            if (!res.ok) {
                 const errorData = await res.json().catch(() => ({}));
                 alert(errorData.message || "ログインに失敗しました");
                 return;
@@ -34,8 +34,10 @@ export default function Login() {
 
             console.log("ログイン成功:", data);
 
-            localStorage.setItem("user_id", data.user_id);
-            window.location.href = "/dashboard";
+            localStorage.setItem("user_id", data.userId);
+            localStorage.setItem("user_name", data.userName);
+
+            navigate("/dashboard");
 
         } catch (err) {
             console.error(err);
@@ -45,7 +47,7 @@ export default function Login() {
     return (
         <div className="loginContainer">
 
-            <div className="loginBox">
+            <div className="loginBox card">
 
                 <h1 className="loginTitle">ログイン</h1>
 
