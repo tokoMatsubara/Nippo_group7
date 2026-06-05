@@ -61,7 +61,7 @@ CREATE TABLE daily_details (
 
 CREATE TABLE daily_summaries (
     daily_summary_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    daily_id INTEGER NOT NULL,
+    daily_id INTEGER NOT NULL UNIQUE,
     daily_summary_content TEXT NOT NULL,
 
     FOREIGN KEY (daily_id) REFERENCES dailies(daily_id)
@@ -77,3 +77,14 @@ CREATE TABLE weekly_summaries (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+-- カテゴリ登録
+INSERT INTO categories(category_name) VALUES 
+    ('今日学んだこと'),
+    ('良かった点、できたこと'),
+    ('その理由'),
+    ('課題・改善点'),
+    ('その理由'),
+    ('改善するための行動'),
+    ('明日の目標'),
+    ('体調・気持ち'),
+    ('コメント');

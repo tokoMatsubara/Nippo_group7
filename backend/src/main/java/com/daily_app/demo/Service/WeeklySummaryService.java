@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.Map;
+import java.util.Optional;
 import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.daily_app.demo.Dto.Internal.DailyQueryDto;
 import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
-//import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Entity.WeeklySummary;
 import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
@@ -41,6 +41,7 @@ public class WeeklySummaryService {
     // =========================================
     @Async
     public void createWeeklySummary(Integer userId) {
+        System.out.println("createWeeklySummary START userId=" + userId);
 
         LocalDate today = LocalDate.now();
         LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
@@ -68,11 +69,44 @@ public class WeeklySummaryService {
                 })
                 .exceptionally(ex -> {
                     System.out.println("エラー: " + ex.getMessage());
+                    ex.printStackTrace(); 
                     return null;
                 });
     }
 
-    
+    @Async
+    public void updateWeeklySummary(Integer userId, LocalDate targetDate) {
+
+        LocalDate startOfWeek = targetDate.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = targetDate.with(DayOfWeek.SUNDAY);
+
+        // ① DBから生データ取得（raw）
+        List<DailyQueryDto> raw = getWeeklyData(userId, startOfWeek, endOfWeek);
+
+        raw.forEach(r -> System.out.println("dailyId=" + r.getDailyId() + " content=" + r.getContent()));
+
+        // ② LLM用に整形
+        List<DailyDto> weeklyData = convertToDailyDto(raw);
+
+        summarizeWeekly(weeklyData)
+                .thenAccept(summary -> {
+
+                    Optional<WeeklySummary> existing = weeklySummaryRepository.findByUserIdAndWeekStartDate(
+                            userId, startOfWeek);
+
+                    WeeklySummary entity = existing
+                            .orElseGet(() -> new WeeklySummary(userId, "", startOfWeek, endOfWeek));
+
+                    entity.setWeeklySummaryContent(summary);
+                    entity.setWeekEndDate(endOfWeek);
+
+                    weeklySummaryRepository.save(entity);
+                })
+                .exceptionally(ex -> {
+                    System.out.println("エラー: " + ex.getMessage());
+                    return null;
+                });
+    }
 
     // =========================================
     // ② DBから取得（raw）
@@ -119,8 +153,14 @@ public class WeeklySummaryService {
         System.out.println("START THREAD: " + Thread.currentThread().getName());
 
         String prompt = buildPrompt(weeklyData);
+        String result;
 
-        String result = callLlmService.chatResponse(prompt);
+        try {
+            result = callLlmService.chatResponse(prompt);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("LLM呼び出し失敗", e);
+        }
 
         System.out.println(prompt);
 
