@@ -1,3 +1,4 @@
+SET client_encoding TO 'UTF8';
 -- daily database setup
 
 DROP DATABASE dailymanagement_db;
