@@ -154,6 +154,7 @@ public class DailyCrudService {
             dailyRepository.save(daily);
 
         } catch (DataIntegrityViolationException e) {
+            System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の登録に失敗しました");
         }
         weeklySummaryService.createWeeklySummary(reportRequest.getUserId());
@@ -184,6 +185,7 @@ public class DailyCrudService {
         try {
             dailyRepository.save(daily);
         } catch (DataIntegrityViolationException e) {
+            System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の更新に失敗しました");
         }
 
@@ -202,6 +204,7 @@ public class DailyCrudService {
             dailyRepository.deleteById(dailyId);
             dailySummaryService.deleteSummary(dailyId);
         }catch(Exception e){
+            System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の削除に失敗しました");
         }
 
