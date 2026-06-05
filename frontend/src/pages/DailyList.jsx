@@ -3,36 +3,8 @@ import "../styles/DailyList.css";
 import React, { useState,useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-
-
-const mockWeekData = {
-    week_start_date: "2026-06-01",
-    week_end_date: "2026-06-05",
-    weekly_summary_content: "今週はReactと設計を学習しました(まだMockです)",
-    dailies: [
-        {
-            day: "月",
-            date: "2026-06-01",
-            daily_summary_content: "React基礎",
-            details: [
-                { category_id: 1, category_name: "今日学んだこと", content: "JSXの基本" },
-                { category_id: 2, category_name: "よかった点", content: "理解が早かった" },
-                { category_id: 3, category_name: "その理由", content: "事前学習していたから" },
-            ],
-        },
-        {
-            day: "火",
-            date: "2026-06-02",
-            daily_summary_content: "コンポーネント設計",
-            details: [
-                { category_id: 1, category_name: "今日学んだこと", content: "propsの使い方" },
-                { category_id: 2, category_name: "課題・改善点", content: "状態管理が難しい" },
-            ],
-        },
-    ],
-};
-
 const days = ["月", "火", "水", "木", "金"];
+const week = ["日", "月", "火", "水", "木", "金", "土"];
 
 export default function DailyList() {
     const [selectedDay, setSelectedDay] = useState("月");
@@ -40,7 +12,11 @@ export default function DailyList() {
     const params = useParams();
 
     // const weekData = mockWeekData;
-    const [weekData, setWeekData] = useState({});
+    const [weekData, setWeekData] = useState({
+        weekStartDate: "",
+        weekEndDate: "",
+        days: []
+    });
 
     useEffect(() => {
         fetchData();
@@ -50,18 +26,20 @@ export default function DailyList() {
     const fetchData = async () => {
         const userId = localStorage.getItem("user_id");
         
-        const response = await fetch(`api/daily/userId/params.startDate/params.endDate`);
+        const response = await fetch(`http://localhost:8080/api/daily/${userId}/${params.startDate}/${params.endDate}`);
         const data = await response.json();
         setWeekData(data);
         console.log(data);
     }
 
-    const selectedDaily = weekData.dailies.find(
-        (d) => d.day === selectedDay
+    const selectedDaily = weekData.days.find(
+        (d) => week[new Date(d.date).getDay()] === selectedDay
     );
 
     const hasDaily = (day) =>
-        weekData.dailies.some((d) => d.day === day);
+        weekData.days.some(
+            (d) => week[new Date(d.date).getDay()] === day
+        );
 
     return (
         <div className="container">
@@ -78,7 +56,7 @@ export default function DailyList() {
 
             {/* 週表示 */}
             <h2 className="title">
-                {dailies.weekStartDate} ～ {dailies.weekEndDate}
+                {weekData.weekStartDate} ～ {weekData.weekEndDate}
             </h2>
 
             {/* 週要約 */}
@@ -111,13 +89,13 @@ export default function DailyList() {
                         <h3 className="date">{selectedDaily.date}</h3>
 
                         <p className="summary">
-                            {selectedDaily.daily_summary_content}
+                            {selectedDaily.summary}
                         </p>
 
 
                         {/* 詳細 */}
                         <div className="section">
-                            {selectedDaily.details.map((item) => (
+                            {selectedDaily.contents.map((item) => (
                                 <div key={item.categoryId} className="sectionItem">
                                     <strong className="sectionTitle">
                                         {item.categoryName}
