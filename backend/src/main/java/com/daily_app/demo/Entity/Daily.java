@@ -1,5 +1,6 @@
 package com.daily_app.demo.Entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class Daily {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "daily_date")
+    private LocalDate dailyDate;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -45,8 +49,9 @@ public class Daily {
     public Daily() {
     }
 
-    public Daily(User user){
+    public Daily(User user, LocalDate dailyDate){
         this.user = user;
+        this.dailyDate = dailyDate;
         dailyDetails = new ArrayList<>();
     }
 
@@ -57,6 +62,10 @@ public class Daily {
     }
     public User getUserId() {
         return user;
+    }
+
+    public LocalDate getDailyDate(){
+        return dailyDate;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -77,6 +86,9 @@ public class Daily {
     }
     public void setUser(User user) {
         this.user = user;
+    }
+    public void setDailyDate(LocalDate dailyDate){
+        this.dailyDate = dailyDate;
     }
     public void setDailyDetails(List<DailyDetail> dailyDetails) {
         this.dailyDetails = dailyDetails;

@@ -33,4 +33,23 @@ public class DailySummary {
         this.dailySummaryContent = dailySummaryContent;
 
     }
+
+    public Daily getDaily() {
+        return daily;
+    }
+    public String getDailySummaryContent() {
+        return dailySummaryContent;
+    }
+    public Integer getDailySummaryId() {
+        return dailySummaryId;
+    }
+    public void setDaily(Daily daily) {
+        this.daily = daily;
+    }
+    public void setDailySummaryContent(String dailySummaryContent) {
+        this.dailySummaryContent = dailySummaryContent;
+    }
+    public void setDailySummaryId(Integer dailySummaryId) {
+        this.dailySummaryId = dailySummaryId;
+    }
 }

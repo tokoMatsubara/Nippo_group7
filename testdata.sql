@@ -8,20 +8,12 @@ INSERT INTO users(user_name, password, mail_address) VALUES (
     'test@example.com'
 );
 
--- カテゴリ登録
-INSERT INTO categories(category_name) VALUES 
-    ('今日学んだこと'),
-    ('良かった点、できたこと'),
-    ('その理由'),
-    ('課題・改善点'),
-    ('その理由'),
-    ('改善するための行動'),
-    ('明日の目標'),
-    ('体調・気持ち'),
-    ('コメント');
 
 -- テスト日報登録
-INSERT INTO dailies(user_id) VALUES (1), (1), (1);
+INSERT INTO dailies(user_id, daily_date) VALUES 
+    (1, '2026-06-01'), 
+    (1, '2026-06-02'), 
+    (1, '2026-06-03');
 
 -- テスト日報詳細登録
 INSERT INTO daily_details(daily_id, category_id, content) VALUES 
