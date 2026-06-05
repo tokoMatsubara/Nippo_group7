@@ -71,6 +71,14 @@ function CreateReport() {
       });
       const data = await res.json();
       setResult(data);
+
+      if (res.ok) {
+        alert("保存しました");
+        navigate("/dashboard");
+      } else {
+        alert("保存に失敗しました");
+      }
+
     } catch (err) {
       console.error(err);
       setResult({ status: "error" });
