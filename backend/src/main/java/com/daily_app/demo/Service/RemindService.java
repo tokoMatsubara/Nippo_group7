@@ -1,3 +1,4 @@
+// 松原編集
 package com.daily_app.demo.Service;
 
 import java.util.List;
@@ -39,7 +40,6 @@ public class RemindService {
 
         
     }
-
 
     /**
      * 🌟【新しく追加する処理】
