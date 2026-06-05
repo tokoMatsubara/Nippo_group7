@@ -117,7 +117,7 @@ function Remind() {
             <span>分</span>
 
             <button
-              className="deleteBtn"
+              className="dangerButton"
               onClick={() => removeAlarm(index)}
             >
               削除
