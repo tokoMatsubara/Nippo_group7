@@ -91,33 +91,6 @@ function CreateReport() {
       </header>
 
       <div className="card">
-        {/* <div className="section-card card">
-          <h2>日付</h2>
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-        </div> */}
-
-        {/* <div className="section-card card">
-          <h2>日報内容</h2>
-          {contents.map((item, index) => (
-            <div key={index} style={{ marginBottom: 10 }}>
-              <input
-                type="number"
-                placeholder="カテゴリID"
-                value={item.categoryId}
-                onChange={(e) => handleChangeContent(index, "categoryId", Number(e.target.value))}
-                style={{ width: 120 }}
-              />
-              <input
-                type="text"
-                placeholder="内容"
-                value={item.content}
-                onChange={(e) => handleChangeContent(index, "content", e.target.value)}
-                style={{ marginLeft: 10, width: 300 }}
-              />
-            </div>
-          ))}
-          <button className="addButton" onClick={addRow}>＋追加</button>
-        </div> */}
 
         <div className="goal-card card">
           <h3>昨日立てた今日の目標</h3>
