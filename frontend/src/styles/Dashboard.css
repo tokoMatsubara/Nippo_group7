@@ -2,11 +2,6 @@
    Dashboard Layout Only
 ========================= */
 
-.dashboardContainer {
-    padding: 20px;
-    min-height: 100vh;
-}
-
 /* セクション間隔 */
 .section {
     margin-bottom: 20px;
