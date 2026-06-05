@@ -193,7 +193,8 @@ public class DailyCrudService {
     public Map<String, String> deleteDaily(Integer dailyId){
         try{
             dailyRepository.deleteById(dailyId);
-        }catch(DataIntegrityViolationException e){
+            dailySummaryService.deleteSummary(dailyId);
+        }catch(Exception e){
             return Map.of("status", "failed", "message", "日報の削除に失敗しました");
         }
 
