@@ -54,7 +54,13 @@ public class DailySummaryService {
 
         // 4. 【本物のLLMを呼び出すロジック】
         // 組み立てたプロンプトをCallLlmServiceに渡して結果を受け取る
-        String realSummary = callLlmService.chatResponse(prompt);
+        String realSummary;
+        try{
+            realSummary = callLlmService.chatResponse(prompt);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("LLM呼び出し失敗(日報要約)");
+        }
 
         //新規の日報登録なら新しいdailysummaryを生成、更新ならdailyidから取得
         DailySummary newSummary = dailySummaryRepository
@@ -80,7 +86,9 @@ public class DailySummaryService {
 
     @Transactional
     public void deleteSummary(Integer dailyId) throws Exception{
-        dailySummaryRepository.deleteByDaily_DailyId(dailyId);
+        dailySummaryRepository.deleteByDaily_DailyId(dailyId).orElseThrow(() -> 
+            new RuntimeException("dailySummary was not able to be deleted")
+        );
     }
 
     private String buildPrompt(List<ContentDto> requestContent){
