@@ -1,12 +1,14 @@
 import "../styles/DailyList.css";
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState,useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+
 
 const mockWeekData = {
     week_start_date: "2026-06-01",
     week_end_date: "2026-06-05",
-    weekly_summary_content: "今週はReactと設計を学習しました",
+    weekly_summary_content: "今週はReactと設計を学習しました(まだMockです)",
     dailies: [
         {
             day: "月",
@@ -35,8 +37,24 @@ const days = ["月", "火", "水", "木", "金"];
 export default function DailyList() {
     const [selectedDay, setSelectedDay] = useState("月");
     const navigate = useNavigate();
+    const params = useParams();
 
-    const weekData = mockWeekData;
+    // const weekData = mockWeekData;
+    const [weekData, setWeekData] = useState({});
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    // BackendへのAPI
+    const fetchData = async () => {
+        const userId = localStorage.getItem("user_id");
+        
+        const response = await fetch(`api/daily/userId/params.startDate/params.endDate`);
+        const data = await response.json();
+        setWeekData(data);
+        console.log(data);
+    }
 
     const selectedDaily = weekData.dailies.find(
         (d) => d.day === selectedDay
@@ -60,12 +78,14 @@ export default function DailyList() {
 
             {/* 週表示 */}
             <h2 className="title">
-                {weekData.week_start_date} ～ {weekData.week_end_date}
+                {dailies.weekStartDate} ～ {dailies.weekEndDate}
             </h2>
 
             {/* 週要約 */}
             <p className="weekSummary">
-                {weekData.weekly_summary_content}
+                {/** まだMockBackend変える必要性あり */}
+                {/* {weekData.weekly_summary_content} */}
+                要約です
             </p>
 
             {/* 曜日 */}
@@ -98,9 +118,9 @@ export default function DailyList() {
                         {/* 詳細 */}
                         <div className="section">
                             {selectedDaily.details.map((item) => (
-                                <div key={item.category_id} className="sectionItem">
+                                <div key={item.categoryId} className="sectionItem">
                                     <strong className="sectionTitle">
-                                        {item.category_name}
+                                        {item.categoryName}
                                     </strong>
 
                                     <p className="sectionValue">

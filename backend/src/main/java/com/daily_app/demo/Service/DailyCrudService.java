@@ -37,7 +37,7 @@ public class DailyCrudService {
     @Autowired
     private WeeklySummaryRepository weeklySummaryRepository;
     @Autowired
-    private DailyDetailRepository dailyDetailrepository;
+    private DailyDetailRepository dailyDetailRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -66,7 +66,7 @@ public class DailyCrudService {
     // #region
     @Transactional
     public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate) {
-        List<DailyQueryDto> dailiesRawList = dailyDetailrepository.dailiesContentList(
+        List<DailyQueryDto> dailiesRawList = dailyDetailRepository.dailiesContentList(
                 userId,
                 startDate,
                 endDate);
