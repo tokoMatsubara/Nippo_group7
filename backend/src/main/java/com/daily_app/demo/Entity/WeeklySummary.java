@@ -1,4 +1,5 @@
 package com.daily_app.demo.Entity;
+
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -9,9 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="weekly_summaries")
+@Table(name = "weekly_summaries")
 public class WeeklySummary {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "weekly_summary_id")
@@ -29,9 +30,10 @@ public class WeeklySummary {
     @Column(name = "week_end_date")
     private LocalDate weekEndDate;
 
-    public WeeklySummary(){}
+    public WeeklySummary() {
+    }
 
-    public WeeklySummary(Integer userId, String weeklySummaryContent, LocalDate weekStartDate, LocalDate weekEndDate){
+    public WeeklySummary(Integer userId, String weeklySummaryContent, LocalDate weekStartDate, LocalDate weekEndDate) {
         this.userId = userId;
         this.weeklySummaryContent = weeklySummaryContent;
         this.weekStartDate = weekStartDate;
@@ -41,10 +43,21 @@ public class WeeklySummary {
     public LocalDate getWeekStartDate() {
         return weekStartDate;
     }
+
     public LocalDate getWeekEndDate() {
         return weekEndDate;
     }
+
     public String getWeeklySummaryContent() {
         return weeklySummaryContent;
+    }
+
+    //週要約更新のために追加
+    public void setWeeklySummaryContent(String weeklySummaryContent) {
+        this.weeklySummaryContent = weeklySummaryContent;
+    }
+
+    public void setWeekEndDate(LocalDate weekEndDate) {
+        this.weekEndDate = weekEndDate;
     }
 }
