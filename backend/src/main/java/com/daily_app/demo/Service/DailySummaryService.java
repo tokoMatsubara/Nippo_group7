@@ -78,6 +78,10 @@ public class DailySummaryService {
     }
 
 
+    @Transactional
+    public void deleteSummary(Integer dailyId) throws Exception{
+        dailySummaryRepository.deleteByDaily_DailyId(dailyId);
+    }
 
     private String buildPrompt(List<ContentDto> requestContent){
         String combinedContent = requestContent.stream()

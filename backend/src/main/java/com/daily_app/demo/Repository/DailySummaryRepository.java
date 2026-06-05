@@ -11,4 +11,5 @@ import com.daily_app.demo.Entity.DailySummary;
 public interface DailySummaryRepository extends JpaRepository<DailySummary, Long> {
     
     Optional<DailySummary> findByDaily_DailyId(Integer dailyId);
+    Optional<DailySummary> deleteByDaily_DailyId(Integer dailyId);
 }
