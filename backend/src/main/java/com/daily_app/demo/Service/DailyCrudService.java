@@ -68,7 +68,10 @@ public class DailyCrudService {
     @Transactional
     public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate) {
         List<DailyQueryDto> dailiesRawList = dailyDetailrepository.dailiesContentList(
-                userId, startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay());
+                userId,
+                startDate, 
+                endDate
+        );
 
         return QueryDtoToResponseDto(dailiesRawList, startDate, endDate);
     }
@@ -90,13 +93,15 @@ public class DailyCrudService {
                 DailyDto dailyDto = new DailyDto();
 
                 dailyDto.setDate(
-                        query.getCreatedAt().toLocalDate());
+                        query.getDailyDate());
 
                 dailyDto.setSummary(
                         query.getDailySummaryContent());
 
                 dailyDto.setContents(
                         new ArrayList<>());
+                        
+                dailyDto.setDailyId(dailyId);
 
                 dailyMap.put(dailyId, dailyDto);
             }
