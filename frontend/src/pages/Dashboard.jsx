@@ -21,7 +21,7 @@ export default function Dashboard() {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const USER_ID = 1;
+            const USER_ID = localStorage.getItem("user_id");
 
             const weekRes = await fetch(
                 `http://localhost:8080/api/weekly_list/${USER_ID}`
