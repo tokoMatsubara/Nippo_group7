@@ -29,6 +29,7 @@ import com.daily_app.demo.Repository.CategoryRepository;
 import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.UserRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
+//import com.daily_app.demo.Service.WeeklySummaryService;
 
 @Service
 public class DailyCrudService {
