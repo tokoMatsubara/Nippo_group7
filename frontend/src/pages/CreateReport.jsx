@@ -4,6 +4,13 @@ import "../styles/CreateReport.css";
 
 const API_BASE = "http://localhost:8080/api";
 
+function toYmd(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 function getWeekRange(date = new Date()) {
   const day = date.getDay(); // 0(日)〜6(土)
 
@@ -72,7 +79,7 @@ function CreateReport() {
       }
       const payload = {
         userId,
-        date,
+        date: toYmd(new Date()),// "2026-06-05",
         contents: [
           { categoryId: 1, content: form.learned },
           { categoryId: 2, content: form.goodPoint },
