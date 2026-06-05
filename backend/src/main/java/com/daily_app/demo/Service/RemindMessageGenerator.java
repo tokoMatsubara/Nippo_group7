@@ -39,7 +39,7 @@ public class RemindMessageGenerator {
         // 3. 日報があるかどうかでメッセージを分岐
         if (yesterdayGoalOpt.isEmpty()) {
             // 昨日の日報を登録していない場合
-            return "昨日の日報がまだ提出されていません。日報を提出しましょう！";
+            return yesterday + "昨日の日報がまだ提出されていません。日報を提出しましょう！";
         } else {
             // 昨日の日報を登録している場合、目標を取り出してメッセージに組み込む
             String yesterdayGoal = yesterdayGoalOpt.get();
