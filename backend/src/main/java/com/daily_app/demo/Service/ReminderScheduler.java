@@ -1,3 +1,4 @@
+// 松原編集
 package com.daily_app.demo.Service;
 
 import org.springframework.scheduling.annotation.Scheduled;
