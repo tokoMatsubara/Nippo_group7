@@ -5,6 +5,13 @@
 /* セクション間隔 */
 .section {
     margin-bottom: 20px;
+    text-align: left;
+}
+
+/* 週一覧は左詰め */
+.weekCard {
+    width: 100%;
+    max-width: 100%;
 }
 
 /* リマインドタイトル */
