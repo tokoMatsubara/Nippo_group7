@@ -49,7 +49,7 @@ export default function Dashboard() {
         <div className="dashboardContainer">
 
             {/* ヘッダー */}
-            <div className="dashboardHeader">
+            <div className="header">
 
                 <h1 className="dashboardTitle">ダッシュボード</h1>
 
