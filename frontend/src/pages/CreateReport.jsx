@@ -4,6 +4,27 @@ import "../styles/CreateReport.css";
 
 const API_BASE = "http://localhost:8080/api";
 
+function getWeekRange(date = new Date()) {
+  const day = date.getDay(); // 0(日)〜6(土)
+
+  // 月曜始まりに調整
+  const diffToMonday = day === 0 ? -6 : 1 - day;
+
+  const start = new Date(date);
+  start.setDate(date.getDate() + diffToMonday);
+
+  const end = new Date(start);
+  end.setDate(start.getDate() + 6);
+
+  return {
+    startDate: start.toISOString().split("T")[0],
+    endDate: end.toISOString().split("T")[0],
+  };
+}
+
+const week = getWeekRange();
+
+
 function CreateReport() {
   const navigate = useNavigate();
   const [date, setDate] = useState("2026-04-01");
@@ -74,7 +95,6 @@ function CreateReport() {
 
       if (res.ok) {
         alert("保存しました");
-        navigate("/dashboard");
       } else {
         alert("保存に失敗しました");
       }
@@ -148,9 +168,12 @@ function CreateReport() {
 
         <Section title="9. コメント" name="comment" value={form.comment} onChange={handleChange} />
 
-        <button className="primaryButton" onClick={handleSubmit} disabled={loading}>
-          {loading ? "送信中..." : "保存"}
-        </button>
+        <div className="submit-area">
+          <button className="primaryButton" type="button" onClick={() => { handleSubmit(); navigate(`/daily-list/${week.startDate}/${week.endDate}`); }}>
+            作成
+          </button>
+        </div>
+
       </div>
     </div>
   );
