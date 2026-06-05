@@ -1,5 +1,5 @@
-SET client_encoding TO 'UTF8';
 -- daily database setup
+
 
 DROP DATABASE dailymanagement_db;
 
@@ -77,6 +77,8 @@ CREATE TABLE weekly_summaries (
 
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+SET client_encoding TO 'UTF8';
 
 -- カテゴリ登録
 INSERT INTO categories(category_name) VALUES 
