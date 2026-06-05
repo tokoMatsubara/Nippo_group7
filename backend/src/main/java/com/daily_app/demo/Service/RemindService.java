@@ -36,5 +36,18 @@ public class RemindService {
             // 3. RemindRepositoryでDBに保存
             remindRepository.save(remind);
         }
+
+        
+    }
+
+
+    /**
+     * 🌟【新しく追加する処理】
+     * 指定されたユーザーIDの通知（リマインド）をDBから全部取ってくる
+     */
+    @Transactional(readOnly = true) // 読み込み専用
+    public List<Remind> getRemindsByUserId(Long userId) {
+        // 先ほどRemindRepositoryに作った特注ボタン（findByUser_UserId）をここで呼び出す！
+        return remindRepository.findByUser_UserId(userId);
     }
 }
