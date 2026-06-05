@@ -29,7 +29,6 @@ import com.daily_app.demo.Repository.CategoryRepository;
 import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.UserRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
-import com.daily_app.demo.Service.WeeklySummaryService;
 
 @Service
 public class DailyCrudService {
@@ -69,9 +68,8 @@ public class DailyCrudService {
     public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate) {
         List<DailyQueryDto> dailiesRawList = dailyDetailrepository.dailiesContentList(
                 userId,
-                startDate, 
-                endDate
-        );
+                startDate,
+                endDate);
 
         return QueryDtoToResponseDto(dailiesRawList, startDate, endDate);
     }
@@ -100,7 +98,7 @@ public class DailyCrudService {
 
                 dailyDto.setContents(
                         new ArrayList<>());
-                        
+
                 dailyDto.setDailyId(dailyId);
 
                 dailyMap.put(dailyId, dailyDto);
@@ -139,6 +137,7 @@ public class DailyCrudService {
     @Transactional
     public Map<String, String> reportDaily(ReportRequestDto reportRequest) {
         User user = userRepository.findById(reportRequest.getUserId()).get();
+        Integer userId = user.getUserId();
         Daily daily = new Daily(user, reportRequest.getDate());
 
         List<DailyDetail> details = new ArrayList<DailyDetail>();
@@ -156,7 +155,7 @@ public class DailyCrudService {
         } catch (DataIntegrityViolationException e) {
             return Map.of("status", "failed", "message", "日報の登録に失敗しました");
         }
-        weeklySummaryService.createWeeklySummary(reportRequest.getUserId());
+        weeklySummaryService.createWeeklySummary(userId);
         dailySummaryService.generateSummary(daily, reportRequest.getContents());
 
         return Map.of("status", "success", "message", "日報の登録に成功しました");
@@ -168,7 +167,10 @@ public class DailyCrudService {
     // #region
     @Transactional
     public Map<String, String> updateDaily(ReportUpdateRequestDto updateRequest) {
-        Daily daily = dailyRepository.findById(updateRequest.getDailyId()).get();
+        Daily daily = dailyRepository.findById(updateRequest.getDailyId())
+                .orElseThrow(() -> new RuntimeException("Daily not found: " + updateRequest.getDailyId()));
+        Integer userId = daily.getUserId().getUserId();
+        LocalDate date = daily.getDailyDate();
         List<DailyDetail> details = daily.getDailyDetails();
 
         for (DailyDetail detail : details) {
@@ -188,6 +190,7 @@ public class DailyCrudService {
         }
 
         dailySummaryService.generateSummary(daily, updateRequest.getContents());
+        weeklySummaryService.updateWeeklySummary(userId, date);
 
         return Map.of("status", "success", "message", "日報の更新に成功しました");
     }
