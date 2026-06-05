@@ -47,9 +47,13 @@ public class RemindMessageGenerator {
 
             String yesterdayGoal = "未設定"; // 目標がみつからなかったときの初期値
 
-            if(details != null && !details.isEmpty()){
-
-                yesterdayGoal = details.get(0).getContent();
+            if (details != null && !details.isEmpty()) {
+                // 💡 修正ポイント：Listの中からカテゴリIDが7の明細を探す
+                yesterdayGoal = details.stream()
+                        .filter(detail -> detail.getCategory() != null && detail.getCategory().getCategoryId() == 7)
+                        .map(DailyDetail::getContent)
+                        .findFirst()
+                        .orElse("未設定"); // カテゴリ7が見つからなかった場合のフォールバック
             }
             // 昨日の日報を登録している場合、目標を取り出してメッセージに組み込む
             return yesterday + "の目標は「" + yesterdayGoal + "」でした。今日の日報もこの調子で提出しましょう！";
