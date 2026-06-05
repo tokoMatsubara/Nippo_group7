@@ -19,15 +19,20 @@ public class RemindService {
     @Autowired
     private RemindRepository remindRepository;
 
+    @Autowired
+    private RemindMessageGenerator remindMessageGenerator;
+
     /**
      * 該当するユーザー全員分、リマインド保管箱にデータを詰めてクレーンで保存する
      */
     @Transactional
     public void createReminds(List<User> targetUsers) {
+
         
         for (User user : targetUsers) {
 
-            String message = "リマインドの時間です。今日の日報を提出しましょう！";
+            // RemindMessageGenreratorからもらったmessageを使う。関数を作る
+            String message = remindMessageGenerator.generateMessage(user);
 
             // 追加したボタンを押す。すでに同じメッセージがあればスキップ
             if(remindRepository.existsByUserAndRemindContent(user, message)){
@@ -45,7 +50,7 @@ public class RemindService {
     }
 
     /**
-     * 🌟【修正】指定されたユーザーIDの通知を、Dtoの形に詰め替えて返す
+     * 指定されたユーザーIDの通知を、Dtoの形に詰め替えて返す
      */
     @Transactional(readOnly = true)
     public List<RemindResponseDto> getRemindsByUserId(Long userId) {
