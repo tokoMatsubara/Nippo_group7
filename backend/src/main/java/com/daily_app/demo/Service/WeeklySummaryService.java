@@ -25,6 +25,8 @@ import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.DailyRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class WeeklySummaryService {
 
@@ -47,6 +49,7 @@ public class WeeklySummaryService {
     // ① 外から呼ばれるメイン処理
     // =========================================
     @Async
+    @Transactional
     public void createWeeklySummary(Integer userId) {
         System.out.println("createWeeklySummary START userId=" + userId);
 
