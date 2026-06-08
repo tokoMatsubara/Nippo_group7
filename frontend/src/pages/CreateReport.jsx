@@ -104,8 +104,62 @@ function CreateReport() {
   });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [yesterdayGoal, setYesterdayGoal] = useState("前日の日報はありません");
 
-  const yesterdayGoal = "昨日設定した目標がここに表示されます";
+  // 前日の日報を取得する処理
+  useEffect(() => {
+    const fetchYesterdayGoal = async () => {
+      if (!date) return;
+
+      // 前日の日付を計算
+      const currentDate = new Date(date);
+      const previousDate = new Date(currentDate);
+      previousDate.setDate(currentDate.getDate() - 1);
+      const previousDateStr = toYmd(previousDate);
+
+      // その日の週の範囲を計算
+      const day = previousDate.getDay();
+      const diffToMonday = day === 0 ? -6 : 1 - day;
+      const weekStart = new Date(previousDate);
+      weekStart.setDate(previousDate.getDate() + diffToMonday);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6);
+
+      const weekStartStr = toYmd(weekStart);
+      const weekEndStr = toYmd(weekEnd);
+
+      try {
+        const userId = localStorage.getItem("user_id");
+        const response = await fetch(
+          `${API_BASE}/daily/${userId}/${weekStartStr}/${weekEndStr}`
+        );
+        const data = await response.json();
+
+        // 前日の日報を探す
+        const previousDaily = data.days?.find(
+          (d) => d.date === previousDateStr
+        );
+
+        if (previousDaily) {
+          const tomorrowGoalContent = previousDaily.contents?.find(
+            (c) => c.categoryId === 7
+          );
+          if (tomorrowGoalContent) {
+            setYesterdayGoal(tomorrowGoalContent.content);
+          } else {
+            setYesterdayGoal("前日の日報はありません");
+          }
+        } else {
+          setYesterdayGoal("前日の日報はありません");
+        }
+      } catch (err) {
+        console.error("Failed to fetch yesterday's goal:", err);
+        setYesterdayGoal("前日の日報はありません");
+      }
+    };
+
+    fetchYesterdayGoal();
+  }, [date]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
