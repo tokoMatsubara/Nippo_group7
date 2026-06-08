@@ -38,10 +38,11 @@ CREATE TABLE reminds (
 CREATE TABLE dailies (
     daily_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    daily_date DATE NOT NULL UNIQUE,
+    daily_date DATE NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+    UNIQUE (user_id, daily_date),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 

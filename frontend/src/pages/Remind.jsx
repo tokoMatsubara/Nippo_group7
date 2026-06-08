@@ -1,15 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Remind.css";
 
 function Remind() {
   const navigate = useNavigate();
 
-  const yesterdayGoal =
-    "Redux Toolkitの検証を完了し、認証周りの実装方針を決める";
+  const [yesterdayGoal, setYesterdayGoal] = useState("");
 
-  const yesterdayIssue =
-    "createAsyncThunkのエラーハンドリングの理解が不足していた";
+  useEffect(() => {
+    fetchYesterdayGoal();
+  }, []);
+
+  const fetchYesterdayGoal = async () => {
+    try {
+      const userId = localStorage.getItem("user_id");
+
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+
+      const dateStr = yesterday.toISOString().split("T")[0];
+
+      const response = await fetch(
+        `http://localhost:8080/api/remind/${userId}`
+      );
+
+      const data = await response.json();
+
+      console.log(data);
+      console.log("days", data.days);
+      console.log("daily", data.days?.[0]);
+      console.log("contents", data.days?.[0]?.contents);
+
+      const goal = data[0].remindContent;
+
+      setYesterdayGoal(
+        goal || "昨日の目標が登録されていません"
+      );
+
+    } catch (error) {
+      console.error(error);
+      setYesterdayGoal("取得に失敗しました");
+    }
+  };
 
   const [notificationEnabled, setNotificationEnabled] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
@@ -64,11 +96,6 @@ function Remind() {
       <div className="card">
         <h2>前日に立てた今日の目標</h2>
         <p>{yesterdayGoal}</p>
-      </div>
-
-      <div className="card">
-        <h2>前日の課題・問題点</h2>
-        <p>{yesterdayIssue}</p>
       </div>
 
       <div className="card">
