@@ -10,6 +10,7 @@ import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 import com.daily_app.demo.Service.DailyCrudService;
 // import com.daily_app.demo.Service.DailySummaryService;
 
+
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -53,10 +54,11 @@ public class DailyController {
     }
 
     // @PostMapping("/summary")
-    // public Map<String, String> generateSummary(@RequestBody ReportRequestDto request) {
-    //     String summary = dailySummaryService.generateSummary(request);
-    //     // 他のメソッドに合わせて Map<String, String>（JSON形式）で返却します
-    //     return Collections.singletonMap("summary", summary);
+    // public Map<String, String> generateSummary(@RequestBody ReportRequestDto
+    // request) {
+    // String summary = dailySummaryService.generateSummary(request);
+    // // 他のメソッドに合わせて Map<String, String>（JSON形式）で返却します
+    // return Collections.singletonMap("summary", summary);
     // }
 
 }

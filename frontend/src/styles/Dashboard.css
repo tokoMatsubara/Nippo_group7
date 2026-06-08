@@ -43,8 +43,9 @@
 .weekTitle {
     font-weight: bold;
     margin-bottom: 4px;
+    color: #111;
 }
 
 .weekSummary {
-    color: #666;
+    color: #111;
 }

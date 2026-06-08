@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function Dashboard() {
     const [weeks, setWeeks] = useState([]);
     const [reminder, setReminder] = useState(null);
+    const [remindIsRead, setRemindIsRead] = useState(true)
     const [loading, setLoading] = useState(true);
 
     const userId = localStorage.getItem("user_id");
@@ -28,15 +29,22 @@ export default function Dashboard() {
             );
             const weekData = await weekRes.json();
 
+            const remindIsReadRes = await fetch(
+                `http://localhost:8080/api/remind/is_read/${USER_ID}`
+            );
+            const remindIsReadData = await remindIsReadRes.json();
+
             // const reminderRes = await fetch(`/api/remind/${USER_ID}`);
             // const reminderData = await reminderRes.json();
 
             console.log(JSON.stringify(weekData, null, 2));
+            console.log(JSON.stringify(remindIsReadData, null, 2));
             // 同じ startDate の重複を排除
             const uniqueWeeks = Array.from(
                 new Map(weekData.summaries.map(w => [w.startDate, w])).values()
             );
             setWeeks(uniqueWeeks);
+            setRemindIsRead(remindIsReadData.isRead);
             // setReminder(reminderData);
 
         } catch (err) {
@@ -64,25 +72,10 @@ export default function Dashboard() {
 
                 <h1 className="title">ダッシュボード</h1>
 
-                {/* 新規作成ボタン */}
-                <button
-                    className="addButton"
-                    onClick={handleCreateReport}
-                >
-                    ＋新規日報作成
-                </button>
-
-                <button
-                    className="primaryButton"
-                    onClick={() => navigate("/remind")}
-                >
-                    🔔 リマインダー
-                </button>
-
             </div>
 
             {/* リマインド */}
-            <section className="section card">
+            <section className="card">
 
                 <h2 className="remindTitle">明日の目標と課題</h2>
 
@@ -105,7 +98,7 @@ export default function Dashboard() {
                 {weeks.map((week) => (
                     <div
                         key={week.startDate}
-                        className="weekCard card"
+                        className="button-56"
                         onClick={() => handleWeekClick(week)}
                     >
                         <div className="weekTitle">

@@ -40,6 +40,17 @@ export default function DailyList() {
         weekData.days.some(
             (d) => week[new Date(d.date).getDay()] === day
         );
+
+    // 選択された曜日の日付を計算
+    const getSelectedDate = () => {
+        if (!weekData.weekStartDate) return null;
+        const startDate = new Date(weekData.weekStartDate);
+        const dayIndex = days.indexOf(selectedDay);
+        const selectedDate = new Date(startDate);
+        selectedDate.setDate(startDate.getDate() + dayIndex);
+        return selectedDate.toISOString().split('T')[0];
+    };
+
     const handleDelete = async () => {
         if (!selectedDaily) return;
         const ok = window.confirm("本当にこの日報を削除しますか？");
@@ -73,7 +84,7 @@ export default function DailyList() {
                     className="backButton"
                     onClick={() => navigate("/dashboard")}
                 >
-                    ダッシュボードへ戻る
+                    もどる
                 </button>
             </div>
 
@@ -82,19 +93,12 @@ export default function DailyList() {
                 {weekData.weekStartDate} ～ {weekData.weekEndDate}
             </h2>
 
-            {/* 週要約 */}
-            <p className="weekSummary">
-                {/** まだMockBackend変える必要性あり */}
-                {/* {weekData.weekly_summary_content} */}
-                要約です
-            </p>
-
             {/* 曜日 */}
             <div className="dayButtons">
                 {days.map((day) => (
                     <button
                         key={day}
-                        className={`dayButton ${selectedDay === day ? "active" : ""}`}
+                        className={`button-56 ${selectedDay === day ? "active" : ""}`}
                         onClick={() => setSelectedDay(day)}
                     >
                         {day} {hasDaily(day) ? "●" : "○"}
@@ -106,7 +110,23 @@ export default function DailyList() {
             <div className="card">
 
                 {!selectedDaily ? (
-                    <p>日報はありません</p>
+                    <>
+                        <h3 className="date">{getSelectedDate()}</h3>
+                        <p>日報はありません</p>
+                        <div className="actions" style={{ justifyContent: 'center' }}>
+                            <button
+                                className="primaryButton"
+                                onClick={() => navigate("/create-report", {
+                                    state: {
+                                        date: getSelectedDate(),
+                                        returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
+                                    },
+                                })}
+                            >
+                                新規作成
+                            </button>
+                        </div>
+                    </>
                 ) : (
                     <>
                         <h3 className="date">{selectedDaily.date}</h3>

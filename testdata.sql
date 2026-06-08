@@ -54,3 +54,6 @@ INSERT INTO daily_summaries(daily_id, daily_summary_content) VALUES
 -- テスト週要約登録
 INSERT INTO weekly_summaries(user_id, weekly_summary_content, week_start_date, week_end_date) VALUES 
     (1, 'この1週間を要約すると、いい感じです', '2026-06-01', '2026-06-08');
+
+
+INSERT INTO reminds(user_id, remind_content) VALUES (1, 'リマインドテストです')

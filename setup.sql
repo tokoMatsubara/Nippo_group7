@@ -42,6 +42,7 @@ CREATE TABLE dailies (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+    UNIQUE (user_id, daily_date),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
@@ -74,6 +75,8 @@ CREATE TABLE weekly_summaries (
     weekly_summary_content TEXT NOT NULL,
     week_start_date DATE NOT NULL,
     week_end_date DATE NOT NULL,
+
+    UNIQUE (user_id, week_start_date),
 
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
