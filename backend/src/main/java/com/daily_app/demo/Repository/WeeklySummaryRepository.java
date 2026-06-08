@@ -15,7 +15,6 @@ public interface WeeklySummaryRepository extends JpaRepository<WeeklySummary, Lo
     List<WeeklySummary> findByUserId(Integer id);
 
     Optional<WeeklySummary> findByUserIdAndWeekStartDate(
-        Integer userId,
-        LocalDate weekStartDate
-);
+            Integer userId,
+            LocalDate weekStartDate);
 }

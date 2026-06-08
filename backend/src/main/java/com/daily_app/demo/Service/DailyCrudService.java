@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,10 +28,12 @@ import com.daily_app.demo.Entity.DailyDetail;
 import com.daily_app.demo.Entity.DailySummary;
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Entity.WeeklySummary;
+import com.daily_app.demo.Event.WeeklySummaryEvent;
 import com.daily_app.demo.Repository.CategoryRepository;
 import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.UserRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
+
 //import com.daily_app.demo.Service.WeeklySummaryService;
 
 @Service
@@ -50,6 +54,9 @@ public class DailyCrudService {
 
     @Autowired
     private DailySummaryService dailySummaryService;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     // weekly response
     // ====================================================================
@@ -85,7 +92,7 @@ public class DailyCrudService {
         return responseDto;
     }
 
-    public List<DailyDto> toDailyDtoList(List<Daily> dailyList){
+    public List<DailyDto> toDailyDtoList(List<Daily> dailyList) {
         List<DailyDto> dailyDtoList = new ArrayList<DailyDto>();
 
         for (Daily daily : dailyList) {
@@ -93,16 +100,15 @@ public class DailyCrudService {
             List<DailyDetail> dailyDetails = daily.getDailyDetails();
 
             List<ContentDto> contentList = new ArrayList<ContentDto>();
-            for (DailyDetail detail : dailyDetails){
+            for (DailyDetail detail : dailyDetails) {
                 contentList.add(detail.toContentDto());
             }
-  
+
             DailySummary summary = daily.getDailySummary();
             String summaryContent = summary == null ? "要約がまだ生成されていません" : summary.getDailySummaryContent();
 
             DailyDto dailyDto = new DailyDto(
-                daily.getDailyId(), daily.getDailyDate(), contentList, summaryContent
-            );
+                    daily.getDailyId(), daily.getDailyDate(), contentList, summaryContent);
 
             dailyDtoList.add(dailyDto);
         }
@@ -122,6 +128,9 @@ public class DailyCrudService {
         Integer userId = user.getUserId();
         Daily daily = new Daily(user, reportRequest.getDate());
 
+        Optional<WeeklySummary> weeklySummary = weeklySummaryRepository.findByUserIdAndWeekStartDate(userId,
+                reportRequest.getDate());
+
         List<DailyDetail> details = new ArrayList<DailyDetail>();
 
         for (com.daily_app.demo.Dto.Request.ContentDto dailyDetailContent : reportRequest.getContents()) {
@@ -140,8 +149,9 @@ public class DailyCrudService {
             System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の登録に失敗しました");
         }
-        weeklySummaryService.createWeeklySummary(userId);
         dailySummaryService.generateSummary(daily, reportRequest.getContents());
+        eventPublisher.publishEvent(
+                new WeeklySummaryEvent(userId, reportRequest.getDate()));
 
         return Map.of("status", "success", "message", "日報の登録に成功しました");
     }
@@ -188,13 +198,13 @@ public class DailyCrudService {
     @Transactional
     public Map<String, String> deleteDaily(Integer dailyId) {
         Daily daily = dailyRepository.findById(dailyId)
-        .orElseThrow(() -> new RuntimeException("Daily not found: " + dailyId));
+                .orElseThrow(() -> new RuntimeException("Daily not found: " + dailyId));
         Integer userId = daily.getUserId().getUserId();
         LocalDate date = daily.getDailyDate();
         try {
             dailyRepository.deleteById(dailyId);
             dailySummaryService.deleteSummary(dailyId);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の削除に失敗しました");
         }
