@@ -47,4 +47,9 @@ public class Remind {
     public boolean getIsRead(){
         return isRead;
     }
+
+    public void setIsRead(boolean isRead) {
+        
+        this.isRead = isRead;
+    }
 }

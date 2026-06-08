@@ -54,11 +54,15 @@ public class RemindService {
     /**
      * 指定されたユーザーIDの通知を、Dtoの形に詰め替えて返す
      */
-    @Transactional(readOnly = true)
+    @Transactional
     public List<RemindResponseDto> getRemindsByUserId(Long userId) {
         // 1. DBから生のデータを取ってくる
         List<Remind> rawReminds = remindRepository.findByUser_UserId(userId);
 
+        for (Remind remind : rawReminds){
+
+            remind.setIsRead(true);
+        }
         // 2. 生のRemindから、UserIdとContentだけを抜き出してDtoに詰め替える
         return rawReminds.stream()
             .map(remind -> new RemindResponseDto(
