@@ -180,7 +180,7 @@ function CreateReport() {
     <div className="daily-page">
       <header className="header">
         <div>
-          <h1 className="title">{date} の日報{editDaily ? "編集" : ""}</h1>
+          <h1 className="title">日報{editDaily ? "編集" : "作成"}</h1>
         </div>
         <div>
           <button className="backButton" onClick={() => navigate(returnPath)}>もどる</button>
@@ -188,6 +188,22 @@ function CreateReport() {
       </header>
 
       <div className="card">
+
+        <div className="section-card card">
+          <h3>日付</h3>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            style={{
+              width: "100%",
+              padding: "8px",
+              fontSize: "16px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+            }}
+          />
+        </div>
 
         <div className="goal-card card">
           <h3>昨日立てた今日の目標</h3>
