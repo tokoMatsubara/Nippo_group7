@@ -63,7 +63,7 @@ public class DailyCrudService {
     }
     // #endregion
 
-    // daily reponse=============================================================
+    // daily response=============================================================
     // #region
     // @Transactional
     public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate) {
@@ -139,8 +139,6 @@ public class DailyCrudService {
 
         try {
             dailyRepository.save(daily);
-            dailySummaryService.generateSummary(daily, reportRequest.getContents());
-            weeklySummaryService.createWeeklySummary(userId);  
         } catch (DataIntegrityViolationException e) {
             System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の登録に失敗しました");
