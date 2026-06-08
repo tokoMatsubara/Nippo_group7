@@ -182,8 +182,8 @@ function CreateReport() {
         <div>
           <h1 className="title">{date} の日報{editDaily ? "編集" : ""}</h1>
         </div>
-        <div className="header-actions">
-          <button className="backButton" onClick={() => navigate("/dashboard")}>ダッシュボードへ戻る</button>
+        <div>
+          <button className="backButton" onClick={() => navigate(returnPath)}>もどる</button>
         </div>
       </header>
 
