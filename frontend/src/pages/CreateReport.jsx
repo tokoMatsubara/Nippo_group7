@@ -102,6 +102,7 @@ function CreateReport() {
 
       if (res.ok) {
         alert("保存しました");
+        navigate(`/daily-list/${week.startDate}/${week.endDate}`);
       } else {
         alert("保存に失敗しました");
       }
@@ -176,7 +177,7 @@ function CreateReport() {
         <Section title="9. コメント" name="comment" value={form.comment} onChange={handleChange} />
 
         <div className="submit-area">
-          <button className="primaryButton" type="button" onClick={() => { handleSubmit(); navigate(`/daily-list/${week.startDate}/${week.endDate}`); }}>
+          <button className="primaryButton" type="button" onClick={handleSubmit}>
             作成
           </button>
         </div>
