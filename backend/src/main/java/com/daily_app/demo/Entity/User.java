@@ -3,6 +3,7 @@ package com.daily_app.demo.Entity;
 
 import java.time.LocalTime;
 import java.util.List;
+import javax.validation.constraints.*;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

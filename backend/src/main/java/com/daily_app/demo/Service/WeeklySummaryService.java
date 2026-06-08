@@ -17,8 +17,12 @@ import org.springframework.stereotype.Service;
 import com.daily_app.demo.Dto.Internal.DailyQueryDto;
 import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
+import com.daily_app.demo.Entity.Daily;
+import com.daily_app.demo.Entity.DailyDetail;
+import com.daily_app.demo.Entity.DailySummary;
 import com.daily_app.demo.Entity.WeeklySummary;
 import com.daily_app.demo.Repository.DailyDetailRepository;
+import com.daily_app.demo.Repository.DailyRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
 
 @Service
@@ -31,6 +35,9 @@ public class WeeklySummaryService {
 
     @Autowired
     private DailyDetailRepository dailyDetailRepository;
+
+    @Autowired
+    private DailyRepository dailyRepository;
 
     WeeklySummaryService(WeeklySummaryRepository weeklySummaryRepository) {
         this.weeklySummaryRepository = weeklySummaryRepository;
@@ -48,12 +55,12 @@ public class WeeklySummaryService {
         LocalDate endOfWeek = today.with(DayOfWeek.SUNDAY);
 
         // ① DBから生データ取得（raw）
-        List<DailyQueryDto> raw = getWeeklyData(userId, startOfWeek, endOfWeek);
+        List<Daily> dailyList = dailyRepository.findByUser_UserIdAndDailyDateBetween(userId, startOfWeek, endOfWeek);
 
-        raw.forEach(r -> System.out.println("dailyId=" + r.getDailyId() + " content=" + r.getContent()));
+        // raw.forEach(r -> System.out.println("dailyId=" + r.getDailyId() + " content=" + r.getContent()));
 
         // ② LLM用に整形
-        List<DailyDto> weeklyData = convertToDailyDto(raw);
+        List<DailyDto> weeklyData = toDailyDtoList(dailyList);
 
         // ③ 非同期でLLM実行
         summarizeWeekly(weeklyData)
@@ -80,13 +87,11 @@ public class WeeklySummaryService {
         LocalDate startOfWeek = targetDate.with(DayOfWeek.MONDAY);
         LocalDate endOfWeek = targetDate.with(DayOfWeek.SUNDAY);
 
-        // ① DBから生データ取得（raw）
-        List<DailyQueryDto> raw = getWeeklyData(userId, startOfWeek, endOfWeek);
-
-        raw.forEach(r -> System.out.println("dailyId=" + r.getDailyId() + " content=" + r.getContent()));
+        // ① 日報データのリスト取得
+        List<Daily> dailyList = dailyRepository.findByUser_UserIdAndDailyDateBetween(userId, startOfWeek, endOfWeek);
 
         // ② LLM用に整形
-        List<DailyDto> weeklyData = convertToDailyDto(raw);
+        List<DailyDto> weeklyData = toDailyDtoList(dailyList);
 
         summarizeWeekly(weeklyData)
                 .thenAccept(summary -> {
@@ -121,31 +126,55 @@ public class WeeklySummaryService {
     // =========================================
     // ③ raw → LLM用DTO変換
     // =========================================
-    private List<DailyDto> convertToDailyDto(List<DailyQueryDto> rawList) {
+    // private List<DailyDto> convertToDailyDto(List<DailyQueryDto> rawList) {
 
-        Map<Integer, DailyDto> map = new LinkedHashMap<>();
+    //     Map<Integer, DailyDto> map = new LinkedHashMap<>();
 
-        for (DailyQueryDto q : rawList) {
+    //     for (DailyQueryDto q : rawList) {
 
-            // 初回だけ日単位DTO作成
-            map.computeIfAbsent(q.getDailyId(), id -> {
-                DailyDto dto = new DailyDto();
-                dto.setDate(q.getDailyDate());
-                dto.setSummary(q.getDailySummaryContent());
-                dto.setContents(new ArrayList<>());
-                return dto;
-            });
+    //         // 初回だけ日単位DTO作成
+    //         map.computeIfAbsent(q.getDailyId(), id -> {
+    //             DailyDto dto = new DailyDto();
+    //             dto.setDate(q.getDailyDate());
+    //             dto.setSummary(q.getDailySummaryContent());
+    //             dto.setContents(new ArrayList<>());
+    //             return dto;
+    //         });
 
-            // 内容追加
-            map.get(q.getDailyId())
-                    .getContents()
-                    .add(new ContentDto(
-                            q.getCategoryId(),
-                            q.getCategoryName(),
-                            q.getContent()));
+    //         // 内容追加
+    //         map.get(q.getDailyId())
+    //                 .getContents()
+    //                 .add(new ContentDto(
+    //                         q.getCategoryId(),
+    //                         q.getCategoryName(),
+    //                         q.getContent()));
+    //     }
+
+    //     return new ArrayList<>(map.values());
+    // }
+
+    public List<DailyDto> toDailyDtoList(List<Daily> dailyList){
+        List<DailyDto> dailyDtoList = new ArrayList<DailyDto>();
+
+        for (Daily daily : dailyList) {
+
+            List<DailyDetail> dailyDetails = daily.getDailyDetails();
+
+            List<ContentDto> contentList = new ArrayList<ContentDto>();
+            for (DailyDetail detail : dailyDetails){
+                contentList.add(detail.toContentDto());
+            }
+  
+            DailySummary summary = daily.getDailySummary();
+            String summaryContent = summary == null ? "要約がまだ生成されていません" : summary.getDailySummaryContent();
+
+            DailyDto dailyDto = new DailyDto(
+                daily.getDailyId(), daily.getDailyDate(), contentList, summaryContent
+            );
+
+            dailyDtoList.add(dailyDto);
         }
-
-        return new ArrayList<>(map.values());
+        return dailyDtoList;
     }
 
     public CompletableFuture<String> summarizeWeekly(List<DailyDto> weeklyData) {

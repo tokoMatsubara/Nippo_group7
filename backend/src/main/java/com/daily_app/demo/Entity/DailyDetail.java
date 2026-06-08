@@ -1,4 +1,6 @@
 package com.daily_app.demo.Entity;
+import com.daily_app.demo.Dto.Response.ContentDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -53,5 +55,12 @@ public class DailyDetail {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+
+
+    public ContentDto toContentDto(){
+        Category category = getCategory();
+        return new ContentDto(category.getCategoryId(), category.getCategoryName(), getContent());
     }
 }

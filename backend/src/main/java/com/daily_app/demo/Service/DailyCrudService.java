@@ -23,6 +23,7 @@ import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 import com.daily_app.demo.Entity.Category;
 import com.daily_app.demo.Entity.Daily;
 import com.daily_app.demo.Entity.DailyDetail;
+import com.daily_app.demo.Entity.DailySummary;
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Entity.WeeklySummary;
 import com.daily_app.demo.Repository.CategoryRepository;
@@ -34,11 +35,12 @@ import com.daily_app.demo.Repository.WeeklySummaryRepository;
 @Service
 public class DailyCrudService {
 
-    private final DailyRepository dailyRepository;
+    @Autowired
+    private DailyRepository dailyRepository;
     @Autowired
     private WeeklySummaryRepository weeklySummaryRepository;
-    @Autowired
-    private DailyDetailRepository dailyDetailRepository;
+    // @Autowired
+    // private DailyDetailRepository dailyDetailRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -48,10 +50,6 @@ public class DailyCrudService {
 
     @Autowired
     private DailySummaryService dailySummaryService;
-
-    DailyCrudService(DailyRepository dailyRepository) {
-        this.dailyRepository = dailyRepository;
-    }
 
     // weekly response
     // ====================================================================
@@ -67,68 +65,50 @@ public class DailyCrudService {
     // #region
     @Transactional
     public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate) {
-        List<DailyQueryDto> dailiesRawList = dailyDetailRepository.dailiesContentList(
-                userId,
-                startDate,
-                endDate);
+        List<Daily> dailies = dailyRepository.findByUser_UserIdAndDailyDateBetween(userId, startDate, endDate);
 
-        return QueryDtoToResponseDto(dailiesRawList, startDate, endDate);
+        return dailiesToResponseDto(dailies, startDate, endDate);
     }
 
-    private DailyResponseDto QueryDtoToResponseDto(
-            List<DailyQueryDto> queryList,
+    private DailyResponseDto dailiesToResponseDto(
+            List<Daily> dailyList,
             LocalDate weekStartDate,
             LocalDate weekEndDate) {
-
-        Map<Integer, DailyDto> dailyMap = new LinkedHashMap<>();
-
-        for (DailyQueryDto query : queryList) {
-
-            Integer dailyId = query.getDailyId();
-
-            // DailyDto未作成なら生成
-            if (!dailyMap.containsKey(dailyId)) {
-
-                DailyDto dailyDto = new DailyDto();
-
-                dailyDto.setDate(
-                        query.getDailyDate());
-
-                dailyDto.setSummary(
-                        query.getDailySummaryContent());
-
-                dailyDto.setContents(
-                        new ArrayList<>());
-
-                dailyDto.setDailyId(dailyId);
-
-                dailyMap.put(dailyId, dailyDto);
-            }
-
-            // ContentDto生成
-            ContentDto contentDto = new ContentDto(
-                    query.getCategoryId(),
-                    query.getCategoryName(),
-                    query.getContent());
-
-            // DailyDtoへ追加
-            dailyMap.get(dailyId)
-                    .getContents()
-                    .add(contentDto);
-        }
 
         // ResponseDto生成
         DailyResponseDto responseDto = new DailyResponseDto();
 
         responseDto.setWeekStartDate(weekStartDate);
-
         responseDto.setWeekEndDate(weekEndDate);
-
-        responseDto.setDays(
-                new ArrayList<>(dailyMap.values()));
+        responseDto.setDays(toDailyDtoList(dailyList));
 
         return responseDto;
     }
+
+    public List<DailyDto> toDailyDtoList(List<Daily> dailyList){
+        List<DailyDto> dailyDtoList = new ArrayList<DailyDto>();
+
+        for (Daily daily : dailyList) {
+
+            List<DailyDetail> dailyDetails = daily.getDailyDetails();
+
+            List<ContentDto> contentList = new ArrayList<ContentDto>();
+            for (DailyDetail detail : dailyDetails){
+                contentList.add(detail.toContentDto());
+            }
+  
+            DailySummary summary = daily.getDailySummary();
+            String summaryContent = summary == null ? "要約がまだ生成されていません" : summary.getDailySummaryContent();
+
+            DailyDto dailyDto = new DailyDto(
+                daily.getDailyId(), daily.getDailyDate(), contentList, summaryContent
+            );
+
+            dailyDtoList.add(dailyDto);
+        }
+        return dailyDtoList;
+    }
+
     // #endregion
 
     // create daily
