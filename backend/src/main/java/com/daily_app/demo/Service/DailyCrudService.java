@@ -186,8 +186,8 @@ public class DailyCrudService {
         }
 
         dailySummaryService.generateSummary(daily, updateRequest.getContents());
-        weeklySummaryService.updateWeeklySummary(userId, date);
-
+        eventPublisher.publishEvent(
+                new WeeklySummaryEvent(userId, date));
         return Map.of("status", "success", "message", "日報の更新に成功しました");
     }
     // #endregion
@@ -208,7 +208,8 @@ public class DailyCrudService {
             System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の削除に失敗しました");
         }
-        weeklySummaryService.updateWeeklySummary(userId, date);
+        eventPublisher.publishEvent(
+                new WeeklySummaryEvent(userId, date));
         return Map.of("status", "success", "message", "日報の削除に成功しました");
     }
     // #endregion
