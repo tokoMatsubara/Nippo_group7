@@ -38,7 +38,7 @@ CREATE TABLE reminds (
 CREATE TABLE dailies (
     daily_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INTEGER NOT NULL,
-    daily_date DATE NOT NULL,
+    daily_date DATE NOT NULL UNIQUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -74,6 +74,8 @@ CREATE TABLE weekly_summaries (
     weekly_summary_content TEXT NOT NULL,
     week_start_date DATE NOT NULL,
     week_end_date DATE NOT NULL,
+
+    UNIQUE (user_id, week_start_date),
 
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
