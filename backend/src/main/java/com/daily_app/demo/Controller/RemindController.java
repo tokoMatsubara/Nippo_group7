@@ -6,6 +6,7 @@
 
 package com.daily_app.demo.Controller;
 
+import com.daily_app.demo.Dto.Response.RemindIsReadDto;
 import com.daily_app.demo.Dto.Response.RemindResponseDto;
 import com.daily_app.demo.Entity.Remind;
 import com.daily_app.demo.Service.RemindService; 
@@ -15,6 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/remind") 
@@ -36,4 +40,10 @@ public class RemindController {
 
         return ResponseEntity.ok(reminds);
     }
+
+    @GetMapping("/is_read/{user_id}")
+    public ResponseEntity<RemindIsReadDto> getMethodName(@PathVariable("user_id") Long userId) {
+        return remindService.remindIsRead(userId);
+    }
+    
 }
