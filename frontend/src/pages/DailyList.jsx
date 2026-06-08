@@ -40,6 +40,29 @@ export default function DailyList() {
         weekData.days.some(
             (d) => week[new Date(d.date).getDay()] === day
         );
+    const handleDelete = async () => {
+        if (!selectedDaily) return;
+        const ok = window.confirm("本当にこの日報を削除しますか？");
+        if (!ok) return;
+
+        try {
+            const res = await fetch(`http://localhost:8080/api/delete/${selectedDaily.dailyId}`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                alert('削除しました');
+                await fetchData();
+            } else {
+                const err = await res.json().catch(() => ({}));
+                console.error('delete error', err);
+                alert('削除に失敗しました');
+            }
+        } catch (e) {
+            console.error(e);
+            alert('削除に失敗しました');
+        }
+    };
 
     return (
         <div className="container">
@@ -122,7 +145,7 @@ export default function DailyList() {
                                 編集
                             </button>
 
-                            <button className="dangerButton">
+                            <button className="dangerButton" onClick={handleDelete}>
                                 削除
                             </button>
                         </div>
