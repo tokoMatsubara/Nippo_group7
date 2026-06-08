@@ -21,9 +21,11 @@ import com.daily_app.demo.Entity.Daily;
 import com.daily_app.demo.Entity.DailyDetail;
 import com.daily_app.demo.Entity.DailySummary;
 import com.daily_app.demo.Entity.WeeklySummary;
+import com.daily_app.demo.Event.WeeklySummaryEvent;
 import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.DailyRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
+import org.springframework.context.ApplicationEventPublisher;
 
 import jakarta.transaction.Transactional;
 
@@ -41,57 +43,51 @@ public class WeeklySummaryService {
     @Autowired
     private DailyRepository dailyRepository;
 
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
     WeeklySummaryService(WeeklySummaryRepository weeklySummaryRepository) {
         this.weeklySummaryRepository = weeklySummaryRepository;
+    }
+
+    public void handleWeeklySummary(Integer userId, LocalDate date) {
+
+        LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = date.with(DayOfWeek.SUNDAY);
+
+        Optional<WeeklySummary> existing = weeklySummaryRepository.findByUserIdAndWeekStartDate(userId, startOfWeek);
+
+        if (existing.isEmpty()) {
+            createWeeklySummary(userId, startOfWeek, endOfWeek);
+        }
+
+        updateWeeklySummary(userId, date);
     }
 
     // =========================================
     // ① 外から呼ばれるメイン処理
     // =========================================
-    @Async
-    @Transactional
-    public void createWeeklySummary(Integer userId) {
+    public void createWeeklySummary(Integer userId, LocalDate startOfWeek, LocalDate endOfWeek) {
         System.out.println("createWeeklySummary START userId=" + userId);
 
-        LocalDate today = LocalDate.now();
-        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = today.with(DayOfWeek.SUNDAY);
+        WeeklySummary entity = new WeeklySummary(
+                userId,
+                "週要約はまだ作成されていません",
+                startOfWeek,
+                endOfWeek);
 
-        // ① DBから生データ取得（raw）
-        List<Daily> dailyList = dailyRepository.findByUser_UserIdAndDailyDateBetween(userId, startOfWeek, endOfWeek);
-
-        // raw.forEach(r -> System.out.println("dailyId=" + r.getDailyId() + " content=" + r.getContent()));
-
-        // ② LLM用に整形
-        List<DailyDto> weeklyData = toDailyDtoList(dailyList);
-
-        // ③ 非同期でLLM実行
-        summarizeWeekly(weeklyData)
-                .thenAccept(summary -> {
-                    System.out.println("週次要約: " + summary);
-                    WeeklySummary entity = new WeeklySummary(
-                            userId,
-                            summary,
-                            startOfWeek,
-                            endOfWeek);
-                    weeklySummaryRepository.save(entity);
-
-                })
-                .exceptionally(ex -> {
-                    System.out.println("エラー: " + ex.getMessage());
-                    ex.printStackTrace(); 
-                    return null;
-                });
+        weeklySummaryRepository.save(entity);
     }
 
     @Async
     public void updateWeeklySummary(Integer userId, LocalDate targetDate) {
+        System.out.println("★★ updateWeeklySummary CALLED ★★ userId=" + userId);
 
         LocalDate startOfWeek = targetDate.with(DayOfWeek.MONDAY);
         LocalDate endOfWeek = targetDate.with(DayOfWeek.SUNDAY);
 
         // ① 日報データのリスト取得
-        List<Daily> dailyList = dailyRepository.findByUser_UserIdAndDailyDateBetween(userId, startOfWeek, endOfWeek);
+        List<Daily> dailyList = dailyRepository.findWeeklyWithDetails(userId, startOfWeek, endOfWeek);
 
         // ② LLM用に整形
         List<DailyDto> weeklyData = toDailyDtoList(dailyList);
@@ -131,32 +127,32 @@ public class WeeklySummaryService {
     // =========================================
     // private List<DailyDto> convertToDailyDto(List<DailyQueryDto> rawList) {
 
-    //     Map<Integer, DailyDto> map = new LinkedHashMap<>();
+    // Map<Integer, DailyDto> map = new LinkedHashMap<>();
 
-    //     for (DailyQueryDto q : rawList) {
+    // for (DailyQueryDto q : rawList) {
 
-    //         // 初回だけ日単位DTO作成
-    //         map.computeIfAbsent(q.getDailyId(), id -> {
-    //             DailyDto dto = new DailyDto();
-    //             dto.setDate(q.getDailyDate());
-    //             dto.setSummary(q.getDailySummaryContent());
-    //             dto.setContents(new ArrayList<>());
-    //             return dto;
-    //         });
+    // // 初回だけ日単位DTO作成
+    // map.computeIfAbsent(q.getDailyId(), id -> {
+    // DailyDto dto = new DailyDto();
+    // dto.setDate(q.getDailyDate());
+    // dto.setSummary(q.getDailySummaryContent());
+    // dto.setContents(new ArrayList<>());
+    // return dto;
+    // });
 
-    //         // 内容追加
-    //         map.get(q.getDailyId())
-    //                 .getContents()
-    //                 .add(new ContentDto(
-    //                         q.getCategoryId(),
-    //                         q.getCategoryName(),
-    //                         q.getContent()));
-    //     }
-
-    //     return new ArrayList<>(map.values());
+    // // 内容追加
+    // map.get(q.getDailyId())
+    // .getContents()
+    // .add(new ContentDto(
+    // q.getCategoryId(),
+    // q.getCategoryName(),
+    // q.getContent()));
     // }
 
-    public List<DailyDto> toDailyDtoList(List<Daily> dailyList){
+    // return new ArrayList<>(map.values());
+    // }
+
+    public List<DailyDto> toDailyDtoList(List<Daily> dailyList) {
         List<DailyDto> dailyDtoList = new ArrayList<DailyDto>();
 
         for (Daily daily : dailyList) {
@@ -164,16 +160,15 @@ public class WeeklySummaryService {
             List<DailyDetail> dailyDetails = daily.getDailyDetails();
 
             List<ContentDto> contentList = new ArrayList<ContentDto>();
-            for (DailyDetail detail : dailyDetails){
+            for (DailyDetail detail : dailyDetails) {
                 contentList.add(detail.toContentDto());
             }
-  
+
             DailySummary summary = daily.getDailySummary();
             String summaryContent = summary == null ? "要約がまだ生成されていません" : summary.getDailySummaryContent();
 
             DailyDto dailyDto = new DailyDto(
-                daily.getDailyId(), daily.getDailyDate(), contentList, summaryContent
-            );
+                    daily.getDailyId(), daily.getDailyDate(), contentList, summaryContent);
 
             dailyDtoList.add(dailyDto);
         }
