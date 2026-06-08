@@ -56,7 +56,7 @@ function Remind() {
           className="backButton"
           onClick={handleClose}
         >
-          ダッシュボードへ戻る
+          もどる
         </button>
       </div>
 

@@ -15,16 +15,6 @@
     padding-bottom: 20px;
 }
 
-/* 共通カード */
-.card {
-    background: white;
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    text-align: left;
-    margin-bottom: 20px;
-}
-
 /* 共通ボタン（青統一） */
 .primaryButton {
     padding: 10px 14px;
@@ -171,7 +161,8 @@
     background-color: #ffdeda;
 }
 
-.card-56 {
+.card {
+    text-align: left;
     position: relative;
 
     background: #fee6e3;

@@ -82,7 +82,7 @@ export default function Dashboard() {
             </div>
 
             {/* リマインド */}
-            <section className="card-56">
+            <section className="card">
 
                 <h2 className="remindTitle">明日の目標と課題</h2>
 

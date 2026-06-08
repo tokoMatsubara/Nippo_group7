@@ -241,7 +241,7 @@ function CreateReport() {
         </div>
       </header>
 
-      <div className="card">
+      <div className="card-56">
 
         <div className="section-card card">
           <h3>日付</h3>
