@@ -218,7 +218,7 @@ function CreateReport() {
 
       if (res.ok) {
         alert(editDaily ? "更新しました" : "保存しました");
-        navigate(returnPath);
+        navigate(-1);
       } else {
         alert(editDaily ? "更新に失敗しました" : "保存に失敗しました");
       }
@@ -237,7 +237,7 @@ function CreateReport() {
           <h1 className="title">日報{editDaily ? "編集" : "作成"}</h1>
         </div>
         <div>
-          <button className="backButton" onClick={() => navigate(returnPath)}>もどる</button>
+          <button className="backButton" onClick={() => navigate(-1)}>もどる</button>
         </div>
       </header>
 
