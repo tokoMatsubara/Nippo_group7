@@ -32,7 +32,11 @@ export default function Dashboard() {
             // const reminderData = await reminderRes.json();
 
             console.log(JSON.stringify(weekData, null, 2));
-            setWeeks(weekData.summaries);
+            // 同じ startDate の重複を排除
+            const uniqueWeeks = Array.from(
+                new Map(weekData.summaries.map(w => [w.startDate, w])).values()
+            );
+            setWeeks(uniqueWeeks);
             // setReminder(reminderData);
 
         } catch (err) {
