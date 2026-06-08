@@ -37,7 +37,7 @@ function CreateReport() {
   const location = useLocation();
   const editDaily = location.state?.daily || null;
   const returnPath = location.state?.returnPath ?? `/daily-list/${week.startDate}/${week.endDate}`;
-  const [date, setDate] = useState(editDaily?.date ?? toYmd(new Date()));
+  const [date, setDate] = useState(location.state?.date ?? editDaily?.date ?? toYmd(new Date()));
   const [dailyId, setDailyId] = useState(editDaily?.dailyId ?? null);
   const [form, setForm] = useState(() => {
     if (!editDaily?.contents) {
