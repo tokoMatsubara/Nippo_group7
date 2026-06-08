@@ -9,7 +9,7 @@ import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 import com.daily_app.demo.Service.DailyCrudService;
 // import com.daily_app.demo.Service.DailySummaryService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 import java.time.LocalDate;
 import java.util.Map;
