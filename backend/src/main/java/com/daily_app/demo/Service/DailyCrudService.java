@@ -93,6 +93,8 @@ public class DailyCrudService {
         for (Daily daily : dailyList) {
 
             List<DailyDetail> dailyDetails = daily.getDailyDetails();
+            System.out.println("dailyId=" + daily.getDailyId());
+            System.out.println("detailCount" + dailyDetails.size());
 
             List<ContentDto> contentList = new ArrayList<ContentDto>();
             for (DailyDetail detail : dailyDetails) {
@@ -136,6 +138,7 @@ public class DailyCrudService {
         }
 
         daily.getDailyDetails().addAll(details);
+        System.out.println("details size = " + details.size());
 
         try {
             dailyRepository.save(daily);
