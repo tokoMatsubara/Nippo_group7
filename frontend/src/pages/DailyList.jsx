@@ -1,6 +1,6 @@
 import "../styles/DailyList.css";
 
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const days = ["月", "火", "水", "木", "金"];
@@ -25,7 +25,7 @@ export default function DailyList() {
     // BackendへのAPI
     const fetchData = async () => {
         const userId = localStorage.getItem("user_id");
-        
+
         const response = await fetch(`http://localhost:8080/api/daily/${userId}/${params.startDate}/${params.endDate}`);
         const data = await response.json();
         setWeekData(data);
@@ -40,6 +40,40 @@ export default function DailyList() {
         weekData.days.some(
             (d) => week[new Date(d.date).getDay()] === day
         );
+
+    // 選択された曜日の日付を計算
+    const getSelectedDate = () => {
+        if (!weekData.weekStartDate) return null;
+        const startDate = new Date(weekData.weekStartDate);
+        const dayIndex = days.indexOf(selectedDay);
+        const selectedDate = new Date(startDate);
+        selectedDate.setDate(startDate.getDate() + dayIndex);
+        return selectedDate.toISOString().split('T')[0];
+    };
+
+    const handleDelete = async () => {
+        if (!selectedDaily) return;
+        const ok = window.confirm("本当にこの日報を削除しますか？");
+        if (!ok) return;
+
+        try {
+            const res = await fetch(`http://localhost:8080/api/delete/${selectedDaily.dailyId}`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                alert('削除しました');
+                await fetchData();
+            } else {
+                const err = await res.json().catch(() => ({}));
+                console.error('delete error', err);
+                alert('削除に失敗しました');
+            }
+        } catch (e) {
+            console.error(e);
+            alert('削除に失敗しました');
+        }
+    };
 
     return (
         <div className="container">
@@ -59,13 +93,6 @@ export default function DailyList() {
                 {weekData.weekStartDate} ～ {weekData.weekEndDate}
             </h2>
 
-            {/* 週要約 */}
-            <p className="weekSummary">
-                {/** まだMockBackend変える必要性あり */}
-                {/* {weekData.weekly_summary_content} */}
-                要約です
-            </p>
-
             {/* 曜日 */}
             <div className="dayButtons">
                 {days.map((day) => (
@@ -83,7 +110,23 @@ export default function DailyList() {
             <div className="card">
 
                 {!selectedDaily ? (
-                    <p>日報はありません</p>
+                    <>
+                        <h3 className="date">{getSelectedDate()}</h3>
+                        <p>日報はありません</p>
+                        <div className="actions" style={{ justifyContent: 'center' }}>
+                            <button
+                                className="primaryButton"
+                                onClick={() => navigate("/create-report", {
+                                    state: {
+                                        date: getSelectedDate(),
+                                        returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
+                                    },
+                                })}
+                            >
+                                新規作成
+                            </button>
+                        </div>
+                    </>
                 ) : (
                     <>
                         <h3 className="date">{selectedDaily.date}</h3>
@@ -110,11 +153,19 @@ export default function DailyList() {
 
                         {/* 共通ボタン化 */}
                         <div className="actions">
-                            <button className="primaryButton">
+                            <button
+                                className="primaryButton"
+                                onClick={() => navigate("/create-report", {
+                                    state: {
+                                        daily: selectedDaily,
+                                        returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
+                                    },
+                                })}
+                            >
                                 編集
                             </button>
 
-                            <button className="dangerButton">
+                            <button className="dangerButton" onClick={handleDelete}>
                                 削除
                             </button>
                         </div>

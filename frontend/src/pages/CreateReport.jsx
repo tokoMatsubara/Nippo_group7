@@ -1,5 +1,5 @@
-﻿import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+﻿import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/CreateReport.css";
 
 const API_BASE = "http://localhost:8080/api";
@@ -34,23 +34,132 @@ const week = getWeekRange();
 
 function CreateReport() {
   const navigate = useNavigate();
-  const [date, setDate] = useState("2026-04-01");
-  const [contents, setContents] = useState([{ categoryId: 1, content: "" }]);
-  const [form, setForm] = useState({
-    learned: "",
-    goodPoint: "",
-    goodReason: "",
-    issue: "",
-    issueReason: "",
-    action: "",
-    tomorrowGoal: "",
-    condition: "普通",
-    comment: "",
+  const location = useLocation();
+  const editDaily = location.state?.daily || null;
+  const returnPath = location.state?.returnPath ?? `/daily-list/${week.startDate}/${week.endDate}`;
+  const [date, setDate] = useState(location.state?.date ?? editDaily?.date ?? toYmd(new Date()));
+  const [dailyId, setDailyId] = useState(editDaily?.dailyId ?? null);
+  const [form, setForm] = useState(() => {
+    if (!editDaily?.contents) {
+      return {
+        learned: "",
+        goodPoint: "",
+        goodReason: "",
+        issue: "",
+        issueReason: "",
+        action: "",
+        tomorrowGoal: "",
+        condition: "普通",
+        comment: "",
+      };
+    }
+
+    const mapped = {
+      learned: "",
+      goodPoint: "",
+      goodReason: "",
+      issue: "",
+      issueReason: "",
+      action: "",
+      tomorrowGoal: "",
+      condition: "普通",
+      comment: "",
+    };
+
+    editDaily.contents.forEach((item) => {
+      switch (item.categoryId) {
+        case 1:
+          mapped.learned = item.content;
+          break;
+        case 2:
+          mapped.goodPoint = item.content;
+          break;
+        case 3:
+          mapped.goodReason = item.content;
+          break;
+        case 4:
+          mapped.issue = item.content;
+          break;
+        case 5:
+          mapped.issueReason = item.content;
+          break;
+        case 6:
+          mapped.action = item.content;
+          break;
+        case 7:
+          mapped.tomorrowGoal = item.content;
+          break;
+        case 8:
+          mapped.condition = item.content || "普通";
+          break;
+        case 9:
+          mapped.comment = item.content;
+          break;
+        default:
+          break;
+      }
+    });
+
+    return mapped;
   });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [yesterdayGoal, setYesterdayGoal] = useState("前日の日報はありません");
 
-  const yesterdayGoal = "昨日設定した目標がここに表示されます";
+  // 前日の日報を取得する処理
+  useEffect(() => {
+    const fetchYesterdayGoal = async () => {
+      if (!date) return;
+
+      // 前日の日付を計算
+      const currentDate = new Date(date);
+      const previousDate = new Date(currentDate);
+      previousDate.setDate(currentDate.getDate() - 1);
+      const previousDateStr = toYmd(previousDate);
+
+      // その日の週の範囲を計算
+      const day = previousDate.getDay();
+      const diffToMonday = day === 0 ? -6 : 1 - day;
+      const weekStart = new Date(previousDate);
+      weekStart.setDate(previousDate.getDate() + diffToMonday);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6);
+
+      const weekStartStr = toYmd(weekStart);
+      const weekEndStr = toYmd(weekEnd);
+
+      try {
+        const userId = localStorage.getItem("user_id");
+        const response = await fetch(
+          `${API_BASE}/daily/${userId}/${weekStartStr}/${weekEndStr}`
+        );
+        const data = await response.json();
+
+        // 前日の日報を探す
+        const previousDaily = data.days?.find(
+          (d) => d.date === previousDateStr
+        );
+
+        if (previousDaily) {
+          const tomorrowGoalContent = previousDaily.contents?.find(
+            (c) => c.categoryId === 7
+          );
+          if (tomorrowGoalContent) {
+            setYesterdayGoal(tomorrowGoalContent.content);
+          } else {
+            setYesterdayGoal("前日の日報はありません");
+          }
+        } else {
+          setYesterdayGoal("前日の日報はありません");
+        }
+      } catch (err) {
+        console.error("Failed to fetch yesterday's goal:", err);
+        setYesterdayGoal("前日の日報はありません");
+      }
+    };
+
+    fetchYesterdayGoal();
+  }, [date]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,23 +186,30 @@ function CreateReport() {
         navigate("/login");
         return;
       }
-      const payload = {
-        userId,
-        date: toYmd(new Date()),// "2026-06-05",
-        contents: [
-          { categoryId: 1, content: form.learned },
-          { categoryId: 2, content: form.goodPoint },
-          { categoryId: 3, content: form.goodReason },
-          { categoryId: 4, content: form.issue },
-          { categoryId: 5, content: form.issueReason },
-          { categoryId: 6, content: form.action },
-          { categoryId: 7, content: form.tomorrowGoal },
-          { categoryId: 8, content: form.condition },
-          { categoryId: 9, content: form.comment },
-        ],
-      };
-      const res = await fetch(`${API_BASE}/report`, {
-        method: "POST",
+      const contentsPayload = [
+        { categoryId: 1, content: form.learned },
+        { categoryId: 2, content: form.goodPoint },
+        { categoryId: 3, content: form.goodReason },
+        { categoryId: 4, content: form.issue },
+        { categoryId: 5, content: form.issueReason },
+        { categoryId: 6, content: form.action },
+        { categoryId: 7, content: form.tomorrowGoal },
+        { categoryId: 8, content: form.condition },
+        { categoryId: 9, content: form.comment },
+      ];
+
+      const payload = editDaily
+        ? { dailyId, contents: contentsPayload }
+        : {
+          userId,
+          date,
+          contents: contentsPayload,
+        };
+
+      const endpoint = editDaily ? "/update" : "/report";
+      const method = editDaily ? "PUT" : "POST";
+      const res = await fetch(`${API_BASE}${endpoint}`, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
@@ -101,11 +217,11 @@ function CreateReport() {
       setResult(data);
 
       if (res.ok) {
-        alert("保存しました");
+        alert(editDaily ? "更新しました" : "保存しました");
+        navigate(returnPath);
       } else {
-        alert("保存に失敗しました");
+        alert(editDaily ? "更新に失敗しました" : "保存に失敗しました");
       }
-
     } catch (err) {
       console.error(err);
       setResult({ status: "error" });
@@ -118,14 +234,30 @@ function CreateReport() {
     <div className="daily-page">
       <header className="header">
         <div>
-          <h1 className="title">{date} の日報</h1>
+          <h1 className="title">日報{editDaily ? "編集" : "作成"}</h1>
         </div>
-        <div className="header-actions">
-          <button className="backButton" onClick={() => navigate("/dashboard")}>ダッシュボードへ戻る</button>
+        <div>
+          <button className="backButton" onClick={() => navigate(returnPath)}>もどる</button>
         </div>
       </header>
 
       <div className="card">
+
+        <div className="section-card card">
+          <h3>日付</h3>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            style={{
+              width: "100%",
+              padding: "8px",
+              fontSize: "16px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+            }}
+          />
+        </div>
 
         <div className="goal-card card">
           <h3>昨日立てた今日の目標</h3>
@@ -176,8 +308,8 @@ function CreateReport() {
         <Section title="9. コメント" name="comment" value={form.comment} onChange={handleChange} />
 
         <div className="submit-area">
-          <button className="primaryButton" type="button" onClick={() => { handleSubmit(); navigate(`/daily-list/${week.startDate}/${week.endDate}`); }}>
-            作成
+          <button className="primaryButton" type="button" onClick={handleSubmit}>
+            保存
           </button>
         </div>
 
