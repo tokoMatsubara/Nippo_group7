@@ -1,22 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Remind.css";
 
 function Remind() {
   const navigate = useNavigate();
 
-  const yesterdayGoal =
-    "Redux Toolkitの検証を完了し、認証周りの実装方針を決める";
-
-  const yesterdayIssue =
-    "createAsyncThunkのエラーハンドリングの理解が不足していた";
-
+  // yesterdayGoalとyesterdayIssueを読み込み中
+  const [remindMessage, setRemindMessage] = useState("読み込み中...");
   const [notificationEnabled, setNotificationEnabled] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
+  const [alarms, setAlarms] = useState([{ hour: 12, minute: 0}]);
 
-  const [alarms, setAlarms] = useState([
-    { hour: 18, minute: 0 }
-  ]);
+  useEffect(() => {
+
+
+    const userId = 1; // テスト用ユーザーIDを1番とする
+
+    fetch("http://localhost:8080/api/remind/${userId}")
+      .then((res) => res.json())
+      .then((data) => {
+
+        // data.value[0] が存在すれば、そのメッセージをセット
+        if (data.value && data.value.length > 0) {
+          setRemindMessage(data.value[0].remindContent);
+        } else {
+          setRemindMessage("本日のリマインドメッセージはありません。");
+        }
+      })
+    
+      .catch((err) => {
+        console.error("データ取得失敗:", err);
+        setRemindMessage("データの取得に失敗しました。");
+      });
+     }, []);
+
+
+
 
   const addAlarm = () => {
     setAlarms([...alarms, { hour: 0, minute: 0 }]);
@@ -60,15 +79,16 @@ function Remind() {
         </button>
       </div>
 
-      {/* カード */}
+      {/* カード ここをいったん減らす6/8 11:30
       <div className="card">
         <h2>前日に立てた今日の目標</h2>
-        <p>{yesterdayGoal}</p>
+        <p>{remindMessage}</p>
       </div>
+      */}
 
       <div className="card">
         <h2>前日の課題・問題点</h2>
-        <p>{yesterdayIssue}</p>
+        <p>{remindMessage}</p>
       </div>
 
       <div className="card">
