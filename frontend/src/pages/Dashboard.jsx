@@ -64,21 +64,6 @@ export default function Dashboard() {
 
                 <h1 className="title">ダッシュボード</h1>
 
-                {/* 新規作成ボタン */}
-                <button
-                    className="addButton"
-                    onClick={handleCreateReport}
-                >
-                    ＋新規日報作成
-                </button>
-
-                <button
-                    className="primaryButton"
-                    onClick={() => navigate("/remind")}
-                >
-                    🔔 リマインダー
-                </button>
-
             </div>
 
             {/* リマインド */}
