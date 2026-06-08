@@ -1,33 +1,43 @@
+// ログイン画面
+
+import "../styles/Login.css";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch("/api/login", {
+            const res = await fetch("http://localhost:8080/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    email,
-                    password
+                    mail_address: email,
+                    password: password
                 })
             });
+
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}));
+                alert(errorData.message || "ログインに失敗しました");
+                return;
+            }
 
             const data = await res.json();
 
             console.log("ログイン成功:", data);
 
-            // JWTなしなので user_id を保存
-            localStorage.setItem("user_id", data.user_id);
+            localStorage.setItem("user_id", data.userId);
+            localStorage.setItem("user_name", data.userName);
 
-            window.location.href = "/dashboard";
+            navigate("/dashboard");
 
         } catch (err) {
             console.error(err);
@@ -35,28 +45,41 @@ export default function Login() {
     };
 
     return (
-        <div>
-            <h1>ログイン</h1>
+        <div className="loginContainer">
 
-            <form onSubmit={handleLogin}>
-                <input
-                    placeholder="メール"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+            <div className="loginBox card">
 
-                <input
-                    type="password"
-                    placeholder="パスワード"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <h1 className="loginTitle">ログイン</h1>
 
-                <button type="submit">ログイン</button>
-            </form>
-            <p>
-                <Link to="/register">新規登録</Link>
-            </p>
+                <form className="loginForm" onSubmit={handleLogin}>
+
+                    <input
+                        className="loginInput"
+                        placeholder="メール"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+
+                    <input
+                        className="loginInput"
+                        type="password"
+                        placeholder="パスワード"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    <button className="loginButton" type="submit">
+                        ログイン
+                    </button>
+
+                </form>
+
+                <p className="loginLink">
+                    <Link to="/register">新規登録</Link>
+                </p>
+
+            </div>
+
         </div>
     );
 }

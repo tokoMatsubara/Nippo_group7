@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+}
+
+/* 戻るボタンを右配置 */
+.topRight {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+/* 週エリア */
+
+.weekSummary {
+    color: #555;
+    margin-bottom: 18px;
+}
+
+/* 曜日ボタン（画面固有なので残す） */
+.dayButtons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.dayButton {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 8px;
+    background: #e5e7eb;
+    cursor: pointer;
+}
+
+.dayButton.active {
+    background: #2563eb;
+    color: white;
+}
+
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.actions button {
+    min-width: 120px;
+    text-align: center;
+}
+
+/* 詳細 */
+.section {
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.sectionTitle {
+    font-weight: bold;
+}
+
+.sectionValue {
+    color: #333;
+    white-space: pre-wrap;
+}
+
+.sectionItem {
+    margin-bottom: 12px;
+}

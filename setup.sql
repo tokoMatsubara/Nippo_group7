@@ -1,5 +1,6 @@
 -- daily database setup
 
+
 DROP DATABASE dailymanagement_db;
 
 CREATE DATABASE dailymanagement_db;
@@ -24,9 +25,20 @@ CREATE TABLE users (
     remind_time TIME NOT NULL DEFAULT '09:30'
 );
 
+CREATE TABLE reminds (
+    remind_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    remind_content TEXT NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+
 CREATE TABLE dailies (
     daily_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     user_id INTEGER NOT NULL,
+    daily_date DATE NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -50,7 +62,7 @@ CREATE TABLE daily_details (
 
 CREATE TABLE daily_summaries (
     daily_summary_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    daily_id INTEGER NOT NULL,
+    daily_id INTEGER NOT NULL UNIQUE,
     daily_summary_content TEXT NOT NULL,
 
     FOREIGN KEY (daily_id) REFERENCES dailies(daily_id)
@@ -66,9 +78,15 @@ CREATE TABLE weekly_summaries (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
--- テストユーザー登録
-INSERT INTO users(user_name, password, mail_address) VALUES (
-    'test_user',
-    'password',
-    'test@example.com'
-)
+SET client_encoding TO 'UTF8';
+-- カテゴリ登録
+INSERT INTO categories(category_name) VALUES 
+    ('今日学んだこと'),
+    ('良かった点、できたこと'),
+    ('その理由'),
+    ('課題・改善点'),
+    ('その理由'),
+    ('改善するための行動'),
+    ('明日の目標'),
+    ('体調・気持ち'),
+    ('コメント');

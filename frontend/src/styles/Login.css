@@ -1,0 +1,79 @@
+/* =========================
+   Login Layout Only
+========================= */
+
+.loginContainer {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Login Card */
+.loginBox {
+    width: 360px;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+/* タイトル */
+.loginTitle {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* フォーム */
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 入力フィールド（最低限のみ） */
+.loginInput {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+}
+
+/* フォーカス */
+.loginInput:focus {
+    border-color: #2563eb;
+}
+
+/* リンク */
+.loginLink {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.loginLink a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.loginLink a:hover {
+    text-decoration: underline;
+}
+
+/* ボタン */
+.loginButton {
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    /* ← 角をより丸く */
+    background: #2563eb;
+    /* ← 青 */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.loginButton:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}

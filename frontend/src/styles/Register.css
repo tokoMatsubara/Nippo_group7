@@ -1,0 +1,78 @@
+/* =========================
+   Register Layout Only
+========================= */
+
+.registerContainer {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* カード配置のみ */
+.registerBox {
+    width: 360px;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+/* タイトル */
+.registerTitle {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* フォーム */
+.registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 入力 */
+.registerInput {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+}
+
+.registerInput:focus {
+    border-color: #2563eb;
+}
+
+/* リンク */
+.registerLink {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.registerLink a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.registerLink a:hover {
+    text-decoration: underline;
+}
+
+/* ボタン */
+.registerButton {
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    /* ← 角をより丸く */
+    background: #2563eb;
+    /* ← 青 */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.registerButton:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
