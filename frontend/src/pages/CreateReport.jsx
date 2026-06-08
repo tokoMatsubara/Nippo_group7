@@ -34,7 +34,7 @@ const week = getWeekRange();
 
 function CreateReport() {
   const navigate = useNavigate();
-  const [date, setDate] = useState("2026-04-01");
+  const [date, setDate] = useState(toYmd(new Date()));
   const [contents, setContents] = useState([{ categoryId: 1, content: "" }]);
   const [form, setForm] = useState({
     learned: "",
@@ -79,7 +79,7 @@ function CreateReport() {
       }
       const payload = {
         userId,
-        date: toYmd(new Date()),// "2026-06-05",
+        date: toYmd(new Date()),// "今日の日付",
         contents: [
           { categoryId: 1, content: form.learned },
           { categoryId: 2, content: form.goodPoint },
