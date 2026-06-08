@@ -82,7 +82,7 @@ export default function Dashboard() {
             </div>
 
             {/* リマインド */}
-            <section className="section card">
+            <section className="card-56">
 
                 <h2 className="remindTitle">明日の目標と課題</h2>
 
@@ -105,7 +105,7 @@ export default function Dashboard() {
                 {weeks.map((week) => (
                     <div
                         key={week.startDate}
-                        className="weekCard card"
+                        className="button-56"
                         onClick={() => handleWeekClick(week)}
                     >
                         <div className="weekTitle">

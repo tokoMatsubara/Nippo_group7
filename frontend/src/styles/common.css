@@ -102,6 +102,51 @@
 }
 
 .container {
-    padding: 20px;
+    padding: 16px;
     min-height: 100vh;
+}
+
+.button-56 {
+    content: "";
+    position: relative;
+
+    background: #fee6e3;
+    border: 2px solid #111;
+    border-radius: 8px;
+
+    padding: 16px;
+    margin-bottom: 20px;
+
+    box-shadow: 8px 8px 0 #111;
+
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.button-56:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 0 0 0 #111;
+    outline: 0;
+}
+
+.button-56:hover:after {
+    transform: translate(0, 0);
+}
+
+.button-56:active {
+    background-color: #ffdeda;
+}
+
+.card-56 {
+    position: relative;
+
+    background: #fee6e3;
+    border: 2px solid #111;
+    border-radius: 8px;
+
+    padding: 16px;
+    margin-bottom: 20px;
+
+    box-shadow: 8px 8px 0 #111;
+
+    transition: transform 0.2s ease;
 }
