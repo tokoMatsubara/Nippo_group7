@@ -10,6 +10,7 @@ import com.daily_app.demo.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class UserController {
     // 1. 作成したUserRepositoryをインジェクション（読み込み）します
     @Autowired
     private UserRepository userRepository;
+
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     /**
      * API-006: ユーザー登録
@@ -42,11 +45,13 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
+        String hashedPassword = passwordEncoder.encode(requestDto.getPassword());
+
         // 2. 画面から届いたDTOのデータを使って、Entity(User)のインスタンスを作成
         // リマインド初期値：status=false, time=null (User.javaのコンストラクタを利用)
         User newUser = new User(
                 requestDto.getUserName(),
-                requestDto.getPassword(), // ※将来的に暗号化推奨
+                hashedPassword, // ※将来的に暗号化推奨
                 requestDto.getMailAddress(),
                 false,
                 java.time.LocalTime.of(9, 0));
@@ -80,7 +85,7 @@ public class UserController {
             User user = userOpt.get();
 
             // 3. パスワードが一致するかチェック
-            if (user.getPassword().equals(requestDto.getPassword())) {
+            if (passwordEncoder.matches(requestDto.getPassword(), user.getPassword())/*user.getPassword().equals(requestDto.getPassword())*/) {
                 // 認証成功：LoginResponseDtoを生成して返却
                 LoginResponseDto response = new LoginResponseDto(
                         true,
