@@ -82,7 +82,7 @@ function Remind() {
 
       {/* ヘッダーエリア */}
       <div className="header">
-        <h1 className="title">🔔 リマインダー</h1>
+        <h1 className="title">🔔 リマインド</h1>
 
         <button
           className="backButton"
