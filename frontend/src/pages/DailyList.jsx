@@ -82,13 +82,6 @@ export default function DailyList() {
                 {weekData.weekStartDate} ～ {weekData.weekEndDate}
             </h2>
 
-            {/* 週要約 */}
-            <p className="weekSummary">
-                {/** まだMockBackend変える必要性あり */}
-                {/* {weekData.weekly_summary_content} */}
-                要約です
-            </p>
-
             {/* 曜日 */}
             <div className="dayButtons">
                 {days.map((day) => (
