@@ -34,7 +34,7 @@ const week = getWeekRange();
 
 function CreateReport() {
   const navigate = useNavigate();
-  const [date, setDate] = useState("2026-04-01");
+  const [date, setDate] = useState(toYmd(new Date()));
   const [contents, setContents] = useState([{ categoryId: 1, content: "" }]);
   const [form, setForm] = useState({
     learned: "",
@@ -79,7 +79,7 @@ function CreateReport() {
       }
       const payload = {
         userId,
-        date: toYmd(new Date()),// "2026-06-05",
+        date: toYmd(new Date()),// "今日の日付",
         contents: [
           { categoryId: 1, content: form.learned },
           { categoryId: 2, content: form.goodPoint },
@@ -102,6 +102,7 @@ function CreateReport() {
 
       if (res.ok) {
         alert("保存しました");
+        navigate(`/daily-list/${week.startDate}/${week.endDate}`);
       } else {
         alert("保存に失敗しました");
       }
@@ -176,7 +177,7 @@ function CreateReport() {
         <Section title="9. コメント" name="comment" value={form.comment} onChange={handleChange} />
 
         <div className="submit-area">
-          <button className="primaryButton" type="button" onClick={() => { handleSubmit(); navigate(`/daily-list/${week.startDate}/${week.endDate}`); }}>
+          <button className="primaryButton" type="button" onClick={handleSubmit}>
             作成
           </button>
         </div>
