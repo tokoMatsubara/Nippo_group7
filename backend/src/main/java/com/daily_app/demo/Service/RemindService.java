@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Entity.Remind; 
 import com.daily_app.demo.Repository.RemindRepository;
+import com.daily_app.demo.Dto.Response.RemindIsReadDto;
 import com.daily_app.demo.Dto.Response.RemindResponseDto;
 
 @Service
@@ -64,5 +66,12 @@ public class RemindService {
                 remind.getRemindContent()     // メッセージ内容
             ))
             .collect(Collectors.toList()); // リストにして返す
+    }
+
+
+    public ResponseEntity<RemindIsReadDto> remindIsRead(Long userId){
+        List<Remind> reminds = remindRepository.findByUser_UserId(userId);
+        boolean allRead = reminds.stream().allMatch(Remind::getIsRead);
+        return ResponseEntity.ok(new RemindIsReadDto(allRead));
     }
 }

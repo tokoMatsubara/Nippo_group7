@@ -77,7 +77,7 @@ public class UserService {
             User user = userOpt.get();
 
             // 3. パスワードが一致するかチェック
-            if (passwordEncoder.matches(requestDto.getPassword(), user.getPassword())/*user.getPassword().equals(requestDto.getPassword())*/) {
+            if (passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
                 // 認証成功：LoginResponseDtoを生成して返却
                 LoginResponseDto response = new LoginResponseDto(
                         true,
