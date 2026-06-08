@@ -5,37 +5,52 @@ import "../styles/Remind.css";
 function Remind() {
   const navigate = useNavigate();
 
-  // yesterdayGoalとyesterdayIssueを読み込み中
-  const [remindMessage, setRemindMessage] = useState("読み込み中...");
-  const [notificationEnabled, setNotificationEnabled] = useState(true);
-  const [isSaved, setIsSaved] = useState(false);
-  const [alarms, setAlarms] = useState([{ hour: 12, minute: 0}]);
+  const [yesterdayGoal, setYesterdayGoal] = useState("");
 
   useEffect(() => {
+    fetchYesterdayGoal();
+  }, []);
 
+  const fetchYesterdayGoal = async () => {
+    try {
+      const userId = localStorage.getItem("user_id");
 
-    const userId = 1; // テスト用ユーザーIDを1番とする
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
 
-    fetch("http://localhost:8080/api/remind/${userId}")
-      .then((res) => res.json())
-      .then((data) => {
+      const dateStr = yesterday.toISOString().split("T")[0];
 
-        // data.value[0] が存在すれば、そのメッセージをセット
-        if (data.value && data.value.length > 0) {
-          setRemindMessage(data.value[0].remindContent);
-        } else {
-          setRemindMessage("本日のリマインドメッセージはありません。");
-        }
-      })
-    
-      .catch((err) => {
-        console.error("データ取得失敗:", err);
-        setRemindMessage("データの取得に失敗しました。");
-      });
-     }, []);
+      const response = await fetch(
+        `http://localhost:8080/api/daily/${userId}`
+      );
 
+      const data = await response.json();
 
+      console.log(data);
+      console.log("days", data.days);
+      console.log("daily", data.days?.[0]);
+      console.log("contents", data.days?.[0]?.contents);
 
+      const goal = data.days?.[0]?.contents?.find(
+        (item) => item.categoryId === 7
+      );
+
+      setYesterdayGoal(
+        goal?.content || "昨日の目標が登録されていません"
+      );
+
+    } catch (error) {
+      console.error(error);
+      setYesterdayGoal("取得に失敗しました");
+    }
+  };
+
+  const [notificationEnabled, setNotificationEnabled] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
+
+  const [alarms, setAlarms] = useState([
+    { hour: 18, minute: 0 }
+  ]);
 
   const addAlarm = () => {
     setAlarms([...alarms, { hour: 0, minute: 0 }]);
@@ -79,16 +94,10 @@ function Remind() {
         </button>
       </div>
 
-      {/* カード ここをいったん減らす6/8 11:30
+      {/* カード */}
       <div className="card">
         <h2>前日に立てた今日の目標</h2>
-        <p>{remindMessage}</p>
-      </div>
-      */}
-
-      <div className="card">
-        <h2>前日の課題・問題点</h2>
-        <p>{remindMessage}</p>
+        <p>{yesterdayGoal}</p>
       </div>
 
       <div className="card">
