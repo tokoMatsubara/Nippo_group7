@@ -1,6 +1,6 @@
 import "../styles/DailyList.css";
 
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const days = ["月", "火", "水", "木", "金"];
@@ -25,7 +25,7 @@ export default function DailyList() {
     // BackendへのAPI
     const fetchData = async () => {
         const userId = localStorage.getItem("user_id");
-        
+
         const response = await fetch(`http://localhost:8080/api/daily/${userId}/${params.startDate}/${params.endDate}`);
         const data = await response.json();
         setWeekData(data);
@@ -110,7 +110,15 @@ export default function DailyList() {
 
                         {/* 共通ボタン化 */}
                         <div className="actions">
-                            <button className="primaryButton">
+                            <button
+                                className="primaryButton"
+                                onClick={() => navigate("/create-report", {
+                                    state: {
+                                        daily: selectedDaily,
+                                        returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
+                                    },
+                                })}
+                            >
                                 編集
                             </button>
 
