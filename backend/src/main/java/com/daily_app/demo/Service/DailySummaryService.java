@@ -84,13 +84,6 @@ public class DailySummaryService {
     }
 
 
-    @Transactional
-    public void deleteSummary(Integer dailyId) throws Exception{
-        dailySummaryRepository.deleteByDaily_DailyId(dailyId).orElseThrow(() -> 
-            new RuntimeException("dailySummary was not able to be deleted")
-        );
-    }
-
     private String buildPrompt(List<ContentDto> requestContent){
         String combinedContent = requestContent.stream()
                 .map(c -> "[" + c.getCategoryId() + "] " 

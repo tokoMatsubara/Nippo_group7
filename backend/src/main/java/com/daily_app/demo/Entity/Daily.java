@@ -49,7 +49,7 @@ public class Daily {
     @OneToMany(mappedBy = "daily", cascade = CascadeType.ALL)
     private List<DailyDetail> dailyDetails;
 
-    @OneToOne(mappedBy = "daily", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "daily", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private DailySummary dailySummary;
 
     //constructer======================================

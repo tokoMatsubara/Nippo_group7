@@ -188,7 +188,6 @@ public class DailyCrudService {
         LocalDate date = daily.getDailyDate();
         try {
             dailyRepository.deleteById(dailyId);
-            dailySummaryService.deleteSummary(dailyId);
         }catch(Exception e){
             System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の削除に失敗しました");
