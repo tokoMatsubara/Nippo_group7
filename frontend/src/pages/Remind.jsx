@@ -21,7 +21,7 @@ function Remind() {
       const dateStr = yesterday.toISOString().split("T")[0];
 
       const response = await fetch(
-        `http://localhost:8080/api/daily/${userId}`
+        `http://localhost:8080/api/remind/${userId}`
       );
 
       const data = await response.json();
@@ -31,12 +31,10 @@ function Remind() {
       console.log("daily", data.days?.[0]);
       console.log("contents", data.days?.[0]?.contents);
 
-      const goal = data.days?.[0]?.contents?.find(
-        (item) => item.categoryId === 7
-      );
+      const goal = data[0].remindContent;
 
       setYesterdayGoal(
-        goal?.content || "昨日の目標が登録されていません"
+        goal || "昨日の目標が登録されていません"
       );
 
     } catch (error) {
