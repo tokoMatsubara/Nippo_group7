@@ -4,7 +4,6 @@ import com.daily_app.demo.Repository.DailyRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.daily_app.demo.Dto.Internal.DailyQueryDto;
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
 import com.daily_app.demo.Dto.Request.ReportUpdateRequestDto;
 import com.daily_app.demo.Dto.Response.ContentDto;
@@ -27,10 +25,8 @@ import com.daily_app.demo.Entity.DailySummary;
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Entity.WeeklySummary;
 import com.daily_app.demo.Repository.CategoryRepository;
-import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.UserRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
-//import com.daily_app.demo.Service.WeeklySummaryService;
 
 @Service
 public class DailyCrudService {
@@ -63,7 +59,7 @@ public class DailyCrudService {
 
     // daily reponse=============================================================
     // #region
-    @Transactional
+    // @Transactional
     public DailyResponseDto dailyResponse(Integer userId, LocalDate startDate, LocalDate endDate) {
         List<Daily> dailies = dailyRepository.findByUser_UserIdAndDailyDateBetween(userId, startDate, endDate);
 
@@ -135,13 +131,12 @@ public class DailyCrudService {
 
         try {
             dailyRepository.save(daily);
-
+            dailySummaryService.generateSummary(daily, reportRequest.getContents());
+            weeklySummaryService.createWeeklySummary(userId);  
         } catch (DataIntegrityViolationException e) {
             System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の登録に失敗しました");
         }
-        weeklySummaryService.createWeeklySummary(userId);
-        dailySummaryService.generateSummary(daily, reportRequest.getContents());
 
         return Map.of("status", "success", "message", "日報の登録に成功しました");
     }
