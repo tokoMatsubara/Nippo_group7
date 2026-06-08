@@ -84,7 +84,7 @@ export default function DailyList() {
                     className="backButton"
                     onClick={() => navigate("/dashboard")}
                 >
-                    ダッシュボードへ戻る
+                    もどる
                 </button>
             </div>
 
@@ -98,7 +98,7 @@ export default function DailyList() {
                 {days.map((day) => (
                     <button
                         key={day}
-                        className={`dayButton ${selectedDay === day ? "active" : ""}`}
+                        className={`button-56 ${selectedDay === day ? "active" : ""}`}
                         onClick={() => setSelectedDay(day)}
                     >
                         {day} {hasDaily(day) ? "●" : "○"}

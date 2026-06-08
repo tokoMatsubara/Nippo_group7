@@ -64,25 +64,10 @@ export default function Dashboard() {
 
                 <h1 className="title">ダッシュボード</h1>
 
-                {/* 新規作成ボタン */}
-                <button
-                    className="addButton"
-                    onClick={handleCreateReport}
-                >
-                    ＋新規日報作成
-                </button>
-
-                <button
-                    className="primaryButton"
-                    onClick={() => navigate("/remind")}
-                >
-                    🔔 リマインダー
-                </button>
-
             </div>
 
             {/* リマインド */}
-            <section className="section card">
+            <section className="card">
 
                 <h2 className="remindTitle">明日の目標と課題</h2>
 
@@ -105,7 +90,7 @@ export default function Dashboard() {
                 {weeks.map((week) => (
                     <div
                         key={week.startDate}
-                        className="weekCard card"
+                        className="button-56"
                         onClick={() => handleWeekClick(week)}
                     >
                         <div className="weekTitle">
