@@ -11,6 +11,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Repository.UserRepository;
 
@@ -40,7 +41,10 @@ public class ReminderScheduler {
         List<User> users = userRepository.findByRemindTimeBetween(start, end);
 
         if (!users.isEmpty()) {
-            remindService.createReminds(users);
+            remindService.createReminds(users); //ここが9:30から一分前後じゃないと入らない
+            
         }
+        System.out.println("Schedulerがうごいているよ");
     }
+
 }
