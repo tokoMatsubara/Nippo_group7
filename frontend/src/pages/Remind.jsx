@@ -27,9 +27,7 @@ function Remind() {
       const data = await response.json();
 
       console.log(data);
-      console.log("days", data.days);
-      console.log("daily", data.days?.[0]);
-      console.log("contents", data.days?.[0]?.contents);
+      console.log(data[0]);
 
       const goal = data[0].remindContent;
 

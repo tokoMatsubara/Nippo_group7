@@ -79,7 +79,7 @@ export default function DailyList() {
     today.setHours(0, 0, 0, 0);
 
     return (
-        <div className="container">
+        <>
             <div className="header">
                 <h1 className="title">日報一覧</h1>
             </div>
@@ -195,6 +195,6 @@ export default function DailyList() {
                     </>
                 )}
             </div>
-        </div>
+        </>
     );
 }

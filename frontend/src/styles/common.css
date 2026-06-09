@@ -8,11 +8,13 @@
 
 /* Header分の余白確保（超重要） */
 .appContent {
-    padding-top: 70px;
+    padding-top: 0px;
     /* ← ヘッダー高さ分 */
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
     padding-bottom: 20px;
+    background-color: #E9F1F8;
+    
 }
 
 /* 共通ボタン（青統一） */
@@ -116,11 +118,21 @@
 
 /* 各画面のタイトル用 */
 .header {
+    width: 100%;
+    min-height: 180px;
+    /* ← 高さを大きく */
+    padding: 40px 32px;
+
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
+    align-items: flex-end;
+    /* 下寄せでタイトルっぽく */
+
+    position: relative;
+    overflow: hidden;
+
+    background-image: url("../assets/blue.png");
+    background-size: cover;
+    background-position: center;
 }
 
 .title {
@@ -128,10 +140,10 @@
     font-weight: bold;
 }
 
-.container {
+/* .container {
     padding: 16px;
     min-height: 100vh;
-}
+} */
 
 /* カード */
 .card {

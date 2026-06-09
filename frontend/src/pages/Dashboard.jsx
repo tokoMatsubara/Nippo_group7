@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function Dashboard() {
     const [weeks, setWeeks] = useState([]);
     const [reminder, setReminder] = useState(null);
+    const [remindIsRead, setRemindIsRead] = useState(true)
     const [loading, setLoading] = useState(true);
 
     const userId = localStorage.getItem("user_id");
@@ -28,15 +29,22 @@ export default function Dashboard() {
             );
             const weekData = await weekRes.json();
 
+            const remindIsReadRes = await fetch(
+                `http://localhost:8080/api/remind/is_read/${USER_ID}`
+            );
+            const remindIsReadData = await remindIsReadRes.json();
+
             // const reminderRes = await fetch(`/api/remind/${USER_ID}`);
             // const reminderData = await reminderRes.json();
 
             console.log(JSON.stringify(weekData, null, 2));
+            console.log(JSON.stringify(remindIsReadData, null, 2));
             // 同じ startDate の重複を排除
             const uniqueWeeks = Array.from(
                 new Map(weekData.summaries.map(w => [w.startDate, w])).values()
             );
             setWeeks(uniqueWeeks);
+            setRemindIsRead(remindIsReadData.isRead);
             // setReminder(reminderData);
 
         } catch (err) {
@@ -57,8 +65,8 @@ export default function Dashboard() {
     if (loading) return <h2>Loading...</h2>;
 
     return (
-        <div className="container">
 
+        <>
             {/* ヘッダー */}
             <div className="header">
 
@@ -104,6 +112,6 @@ export default function Dashboard() {
                 ))}
             </section>
 
-        </div>
+        </>
     );
 }

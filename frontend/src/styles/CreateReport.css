@@ -2,10 +2,7 @@
    CreateReport Layout Only
 ========================= */
 
-.daily-page {
-    padding: 20px;
-    min-height: 100vh;
-}
+
 
 /* 目標カード（card前提） */
 .goal-card {
