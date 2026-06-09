@@ -116,9 +116,9 @@ export default function DailyList() {
                         <button
                             key={day}
                             className={`dayButton 
-${selectedDay === day ? "active" : ""} 
-${isToday ? "today" : ""} 
-${isFuture ? "future" : ""}`}
+                                ${selectedDay === day ? "active" : ""} 
+                                ${isToday ? "today" : ""} 
+                                ${isFuture ? "future" : ""}`}
                             onClick={() => {
                                 if (isFuture) return;   // ← ここで無効化
                                 setSelectedDay(day);
