@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
@@ -23,7 +23,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     //パスワードのハッシュ化
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
 
     //ユーザー登録ロジック=================================================================
@@ -67,8 +68,6 @@ public class UserService {
 
     public ResponseEntity<LoginResponseDto> login(LoginRequestDto requestDto) {
 
-        System.out.println("--- ログイン認証 本稼働 ---");
-
         // 1. 入力されたメールアドレスでDBを検索
         Optional<User> userOpt = userRepository.findByMailAddress(requestDto.getMailAddress());
 
@@ -82,7 +81,6 @@ public class UserService {
                 LoginResponseDto response = new LoginResponseDto(
                         true,
                         "ログインに成功しました",
-                        user.getUserId(),
                         user.getUserName());
                 return ResponseEntity.ok(response);
             }

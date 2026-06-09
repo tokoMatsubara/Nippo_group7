@@ -13,7 +13,7 @@ function Remind() {
 
   const fetchYesterdayGoal = async () => {
     try {
-      const userId = localStorage.getItem("user_id");
+      // const userId = localStorage.getItem("user_id");
 
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
@@ -21,8 +21,10 @@ function Remind() {
       const dateStr = yesterday.toISOString().split("T")[0];
 
       const response = await fetch(
-        `http://localhost:8080/api/remind/${userId}`
-      );
+        `http://localhost:8080/api/remind`, {
+          method: "GET",
+          credentials: "include"
+      });
 
       const data = await response.json();
 
@@ -38,7 +40,7 @@ function Remind() {
 
     } catch (error) {
       console.error(error);
-      setYesterdayGoal("取得に失敗しました");
+      setYesterdayGoal("取得に失敗しました");  
     }
   };
 

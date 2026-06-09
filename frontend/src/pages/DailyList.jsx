@@ -24,9 +24,12 @@ export default function DailyList() {
 
     // BackendへのAPI
     const fetchData = async () => {
-        const userId = localStorage.getItem("user_id");
+        // const userId = localStorage.getItem("user_id");
 
-        const response = await fetch(`http://localhost:8080/api/daily/${userId}/${params.startDate}/${params.endDate}`);
+        const response = await fetch(`http://localhost:8080/api/daily/${params.startDate}/${params.endDate}`, {
+            method: "GET",
+            credentials: "include"
+        });
         const data = await response.json();
         setWeekData(data);
         console.log(data);
@@ -59,6 +62,7 @@ export default function DailyList() {
         try {
             const res = await fetch(`http://localhost:8080/api/delete/${selectedDaily.dailyId}`, {
                 method: 'DELETE',
+                credentials: "include"
             });
 
             if (res.ok) {
@@ -68,6 +72,8 @@ export default function DailyList() {
                 const err = await res.json().catch(() => ({}));
                 console.error('delete error', err);
                 alert('削除に失敗しました');
+                alert('ログインしなおして下さい');
+                navigate("/login");
             }
         } catch (e) {
             console.error(e);

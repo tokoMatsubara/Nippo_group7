@@ -22,15 +22,21 @@ export default function Dashboard() {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const USER_ID = localStorage.getItem("user_id");
+            // const USER_ID = localStorage.getItem("user_id");
 
             const weekRes = await fetch(
-                `http://localhost:8080/api/weekly_list/${USER_ID}`
+                `http://localhost:8080/api/weekly_list`, {
+                    method: "GET", 
+                    credentials: "include"
+                }
             );
             const weekData = await weekRes.json();
 
             const remindIsReadRes = await fetch(
-                `http://localhost:8080/api/remind/is_read/${USER_ID}`
+                `http://localhost:8080/api/remind/is_read`, {
+                    method: "GET",
+                    credentials: "include"
+                }
             );
             const remindIsReadData = await remindIsReadRes.json();
 
