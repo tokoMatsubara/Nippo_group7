@@ -41,7 +41,7 @@ public class ReminderScheduler {
         List<User> users = userRepository.findByRemindTimeBetween(start, end);
 
         if (!users.isEmpty()) {
-            remindService.createReminds(users);
+            remindService.createReminds(users); //ここが9:30から一分前後じゃないと入らない
             
         }
         System.out.println("Schedulerがうごいているよ");
