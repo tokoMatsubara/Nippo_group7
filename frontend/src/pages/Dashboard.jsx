@@ -98,7 +98,7 @@ export default function Dashboard() {
                 {weeks.map((week) => (
                     <div
                         key={week.startDate}
-                        className="button-56"
+                        className="button"
                         onClick={() => handleWeekClick(week)}
                     >
                         <div className="weekTitle">
