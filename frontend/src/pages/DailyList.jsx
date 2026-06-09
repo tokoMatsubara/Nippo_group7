@@ -98,7 +98,7 @@ export default function DailyList() {
                 {days.map((day) => (
                     <button
                         key={day}
-                        className={`button-56 ${selectedDay === day ? "active" : ""}`}
+                        className={`button ${selectedDay === day ? "active" : ""}`}
                         onClick={() => setSelectedDay(day)}
                     >
                         {day} {hasDaily(day) ? "●" : "○"}
