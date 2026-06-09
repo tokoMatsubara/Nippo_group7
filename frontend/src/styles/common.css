@@ -118,13 +118,15 @@
 
 /* 各画面のタイトル用 */
 .header {
+    
     width: 100%;
     min-height: 180px;
     /* ← 高さを大きく */
     padding: 40px 32px;
 
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: flex-start;
     /* 下寄せでタイトルっぽく */
 
     position: relative;
@@ -184,6 +186,7 @@
 
 /* card用ボタン */
 .button {
+    display: flex;
     text-align: left;
     position: relative;
     word-wrap: break-word;

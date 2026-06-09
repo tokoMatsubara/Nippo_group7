@@ -75,65 +75,66 @@ export default function DailyList() {
         }
     };
 
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+
+        return `${month}月${day}日`;
+    };
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     return (
         <>
             <div className="header">
-                <h1 className="title">日報一覧</h1>
+                <h1 className="title">日報一覧（{formatDate(weekData.weekStartDate)} ～ {formatDate(weekData.weekEndDate)}）</h1>
 
-                <button
-                    className="backButton"
-                    onClick={() => navigate("/dashboard")}
-                >
-                    もどる
-                </button>
-            </div>
+                {/* 週表示 */}
+                {/* <h2 className="title">
+                    {formatDate(weekData.weekStartDate)} ～ {formatDate(weekData.weekEndDate)}
+                </h2> */}
 
-            {/* 週表示 */}
-            <h2 className="title">
-                {weekData.weekStartDate} ～ {weekData.weekEndDate}
-            </h2>
+                {/* 曜日 */}
+                <div className="dayButtons">
+                    {days.map((day, index) => {
+                        const date = new Date(weekData.weekStartDate);
+                        date.setDate(date.getDate() + index);
+                        date.setHours(0, 0, 0, 0);
 
-            {/* 曜日 */}
-            <div className="dayButtons">
-                {days.map((day, index) => {
-                    const date = new Date(weekData.weekStartDate);
-                    date.setDate(date.getDate() + index);
-                    date.setHours(0, 0, 0, 0);
+                        const dayNumber = date.getDate();
+                        const dayLabel = day;
 
-                    const dayNumber = date.getDate();
-                    const dayLabel = day;
+                        const isToday =
+                            today.getTime() === date.getTime();
+                        const isFuture =
+                            date.getTime() > today.getTime();
 
-                    const isToday =
-                        today.getTime() === date.getTime();
+                        return (
+                            <button
+                                key={day}
+                                className={`dayButton 
+                            ${selectedDay === day ? "active" : ""} 
+                            ${isToday ? "today" : ""} 
+                            ${isFuture ? "future" : ""}`}
+                                onClick={() => {
+                                    if (isFuture) return;   // ← ここで無効化
+                                    setSelectedDay(day);
+                                }}
+                            >
+                                <span className="dayTop">
+                                    {dayNumber} ({dayLabel})
+                                </span>
 
-                    const isFuture =
-                        date.getTime() > today.getTime();
-
-                    return (
-                        <button
-                            key={day}
-                            className={`dayButton 
-                                ${selectedDay === day ? "active" : ""} 
-                                ${isToday ? "today" : ""} 
-                                ${isFuture ? "future" : ""}`}
-                            onClick={() => {
-                                if (isFuture) return;   // ← ここで無効化
-                                setSelectedDay(day);
-                            }}
-                        >
-                            <span className="dayTop">
-                                {dayNumber} ({dayLabel})
-                            </span>
-
-                            <span className="dayMark">
-                                {hasDaily(day) ? "●" : "○"}
-                            </span>
-                        </button>
-                    );
-                })}
+                                <span className="dayMark">
+                                    {hasDaily(day) ? "●" : "○"}
+                                </span>
+                            </button>
+                        );
+                    })}
+                </div>
             </div>
 
             {/* カード */}
@@ -159,15 +160,19 @@ export default function DailyList() {
                     </>
                 ) : (
                     <>
-                        <h3 className="date">{selectedDaily.date}</h3>
+                        <h3 className="date">{formatDate(selectedDaily.date)}</h3>
 
-                        <p className="summary">
-                            {selectedDaily.summary}
-                        </p>
-
-
-                        {/* 詳細 */}
                         <div className="section">
+                            <div className="sectionItem">
+                                <div className="sectionTitle">要約
+                                    <div className="sectionValue">
+                                        {selectedDaily.summary}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {/* 詳細 */}
                             {selectedDaily.contents.map((item) => (
                                 <div key={item.categoryId} className="sectionItem">
                                     <strong className="sectionTitle">
