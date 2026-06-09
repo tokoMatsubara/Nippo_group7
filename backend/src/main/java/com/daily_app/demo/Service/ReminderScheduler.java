@@ -42,7 +42,9 @@ public class ReminderScheduler {
 
         if (!users.isEmpty()) {
             remindService.createReminds(users);
+            
         }
+        System.out.println("Schedulerがうごいているよ");
     }
 
 }
