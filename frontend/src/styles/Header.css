@@ -11,7 +11,7 @@
 
     padding: 0 20px;
 
-    background: #fff;
+    background: #FFBC61;
     border-bottom: 1px solid #e5e5e5;
 }
 
@@ -24,6 +24,7 @@
     font-weight: bold;
     font-size: 18px;
     cursor: pointer;
+    background: #FFBC61;
 
     transition: opacity 0.2s ease;
 }
@@ -56,7 +57,7 @@
 
 /* hoverアニメーション */
 .navLinks a:hover {
-    color: #1976d2;
+    color: #F99292;
     transform: translateY(-2px);
 }
 
@@ -69,7 +70,7 @@
 
     width: 0%;
     height: 2px;
-    background: #1976d2;
+    background: #F99292;
 
     transition: width 0.3s ease;
 }
@@ -81,7 +82,7 @@
 
 /* active */
 .navLinks a.active {
-    color: #1976d2;
+    color: #F99292;
     font-weight: 600;
 }
 
