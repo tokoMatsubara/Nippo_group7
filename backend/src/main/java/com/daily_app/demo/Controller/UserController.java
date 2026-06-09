@@ -60,8 +60,9 @@ public class UserController {
             new UsernamePasswordAuthenticationToken(requestDto.getMailAddress(), requestDto.getPassword()));
             
             String token = tokenProvider.generateToken(authentication.getName());
+            System.out.println(token);
 
-            ResponseCookie cookie = ResponseCookie.from("token", token)
+            ResponseCookie cookie = ResponseCookie.from("accessToken", token)
                 .httpOnly(true).secure(false).path("/")
                 .maxAge(Duration.ofHours(1)).sameSite("Strict").build();
         
