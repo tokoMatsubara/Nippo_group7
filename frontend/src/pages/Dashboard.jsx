@@ -102,7 +102,7 @@ export default function Dashboard() {
             {/* 週一覧 */}
             <section className="section">
 
-                <h2>週一覧</h2>
+                <h2 className="weekTitle">週一覧</h2>
 
                 {weeks.map((week) => (
                     <div
