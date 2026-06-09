@@ -32,7 +32,7 @@ public class RemindController {
      * API: ログインしているユーザーの通知一覧を取得する
      * URL: GET /api/reminds/{user_id}
      */
-    @GetMapping("/{user_id}")
+    @GetMapping("/")
     public ResponseEntity<List<RemindResponseDto>> getUserReminds(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         Integer userId = userDetails.getId();
