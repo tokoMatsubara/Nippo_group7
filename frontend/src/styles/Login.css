@@ -65,7 +65,7 @@
     border: none;
     border-radius: 12px;
     /* ← 角をより丸く */
-    background: #2563eb;
+    background: #F6B352;
     /* ← 青 */
     color: white;
     font-weight: bold;
@@ -74,6 +74,25 @@
 }
 
 .loginButton:hover {
-    background: #1d4ed8;
+    background: #F6B352;
+    transform: translateY(-1px);
+}
+
+/* 新規登録ボタン */
+.registerButton {
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    /* ← 角をより丸く */
+    background: #F68655;
+    /* ← 青 */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.registerButton:hover {
+    background: #F68655;
     transform: translateY(-1px);
 }
