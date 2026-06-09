@@ -164,16 +164,74 @@
 .card {
     text-align: left;
     position: relative;
-
-    background: #c1daf3;
-    border: 2px solid #111;
-    color: #111;
-    border-radius: 8px;
-
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 2px solid #1976d2;
+    border-radius: 0.25rem;
+    box-shadow: 0 10px 20px #ccc;
+    color: #333;
+    text-decoration: none;
+    transition: 0.5s;
+    margin-bottom: 30px;
     padding: 16px;
-    margin-bottom: 20px;
+}
 
-    box-shadow: 6px 6px 0 #111;
+.card-image {
+    width: 100%;
+    object-fit: contain;
+}
 
-    transition: transform 0.2s ease;
+.card-box {
+    padding: 1rem;
+}
+
+.card-title {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.card-description {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+/* CSS */
+.button-89 {
+    --b: 2px;
+    /* border thickness */
+    --s: .45em;
+    /* size of the corner */
+    --color: #1976d2;
+
+    padding: calc(.5em + var(--s)) calc(.9em + var(--s));
+    color: var(#0000);
+    --_p: var(--s);
+    background:
+        conic-gradient(from 90deg at var(--b) var(--b), #0000 90deg, var(--color) 0) var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
+    transition: .3s linear, color 0s, background-color 0s;
+    outline: var(--b) solid #0000;
+    outline-offset: .6em;
+    font-size: 16px;
+
+    border: 0;
+
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.button-89:hover,
+.button-89:focus-visible {
+    --_p: 0px;
+    outline-color: var(--color);
+    outline-offset: .05em;
+}
+
+.button-89:active {
+    background: var(--color);
+    color: #fff;
 }
