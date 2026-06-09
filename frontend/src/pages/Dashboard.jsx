@@ -65,8 +65,8 @@ export default function Dashboard() {
     if (loading) return <h2>Loading...</h2>;
 
     return (
-        <div className="container">
 
+        <>
             {/* ヘッダー */}
             <div className="header">
 
@@ -98,7 +98,7 @@ export default function Dashboard() {
                 {weeks.map((week) => (
                     <div
                         key={week.startDate}
-                        className="button-56"
+                        className="button"
                         onClick={() => handleWeekClick(week)}
                     >
                         <div className="weekTitle">
@@ -112,6 +112,6 @@ export default function Dashboard() {
                 ))}
             </section>
 
-        </div>
+        </>
     );
 }

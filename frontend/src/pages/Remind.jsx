@@ -77,18 +77,13 @@ function Remind() {
   };
 
   return (
-    <div>
+    <div className="container">
 
       {/* ヘッダーエリア */}
       <div className="header">
+
         <h1 className="title">🔔 リマインド</h1>
 
-        <button
-          className="backButton"
-          onClick={handleClose}
-        >
-          もどる
-        </button>
       </div>
 
       {/* カード */}

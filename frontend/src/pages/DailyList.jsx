@@ -75,8 +75,11 @@ export default function DailyList() {
         }
     };
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     return (
-        <div className="container">
+        <>
             <div className="header">
                 <h1 className="title">日報一覧</h1>
 
@@ -95,15 +98,42 @@ export default function DailyList() {
 
             {/* 曜日 */}
             <div className="dayButtons">
-                {days.map((day) => (
-                    <button
-                        key={day}
-                        className={`button-56 ${selectedDay === day ? "active" : ""}`}
-                        onClick={() => setSelectedDay(day)}
-                    >
-                        {day} {hasDaily(day) ? "●" : "○"}
-                    </button>
-                ))}
+                {days.map((day, index) => {
+                    const date = new Date(weekData.weekStartDate);
+                    date.setDate(date.getDate() + index);
+                    date.setHours(0, 0, 0, 0);
+
+                    const dayNumber = date.getDate();
+                    const dayLabel = day;
+
+                    const isToday =
+                        today.getTime() === date.getTime();
+
+                    const isFuture =
+                        date.getTime() > today.getTime();
+
+                    return (
+                        <button
+                            key={day}
+                            className={`dayButton 
+                                ${selectedDay === day ? "active" : ""} 
+                                ${isToday ? "today" : ""} 
+                                ${isFuture ? "future" : ""}`}
+                            onClick={() => {
+                                if (isFuture) return;   // ← ここで無効化
+                                setSelectedDay(day);
+                            }}
+                        >
+                            <span className="dayTop">
+                                {dayNumber} ({dayLabel})
+                            </span>
+
+                            <span className="dayMark">
+                                {hasDaily(day) ? "●" : "○"}
+                            </span>
+                        </button>
+                    );
+                })}
             </div>
 
             {/* カード */}
@@ -172,6 +202,6 @@ export default function DailyList() {
                     </>
                 )}
             </div>
-        </div>
+        </>
     );
 }

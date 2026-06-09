@@ -19,16 +19,33 @@
 /* 曜日ボタン（画面固有なので残す） */
 .dayButtons {
     display: flex;
+    flex-direction: row;
     gap: 10px;
     margin-bottom: 20px;
+
+    overflow-x: auto;
+    /* スマホ対策（横スクロールOK） */
+    white-space: nowrap;
 }
 
 .dayButton {
-    padding: 6px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
+    padding: 8px 10px;
     border: none;
     border-radius: 8px;
     background: #e5e7eb;
     cursor: pointer;
+    min-width: 60px;
+    transition: 0.2s;
+}
+
+.dayButton:hover {
+    background: #d1d5db;
 }
 
 .dayButton.active {
@@ -36,6 +53,43 @@
     color: white;
 }
 
+.dayDate {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.dayName {
+    font-size: 12px;
+}
+
+.dayMark {
+    font-size: 12px;
+}
+
+/* 今日 */
+.dayButton.today {
+    border: 2px solid #f59e0b;
+    box-shadow: 0 0 6px #fbbf24;
+}
+
+/* 未来 */
+.dayButton.future {
+    background: #f3f4f6;
+    color: #9ca3af;
+    opacity: 0.7;
+}
+
+/* 未来はホバーしても変化させない */
+.dayButton.future:hover {
+    background: #f3f4f6;
+    box-shadow: none;
+    transform: none;
+}
+
+.dayButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
 
 .actions {
     display: flex;
