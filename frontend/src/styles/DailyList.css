@@ -19,23 +19,77 @@
 /* 曜日ボタン（画面固有なので残す） */
 .dayButtons {
     display: flex;
+    flex-direction: row;
     gap: 10px;
     margin-bottom: 20px;
+
+    overflow-x: auto;
+    /* スマホ対策（横スクロールOK） */
+    white-space: nowrap;
 }
 
 .dayButton {
-    padding: 6px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
+    padding: 8px 10px;
     border: none;
     border-radius: 8px;
     background: #e5e7eb;
     cursor: pointer;
+    min-width: 60px;
+    transition: 0.2s;
+}
+
+.dayButton:hover {
+    background: #d1d5db;
 }
 
 .dayButton.active {
-    background: #2563eb;
+    background: #FFBC61;
     color: white;
 }
 
+.dayDate {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.dayName {
+    font-size: 12px;
+}
+
+.dayMark {
+    font-size: 12px;
+}
+
+/* 今日 */
+.dayButton.today {
+    border: 2px solid #f59e0b;
+    box-shadow: 0 0 6px #fbbf24;
+}
+
+/* 未来 */
+.dayButton.future {
+    background: #f3f4f6;
+    color: #9ca3af;
+    opacity: 0.7;
+}
+
+/* 未来はホバーしても変化させない */
+.dayButton.future:hover {
+    background: #f3f4f6;
+    box-shadow: none;
+    transform: none;
+}
+
+.dayButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
 
 .actions {
     display: flex;
@@ -56,7 +110,7 @@
     border-bottom: 1px solid #eee;
 }
 
-.sectionTitle {
+/* .sectionTitle {
     font-weight: bold;
 }
 
@@ -67,4 +121,30 @@
 
 .sectionItem {
     margin-bottom: 12px;
+} */
+/* 項目ブロック */
+.sectionItem {
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    border-left: 3px solid #FFBC61;
+    background: #FFF4E0;
+    /* うっすら背景 */
+    border-radius: 6px;
+}
+
+/* カテゴリ名（ラベル） */
+.sectionTitle {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #F99292;
+    margin-bottom: 6px;
+}
+
+/* 内容 */
+.sectionValue {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+    white-space: pre-wrap;
 }

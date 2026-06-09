@@ -1,11 +1,34 @@
 import { useNavigate, NavLink } from "react-router-dom";
-import logoIcon from "../assets/a_clean_flat_modern_vector_icon_on_a_white_backgro.png";
+import React, { useEffect, useState } from "react";
 import "../styles/Header.css";
+import logoIcon from "../assets/a_clean_flat_modern_vector_icon_on_a_white_backgro.png";
 
 export default function Header() {
     const navigate = useNavigate();
+    const [remindIsRead, setRemindIsRead] = useState(true);
 
     const userName = localStorage.getItem("user_name");
+
+    useEffect(() => {
+        fetchData();
+    }, [location.pathname]);
+
+    const fetchData = async () => {
+        try {
+            const userId = localStorage.getItem("user_id");
+
+            const remindIsReadRes = await fetch(
+                `http://localhost:8080/api/remind/is_read/${userId}`
+            );
+            const remindIsReadData = await remindIsReadRes.json();
+            console.log(JSON.stringify(remindIsReadData, null, 2));
+
+            setRemindIsRead(remindIsReadData.isRead);
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     const handleLogout = () => {
         // localStorage.removeItem("user_id");
@@ -26,7 +49,13 @@ export default function Header() {
             <nav className="navLinks">
                 <NavLink to="/dashboard">ダッシュボード</NavLink>
                 <NavLink to="/create-report">日報作成</NavLink>
-                <NavLink to="/remind">リマインド</NavLink>
+                <NavLink to="/remind" className="navItemWithBadge">
+                    リマインド
+
+                    {!remindIsRead && (
+                        <span className="redDot" />
+                    )}
+                </NavLink>
 
                 {/* 日付付きルートは固定リンクにしにくいので例だけ */}
                 {/* 必要ならボタン遷移にする */}

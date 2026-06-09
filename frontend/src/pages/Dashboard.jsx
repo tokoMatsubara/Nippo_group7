@@ -68,11 +68,20 @@ export default function Dashboard() {
         navigate("/create-report");
     };
 
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+
+        return `${month}月${day}日`;
+    };
+
     if (loading) return <h2>Loading...</h2>;
 
     return (
-        <div className="container">
 
+        <>
             {/* ヘッダー */}
             <div className="header">
 
@@ -99,25 +108,32 @@ export default function Dashboard() {
             {/* 週一覧 */}
             <section className="section">
 
-                <h2>週一覧</h2>
+                <h2 className="weekTitle">週一覧</h2>
 
                 {weeks.map((week) => (
                     <div
                         key={week.startDate}
-                        className="button-56"
+                        className="button"
                         onClick={() => handleWeekClick(week)}
                     >
-                        <div className="weekTitle">
-                            {week.startDate} ~ {week.endDate}
+                        <div className="weekContent">
+
+                            <div className="weekTitle">
+                                {formatDate(week.startDate)} ~ {formatDate(week.endDate)}
+                            </div>
+                            <h4 className="summaryTitle">週次要約</h4>
+                            <div className="weekSummary">
+                                {week.content}
+                            </div>
+                        </div>
+                        <div className="weekArrow">
+                            ›
                         </div>
 
-                        <div className="weekSummary">
-                            {week.content}
-                        </div>
                     </div>
                 ))}
             </section>
 
-        </div>
+        </>
     );
 }

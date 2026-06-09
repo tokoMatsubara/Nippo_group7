@@ -57,7 +57,7 @@ public class RemindService {
     @Transactional
     public List<RemindResponseDto> getRemindsByUserId(Integer userId) {
         // 1. DBから生のデータを取ってくる
-        List<Remind> rawReminds = remindRepository.findByUser_UserId(userId);
+        List<Remind> rawReminds = remindRepository.findByUser_UserIdOrderByRemindIdDesc(userId);
 
         for (Remind remind : rawReminds){
 
@@ -73,8 +73,8 @@ public class RemindService {
     }
 
 
-    public ResponseEntity<RemindIsReadDto> remindIsRead(Integer userId){
-        List<Remind> reminds = remindRepository.findByUser_UserId(userId);
+    public ResponseEntity<RemindIsReadDto> remindIsRead(Long userId){
+        List<Remind> reminds = remindRepository.findByUser_UserIdOrderByRemindIdDesc(userId);
         boolean allRead = reminds.stream().allMatch(Remind::getIsRead);
         return ResponseEntity.ok(new RemindIsReadDto(allRead));
     }

@@ -18,6 +18,9 @@ public interface RemindRepository extends JpaRepository<Remind, Integer>{
     // 「毎日リマインドを送りたい（毎日レコードを作りたい）」のであれば、存在チェックに「今日の日付」も含める必要がある
     //boolean existsByUserAndRemindContentAndCreatedAtAfter(User user, String remindContent, LocalDateTime dateTime);
 
-    List<Remind> findByUser_UserId(Integer userId);
+    List<Remind> findByUser_UserIdOrderByRemindIdDesc(Long userId);
+
+
+    List<Remind> findByUser_UserId(Long userId);
     
 }

@@ -50,7 +50,7 @@ export default function Login() {
 
             <div className="loginBox card">
 
-                <h1 className="loginTitle">ログイン</h1>
+                <h1 className="loginTitle">日報ツール</h1>
 
                 <form className="loginForm" onSubmit={handleLogin}>
 
@@ -73,11 +73,15 @@ export default function Login() {
                         ログイン
                     </button>
 
-                </form>
+                    <button
+                        className="registerButton"
+                        type="button"
+                        onClick={() => navigate("/register")}
+                    >
+                        新規登録
+                    </button>
 
-                <p className="loginLink">
-                    <Link to="/register">新規登録</Link>
-                </p>
+                </form>
 
             </div>
 
