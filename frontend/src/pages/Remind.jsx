@@ -85,12 +85,6 @@ function Remind() {
 
         <h1 className="title">🔔 リマインド</h1>
 
-        <button
-          className="backButton"
-          onClick={handleClose}
-        >
-          もどる
-        </button>
       </div>
 
       {/* カード */}

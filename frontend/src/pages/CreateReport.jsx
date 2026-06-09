@@ -236,9 +236,6 @@ function CreateReport() {
         <div>
           <h1 className="title">日報{editDaily ? "編集" : "作成"}</h1>
         </div>
-        <div>
-          <button className="backButton" onClick={() => navigate(-1)}>もどる</button>
-        </div>
       </header>
 
       <div>
