@@ -49,12 +49,14 @@
 
 /* テキスト */
 .weekTitle {
+    font-size: 25px;
     font-weight: bold;
-    margin-bottom: 4px;
+    margin-bottom: 1px;
     color: #333;
 }
 
 .summaryTitle {
+    font-size: 20px;
     font-weight: 500;
     color: #F99292;
     margin-bottom: 4px;
