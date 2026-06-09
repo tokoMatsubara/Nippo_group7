@@ -185,6 +185,7 @@
     transition: 0.5s;
     margin-bottom: 30px;
     padding: 16px;
+    user-select: none;
 }
 
 .button-image {
