@@ -20,7 +20,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -61,7 +60,7 @@ public class UserController {
             
             System.out.println(authentication.getName());
 
-            ResponseCookie mail = ResponseCookie.from("email", authentication.getName())
+            ResponseCookie mail = ResponseCookie.from("token", authentication.getName())
             .httpOnly(true).secure(false).path("/")
             .maxAge(Duration.ofHours(1)).sameSite("Strict").build();
         

@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,7 +27,6 @@ import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Entity.WeeklySummary;
 import com.daily_app.demo.Event.WeeklySummaryEvent;
 import com.daily_app.demo.Repository.CategoryRepository;
-import com.daily_app.demo.Repository.UserRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
 
 @Service
@@ -41,11 +39,7 @@ public class DailyCrudService {
     // @Autowired
     // private DailyDetailRepository dailyDetailRepository;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private CategoryRepository categoryRepository;
-    @Autowired
-    private WeeklySummaryService weeklySummaryService;
 
     @Autowired
     private DailySummaryService dailySummaryService;

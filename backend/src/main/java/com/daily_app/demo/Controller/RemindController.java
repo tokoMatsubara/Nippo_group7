@@ -8,14 +8,12 @@ package com.daily_app.demo.Controller;
 
 import com.daily_app.demo.Dto.Response.RemindIsReadDto;
 import com.daily_app.demo.Dto.Response.RemindResponseDto;
-import com.daily_app.demo.Entity.Remind;
 import com.daily_app.demo.Service.RemindService;
 import com.daily_app.demo.config.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

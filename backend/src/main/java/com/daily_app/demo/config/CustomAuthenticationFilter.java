@@ -7,7 +7,6 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,6 +23,8 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void doFilterInternal(
@@ -33,7 +34,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
         if(cookies != null && cookies.length > 0){
             System.out.println("cookieがnullじゃない！");
             String email = Arrays.stream(cookies)
-                .filter(c -> "email".equals(c.getName()))
+                .filter(c -> "token".equals(c.getName()))
                 .map(c -> c.getValue())
                 .findFirst()
                 .orElse(null);
