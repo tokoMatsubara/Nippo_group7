@@ -39,6 +39,13 @@
     transform: translateY(-2px);
 }
 
+.weekArrow {
+    font-size: 30px;
+    color: #9ca3af;
+
+    transition: all 0.2s ease;
+}
+
 /* テキスト */
 .weekTitle {
     font-weight: bold;
@@ -46,6 +53,13 @@
     color: #111;
 }
 
+.summaryTitle {
+    font-weight: 500;
+    color: #1e3a8a;
+    margin-bottom: 4px;
+}
+
 .weekSummary {
-    color: #111;
+    color: #374151;
+    line-height: 1.75;
 }
