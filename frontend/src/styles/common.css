@@ -114,6 +114,22 @@
     background: #86efac;
 }
 
+/* 曜日ボタン */
+.dayButton {
+    padding: 6px 14px;
+    border: 2px solid #1976d2;
+    border-radius: 8px;
+    background: #e5e7eb;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dayButton.active {
+    background: #2563eb;
+    color: white;
+    box-shadow: 0 0 0 #111;
+}
+
 /* 各画面のタイトル用 */
 .header {
     display: flex;
