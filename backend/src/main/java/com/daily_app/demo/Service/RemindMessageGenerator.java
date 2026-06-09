@@ -27,38 +27,39 @@ public class RemindMessageGenerator {
      * ユーザーの日報提出状況に合わせてリマインドメッセージを生成する
      */
     public String generateMessage(User user) {
-        // 1. 昨日の日付を取得
-        LocalDate yesterday = LocalDate.now(ZONE).minusDays(1);
-
-        // 2. 昨日の日報をDBから探す
+        // 1. 前営業日の日付を取得
+        LocalDate previousBusinessDay = BusinessDayUtil.previousBusinessDay(LocalDate.now(ZONE));
+        //LocalDate previousBusinessDay = BusinessDayUtil.previousBusinessDay(LocalDate.of(2026, 6, 9));
+        // 2. 前営業日の日報をDBから探す
         // ※リポジトリに findByUserAndReportDate(User user, LocalDate date)
-        Optional<Daily> yesterdayDailyOpt = dailyRepository.findByUserAndDailyDate(user, yesterday);
+        Optional<Daily> previousBusinessDayDailyOpt = dailyRepository.findByUserAndDailyDate(user, previousBusinessDay);
         
         // 3. 日報があるかどうかでメッセージを分岐
-        if (yesterdayDailyOpt.isEmpty()) {
-            // 昨日の日報を登録していない場合
-            return yesterday + "昨日の日報がまだ提出されていません。日報を提出しましょう！";
+        if (previousBusinessDayDailyOpt.isEmpty()) {
+            // 前営業日の日報を登録していない場合
+            return previousBusinessDay + "昨日の日報がまだ提出されていません。日報を提出しましょう！";
         } else {
 
             // すでに日報を提出している
-            Daily yesterdayDaily = yesterdayDailyOpt.get();
+            Daily previousBusinessDayDaily = previousBusinessDayDailyOpt.get();
 
-            List<DailyDetail> details = yesterdayDaily.getDailyDetails();
+            List<DailyDetail> details = previousBusinessDayDaily.getDailyDetails();
 
-            String yesterdayGoal = "未設定"; // 目標がみつからなかったときの初期値
+            String previousBusinessDayGoal = "未設定"; // 目標がみつからなかったときの初期値
 
             if (details != null && !details.isEmpty()) {
                 // 💡 修正ポイント：Listの中からカテゴリIDが7の明細を探す
-                yesterdayGoal = details.stream()
+                previousBusinessDayGoal = details.stream()
                         .filter(detail -> detail.getCategory() != null && detail.getCategory().getCategoryId() == 7)
                         .map(DailyDetail::getContent)
                         .findFirst()
                         .orElse("未設定"); // カテゴリ7が見つからなかった場合のフォールバック
             }
             // 昨日の日報を登録している場合、目標を取り出してメッセージに組み込む
-            return yesterday + "の目標は「" + yesterdayGoal + "」でした。今日の日報もこの調子で提出しましょう！";
+            return previousBusinessDay + "の目標は「" + previousBusinessDayGoal + "」でした。今日の日報もこの調子で提出しましょう！";
         }
     }
+    
 }
 
     

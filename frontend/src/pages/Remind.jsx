@@ -29,7 +29,8 @@ function Remind() {
       console.log(data);
       console.log(data[0]);
 
-      const goal = data[0].remindContent;
+        const goal = data[0].remindContent;
+      
 
       setYesterdayGoal(
         goal || "昨日の目標が登録されていません"
