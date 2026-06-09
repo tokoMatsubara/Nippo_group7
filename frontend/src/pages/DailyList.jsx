@@ -82,13 +82,6 @@ export default function DailyList() {
         <div className="container">
             <div className="header">
                 <h1 className="title">日報一覧</h1>
-
-                <button
-                    className="backButton"
-                    onClick={() => navigate("/dashboard")}
-                >
-                    もどる
-                </button>
             </div>
 
             {/* 週表示 */}
