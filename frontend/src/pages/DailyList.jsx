@@ -142,7 +142,7 @@ export default function DailyList() {
 
                 {!selectedDaily ? (
                     <>
-                        <h3 className="date">{getSelectedDate()}</h3>
+                        <h3>{getSelectedDate()}</h3>
                         <p>日報はありません</p>
                         <div className="actions" style={{ justifyContent: 'center' }}>
                             <button
@@ -160,7 +160,7 @@ export default function DailyList() {
                     </>
                 ) : (
                     <>
-                        <h3 className="date">{formatDate(selectedDaily.date)}</h3>
+                        <h3>{formatDate(selectedDaily.date)}</h3>
 
                         <div className="section">
                             <div className="sectionItem">
