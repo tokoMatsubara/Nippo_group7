@@ -29,8 +29,8 @@ function Remind() {
       console.log(data);
       console.log(data[0]);
 
-        const goal = data[0].remindContent;
-      
+      const goal = data[0].remindContent;
+
 
       setYesterdayGoal(
         goal || "昨日の目標が登録されていません"
@@ -88,13 +88,13 @@ function Remind() {
 
       {/* カード */}
       <div className="card">
-        <h2>前日に立てた今日の目標</h2>
+        <h2 className="remindTitle">前日に立てた今日の目標</h2>
         <p>{yesterdayGoal}</p>
       </div>
 
       <div className="card">
 
-        <h2>リマインド通知設定</h2>
+        <h2 className="remindTitle">リマインド通知設定</h2>
 
         <label>
           <input
