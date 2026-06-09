@@ -73,7 +73,7 @@ public class RemindService {
     }
 
 
-    public ResponseEntity<RemindIsReadDto> remindIsRead(Long userId){
+    public ResponseEntity<RemindIsReadDto> remindIsRead(Integer userId){
         List<Remind> reminds = remindRepository.findByUser_UserIdOrderByRemindIdDesc(userId);
         boolean allRead = reminds.stream().allMatch(Remind::getIsRead);
         return ResponseEntity.ok(new RemindIsReadDto(allRead));
