@@ -9,15 +9,17 @@ package com.daily_app.demo.Controller;
 import com.daily_app.demo.Dto.Response.RemindIsReadDto;
 import com.daily_app.demo.Dto.Response.RemindResponseDto;
 import com.daily_app.demo.Entity.Remind;
-import com.daily_app.demo.Service.RemindService; 
+import com.daily_app.demo.Service.RemindService;
+import com.daily_app.demo.config.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -33,7 +35,9 @@ public class RemindController {
      * URL: GET /api/reminds/{user_id}
      */
     @GetMapping("/{user_id}")
-    public ResponseEntity<List<RemindResponseDto>> getUserReminds(@PathVariable("user_id") Long userId) {
+    public ResponseEntity<List<RemindResponseDto>> getUserReminds(
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Integer userId = userDetails.getId();
         System.out.println("ユーザーID: " + userId + " が通知を取りにきました。");
 
         List<RemindResponseDto> reminds = remindService.getRemindsByUserId(userId);
@@ -42,8 +46,9 @@ public class RemindController {
     }
 
     @GetMapping("/is_read/{user_id}")
-    public ResponseEntity<RemindIsReadDto> getMethodName(@PathVariable("user_id") Long userId) {
-        return remindService.remindIsRead(userId);
+    public ResponseEntity<RemindIsReadDto> getMethodName(
+        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return remindService.remindIsRead(userDetails.getId());
     }
     
 }

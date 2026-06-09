@@ -68,7 +68,7 @@ public class Daily {
     public Integer getDailyId() {
         return dailyId;
     }
-    public User getUserId() {
+    public User getUser() {
         return user;
     }
 

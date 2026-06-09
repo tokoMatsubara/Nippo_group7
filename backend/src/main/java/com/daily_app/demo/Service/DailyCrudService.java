@@ -119,14 +119,9 @@ public class DailyCrudService {
     // #region
 
     @Transactional
-    public Map<String, String> reportDaily(ReportRequestDto reportRequest) {
-        User user = userRepository.findById(reportRequest.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found: " + reportRequest.getUserId()));
+    public Map<String, String> reportDaily(User user, ReportRequestDto reportRequest) {
         Integer userId = user.getUserId();
         Daily daily = new Daily(user, reportRequest.getDate());
-
-        Optional<WeeklySummary> weeklySummary = weeklySummaryRepository.findByUserIdAndWeekStartDate(userId,
-                reportRequest.getDate());
 
         List<DailyDetail> details = new ArrayList<DailyDetail>();
 
@@ -159,10 +154,10 @@ public class DailyCrudService {
     // report=============================================================
     // #region
     @Transactional
-    public Map<String, String> updateDaily(ReportUpdateRequestDto updateRequest) {
+    public Map<String, String> updateDaily(User user, ReportUpdateRequestDto updateRequest) {
         Daily daily = dailyRepository.findById(updateRequest.getDailyId())
                 .orElseThrow(() -> new RuntimeException("Daily not found: " + updateRequest.getDailyId()));
-        Integer userId = daily.getUserId().getUserId();
+        Integer userId = user.getUserId();
         LocalDate date = daily.getDailyDate();
         List<DailyDetail> details = daily.getDailyDetails();
 
@@ -177,8 +172,11 @@ public class DailyCrudService {
         daily.setDailyDetails(details);
 
         try {
+            if(userId != daily.getUser().getUserId()){
+                throw new Exception("違うユーザーの日報を更新しようとしています。");
+            }
             dailyRepository.save(daily);
-        } catch (DataIntegrityViolationException e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の更新に失敗しました");
         }
@@ -194,12 +192,15 @@ public class DailyCrudService {
     // report=============================================================
     // #region
     @Transactional
-    public Map<String, String> deleteDaily(Integer dailyId) {
+    public Map<String, String> deleteDaily(User user, Integer dailyId) {
         Daily daily = dailyRepository.findById(dailyId)
                 .orElseThrow(() -> new RuntimeException("Daily not found: " + dailyId));
-        Integer userId = daily.getUserId().getUserId();
+        Integer userId = user.getUserId();
         LocalDate date = daily.getDailyDate();
         try {
+            if(userId != daily.getUser().getUserId()){
+                throw new Exception("違うユーザーの日報を削除しようとしています。");
+            }
             dailyRepository.deleteById(dailyId);
         } catch (Exception e) {
             System.err.println(e.getMessage());

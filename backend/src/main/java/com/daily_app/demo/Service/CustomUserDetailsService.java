@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Repository.UserRepository;
+import com.daily_app.demo.config.CustomUserDetails;
 
 // ユーザー認証に用いる専用のUserDetailsを作る
 @Service
@@ -17,15 +18,11 @@ public class CustomUserDetailsService implements UserDetailsService{
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email){
+    public CustomUserDetails loadUserByUsername(String email){
         User user = userRepository.findByMailAddress(email).orElseThrow(() -> 
             new UsernameNotFoundException("User not found" + email)
         );
 
-        return org.springframework.security.core.userdetails.User.builder()
-            .username(user.getUserName())
-            .password(user.getPassword())
-            .authorities("ROLE_USER")
-            .build();
+        return new CustomUserDetails(user);
     }
 }

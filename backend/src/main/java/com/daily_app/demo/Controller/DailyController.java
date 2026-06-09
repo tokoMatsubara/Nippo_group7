@@ -1,6 +1,7 @@
 package com.daily_app.demo.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
@@ -9,7 +10,7 @@ import com.daily_app.demo.Dto.Response.DailyResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 import com.daily_app.demo.Service.DailyCrudService;
 // import com.daily_app.demo.Service.DailySummaryService;
-
+import com.daily_app.demo.config.CustomUserDetails;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -25,32 +26,35 @@ public class DailyController {
     // @Autowired
     // private DailySummaryService dailySummaryService;
 
-    @GetMapping("/weekly_list/{user_id}")
-    public WeeklyListResponseDto getWeeklyList(@PathVariable Integer user_id) {
-        return dailyCrud.weeklyListResponse(user_id);
+    @GetMapping("/weekly_list")
+    public WeeklyListResponseDto getWeeklyList(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return dailyCrud.weeklyListResponse(userDetails.getId());
     }
 
-    @GetMapping("/daily/{userId}/{startDate}/{endDate}")
+    @GetMapping("/daily/{startDate}/{endDate}")
     public DailyResponseDto getDaily(
-            @PathVariable Integer userId,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable LocalDate startDate,
             @PathVariable LocalDate endDate) {
-        return dailyCrud.dailyResponse(userId, startDate, endDate);
+        return dailyCrud.dailyResponse(userDetails.getId(), startDate, endDate);
     }
 
     @PostMapping("/report")
-    public Map<String, String> createReport(@RequestBody ReportRequestDto request) {
-        return dailyCrud.reportDaily(request);
+    public Map<String, String> createReport(
+        @AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ReportRequestDto request) {
+        return dailyCrud.reportDaily(userDetails.getUser(), request);
     }
 
     @PutMapping("/update")
-    public Map<String, String> updateReport(@RequestBody ReportUpdateRequestDto request) {
-        return dailyCrud.updateDaily(request);
+    public Map<String, String> updateReport(
+        @AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ReportUpdateRequestDto request) {
+        return dailyCrud.updateDaily(userDetails.getUser(), request);
     }
 
     @DeleteMapping("/delete/{daily_id}")
-    public Map<String, String> deleteReport(@PathVariable Integer daily_id) {
-        return dailyCrud.deleteDaily(daily_id);
+    public Map<String, String> deleteReport(
+        @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Integer daily_id) {
+        return dailyCrud.deleteDaily(userDetails.getUser(), daily_id);
     }
 
     // @PostMapping("/summary")

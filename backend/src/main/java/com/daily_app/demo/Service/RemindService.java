@@ -55,7 +55,7 @@ public class RemindService {
      * 指定されたユーザーIDの通知を、Dtoの形に詰め替えて返す
      */
     @Transactional
-    public List<RemindResponseDto> getRemindsByUserId(Long userId) {
+    public List<RemindResponseDto> getRemindsByUserId(Integer userId) {
         // 1. DBから生のデータを取ってくる
         List<Remind> rawReminds = remindRepository.findByUser_UserId(userId);
 
@@ -73,7 +73,7 @@ public class RemindService {
     }
 
 
-    public ResponseEntity<RemindIsReadDto> remindIsRead(Long userId){
+    public ResponseEntity<RemindIsReadDto> remindIsRead(Integer userId){
         List<Remind> reminds = remindRepository.findByUser_UserId(userId);
         boolean allRead = reminds.stream().allMatch(Remind::getIsRead);
         return ResponseEntity.ok(new RemindIsReadDto(allRead));

@@ -13,7 +13,7 @@ export default function Login() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8080/api/login", {
+            const res = await fetch("http://localhost:8080/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -21,7 +21,8 @@ export default function Login() {
                 body: JSON.stringify({
                     mail_address: email,
                     password: password
-                })
+                }),
+                credentials: "include"
             });
 
             if (!res.ok) {
@@ -34,7 +35,7 @@ export default function Login() {
 
             console.log("ログイン成功:", data);
 
-            localStorage.setItem("user_id", data.userId);
+            // localStorage.setItem("user_id", data.userId);
             localStorage.setItem("user_name", data.userName);
 
             navigate("/dashboard");
