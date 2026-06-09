@@ -32,19 +32,20 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
         throws ServletException, IOException{
         Cookie cookies[] = request.getCookies();
         if(cookies != null && cookies.length > 0){
-            System.out.println("cookieがnullじゃない！");
-            String email = Arrays.stream(cookies)
+            System.out.println("cookieがnullじゃない!");
+            String token = Arrays.stream(cookies)
                 .filter(c -> "token".equals(c.getName()))
                 .map(c -> c.getValue())
                 .findFirst()
                 .orElse(null);
             
-            CustomUserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            String mailAddress = jwtTokenProvider.getMailAddress(token);
+            CustomUserDetails userDetails = userDetailsService.loadUserByUsername(mailAddress);
                 
-            UsernamePasswordAuthenticationToken token = 
+            UsernamePasswordAuthenticationToken userToken = 
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             
-            SecurityContextHolder.getContext().setAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(userToken);
         }
         System.out.println("カスタムフィルター終了");
 

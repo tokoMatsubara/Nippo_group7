@@ -4,10 +4,9 @@ package com.daily_app.demo.Controller;
 import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
-import com.daily_app.demo.Repository.UserRepository;
-import com.daily_app.demo.Service.CallLlmService;
 import com.daily_app.demo.Service.UserService;
 import com.daily_app.demo.config.CustomUserDetails;
+import com.daily_app.demo.config.JwtTokenProvider;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -35,6 +34,8 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
     /**
      * API-006: ユーザー登録
@@ -58,13 +59,13 @@ public class UserController {
             Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(requestDto.getMailAddress(), requestDto.getPassword()));
             
-            System.out.println(authentication.getName());
+            String token = tokenProvider.generateToken(authentication.getName());
 
-            ResponseCookie mail = ResponseCookie.from("token", authentication.getName())
-            .httpOnly(true).secure(false).path("/")
-            .maxAge(Duration.ofHours(1)).sameSite("Strict").build();
+            ResponseCookie cookie = ResponseCookie.from("token", token)
+                .httpOnly(true).secure(false).path("/")
+                .maxAge(Duration.ofHours(1)).sameSite("Strict").build();
         
-            response.addHeader(HttpHeaders.SET_COOKIE, mail.toString());
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
             return userService.login(requestDto);
         }catch(Exception e){
             System.err.println(e.getMessage());

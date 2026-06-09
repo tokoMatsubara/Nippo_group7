@@ -27,21 +27,21 @@ public class JwtTokenProvider {
         this.expirationMs = expirationMs;
     }
 
-    /** username からトークンを生成 */
-    public String generateToken(String username) {
+    /** mailAddress からトークンを生成 */
+    public String generateToken(String mailAddress) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expirationMs);
 
         return Jwts.builder()
-                .subject(username)          // sub クレーム
+                .subject(mailAddress)          // sub クレーム
                 .issuedAt(now)              // iat
                 .expiration(expiry)         // exp
                 .signWith(key)              // 署名（アルゴリズムは鍵から自動判定）
                 .compact();
     }
 
-    /** トークンから username を取り出す */
-    public String getUsername(String token) {
+    /** トークンから mailAddress を取り出す */
+    public String getMailAddress(String token) {
         return parseClaims(token).getSubject();
     }
 
