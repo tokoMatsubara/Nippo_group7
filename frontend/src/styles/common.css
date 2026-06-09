@@ -13,7 +13,7 @@
     padding-left: 0px;
     padding-right: 0px;
     padding-bottom: 20px;
-    background-color: #E9F1F8;
+    background-color: #FFF4E0;
 
 }
 
@@ -118,7 +118,7 @@
 
 /* 各画面のタイトル用 */
 .header {
-    
+
     width: 100%;
     min-height: 180px;
     /* ← 高さを大きく */
@@ -132,7 +132,7 @@
     position: relative;
     overflow: hidden;
 
-    background-image: url("../assets/blue.png");
+    background-image: url("../assets/orange.png");
     background-size: cover;
     background-position: center;
 }
