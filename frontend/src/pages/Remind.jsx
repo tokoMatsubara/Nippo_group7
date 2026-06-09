@@ -27,7 +27,7 @@ function Remind() {
       const data = await response.json();
 
       console.log(data);
-      // console.log(data[0]);
+      console.log(data[0]);
 
         const goal = data[0].remindContent;
       
