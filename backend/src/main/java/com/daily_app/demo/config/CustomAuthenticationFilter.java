@@ -6,10 +6,8 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -38,11 +36,6 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
                 .map(c -> c.getValue())
                 .findFirst()
                 .orElse(null);
-            String password = Arrays.stream(cookies)
-                .filter(c -> "password".equals(c.getName()))
-                .map(c -> c.getValue())
-                .findFirst()
-                .orElse(null);  
             
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                 
