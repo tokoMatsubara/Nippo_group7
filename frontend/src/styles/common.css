@@ -14,25 +14,25 @@
     padding-right: 0px;
     padding-bottom: 20px;
     background-color: #E9F1F8;
-    
+
 }
 
 /* 共通ボタン（青統一） */
 .primaryButton {
     padding: 10px 14px;
-    background: #2563eb;
-    color: white;
-    border: 2px solid #111;
+    background: #FFC679;
+    color: #333;
+    border: 2px solid #333;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    box-shadow: 2px 2px 0 #111;
+    box-shadow: 2px 2px 0 #333;
     transition: box-shadow 0.2s ease, transform 0.2s ease
 }
 
 .primaryButton:hover {
-    background: #1d4ed8;
-    box-shadow: 0 0 0 #111;
+    background: #FFC679;
+    box-shadow: 0 0 0 #333;
     outline: 0;
 }
 
@@ -45,18 +45,18 @@
 /* 戻るボタン（統一） */
 .backButton {
     padding: 10px 14px;
-    color: #111;
-    border: 2px solid #111;
+    color: #333;
+    border: 2px solid #333;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    box-shadow: 2px 2px 0 #111;
+    box-shadow: 2px 2px 0 #333;
     transition: box-shadow 0.2s ease, transform 0.2s ease
 }
 
 .backButton:hover {
     background: #8b909a;
-    box-shadow: 0 0 0 #111;
+    box-shadow: 0 0 0 #333;
     outline: 0;
 }
 
@@ -69,19 +69,19 @@
 /* アラートボタン（赤統一）*/
 .dangerButton {
     padding: 10px 14px;
-    background: #ef4444;
-    color: white;
-    border: 2px solid #111;
+    background: #F99292;
+    color: #333;
+    border: 2px solid #333;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    box-shadow: 2px 2px 0 #111;
+    box-shadow: 2px 2px 0 #333;
     transition: box-shadow 0.2s ease, transform 0.2s ease
 }
 
 .dangerButton:hover {
-    background: #dc2626;
-    box-shadow: 0 0 0 #111;
+    background: #f98b8b;
+    box-shadow: 0 0 0 #333;
     outline: 0;
 }
 
@@ -94,26 +94,26 @@
 /* 追加ボタン（緑統一）*/
 .addButton {
     padding: 10px 14px;
-    background: #22c55e;
-    color: white;
-    border: 2px solid #111;
+    background: #FFC679;
+    color: #333;
+    border: 2px solid #333;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    box-shadow: 2px 2px 0 #111;
+    box-shadow: 2px 2px 0 #333;
     transition: box-shadow 0.2s ease, transform 0.2s ease
 }
 
 .addButton:hover {
-    background: #16a34a;
-    box-shadow: 0 0 0 #111;
+    background: #fabd6f;
+    box-shadow: 0 0 0 #333;
     outline: 0;
 }
 
 .addButton:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    background: #86efac;
+    background: #FFC679;
 }
 
 /* 各画面のタイトル用 */
@@ -150,9 +150,9 @@
     text-align: left;
     position: relative;
     word-wrap: break-word;
-    background-color: #fff;
+    background-color: #FFF4E0;
     background-clip: border-box;
-    border: 2px solid #1976d2;
+    border: 5px solid #FFC679;
     border-radius: 0.25rem;
     box-shadow: 0 10px 20px #ccc;
     color: #333;
@@ -187,9 +187,9 @@
     text-align: left;
     position: relative;
     word-wrap: break-word;
-    background-color: #fff;
+    background-color: #FFF4E0;
     background-clip: border-box;
-    border: 2px solid #1976d2;
+    border: 5px solid #FFC679;
     border-radius: 0.25rem;
     box-shadow: 0 10px 20px #ccc;
     color: #333;

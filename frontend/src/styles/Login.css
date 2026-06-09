@@ -41,7 +41,7 @@
 
 /* フォーカス */
 .loginInput:focus {
-    border-color: #2563eb;
+    border-color: #F6B352;
 }
 
 /* リンク */
@@ -51,7 +51,7 @@
 }
 
 .loginLink a {
-    color: #2563eb;
+    color: #F6B352;
     text-decoration: none;
 }
 
@@ -65,7 +65,7 @@
     border: none;
     border-radius: 12px;
     /* ← 角をより丸く */
-    background: #F6B352;
+    background: #F99292;
     /* ← 青 */
     color: white;
     font-weight: bold;
@@ -74,25 +74,6 @@
 }
 
 .loginButton:hover {
-    background: #F6B352;
-    transform: translateY(-1px);
-}
-
-/* 新規登録ボタン */
-.registerButton {
-    padding: 10px;
-    border: none;
-    border-radius: 12px;
-    /* ← 角をより丸く */
-    background: #F68655;
-    /* ← 青 */
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.registerButton:hover {
-    background: #F68655;
+    background: #fa8a8a;
     transform: translateY(-1px);
 }
