@@ -43,8 +43,7 @@
 /* 戻るボタン（統一） */
 .backButton {
     padding: 10px 14px;
-    background: #9ca3af;
-    color: white;
+    color: #111;
     border: 2px solid #111;
     border-radius: 6px;
     cursor: pointer;
