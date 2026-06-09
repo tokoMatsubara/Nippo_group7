@@ -28,8 +28,8 @@ public class RemindMessageGenerator {
      */
     public String generateMessage(User user) {
         // 1. 前営業日の日付を取得
-        //LocalDate previousBusinessDay = BusinessDayUtil.previousBusinessDay(LocalDate.now(ZONE));
-        LocalDate previousBusinessDay = BusinessDayUtil.previousBusinessDay(LocalDate.of(2026, 6, 9));
+        LocalDate previousBusinessDay = BusinessDayUtil.previousBusinessDay(LocalDate.now(ZONE));
+        //LocalDate previousBusinessDay = BusinessDayUtil.previousBusinessDay(LocalDate.of(2026, 6, 9));
         // 2. 前営業日の日報をDBから探す
         // ※リポジトリに findByUserAndReportDate(User user, LocalDate date)
         Optional<Daily> previousBusinessDayDailyOpt = dailyRepository.findByUserAndDailyDate(user, previousBusinessDay);
