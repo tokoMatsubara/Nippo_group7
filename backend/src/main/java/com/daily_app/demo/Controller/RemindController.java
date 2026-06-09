@@ -43,7 +43,7 @@ public class RemindController {
         return ResponseEntity.ok(reminds);
     }
 
-    @GetMapping("/is_read/{user_id}")
+    @GetMapping("/is_read")
     public ResponseEntity<RemindIsReadDto> getMethodName(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return remindService.remindIsRead(userDetails.getId());
