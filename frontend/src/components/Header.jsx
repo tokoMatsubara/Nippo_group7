@@ -15,11 +15,13 @@ export default function Header() {
 
     const fetchData = async () => {
         try {
-            const userId = localStorage.getItem("user_id");
+            // const userId = localStorage.getItem("user_id");
 
             const remindIsReadRes = await fetch(
-                `http://localhost:8080/api/remind/is_read/${userId}`
-            );
+                `http://localhost:8080/api/remind/is_read`, {
+                    method: "GET",
+                    credentials: "include"
+            });
             const remindIsReadData = await remindIsReadRes.json();
             console.log(JSON.stringify(remindIsReadData, null, 2));
 

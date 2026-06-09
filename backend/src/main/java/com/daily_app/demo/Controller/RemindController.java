@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-@RequestMapping("/api/remind") 
+@RequestMapping("/api") 
 @CrossOrigin(origins = "http://localhost:5173") 
 public class RemindController {
 
@@ -32,7 +32,7 @@ public class RemindController {
      * API: ログインしているユーザーの通知一覧を取得する
      * URL: GET /api/reminds/{user_id}
      */
-    @GetMapping("/")
+    @GetMapping("/remind")
     public ResponseEntity<List<RemindResponseDto>> getUserReminds(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         Integer userId = userDetails.getId();
@@ -43,7 +43,7 @@ public class RemindController {
         return ResponseEntity.ok(reminds);
     }
 
-    @GetMapping("/is_read")
+    @GetMapping("/remind/is_read")
     public ResponseEntity<RemindIsReadDto> getMethodName(
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         return remindService.remindIsRead(userDetails.getId());
