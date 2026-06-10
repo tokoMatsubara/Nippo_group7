@@ -22,6 +22,7 @@
     font-size: 22px;
     margin-bottom: 20px;
     font-weight: bold;
+    color: #F99292;
 }
 
 /* フォーム */
@@ -50,7 +51,7 @@
 }
 
 .registerLink a {
-    color: #2563eb;
+    color: #4C4C4C;
     text-decoration: none;
 }
 
@@ -64,7 +65,7 @@
     border: none;
     border-radius: 12px;
     /* ← 角をより丸く */
-    background: #2563eb;
+    background: #FFC679;
     /* ← 青 */
     color: white;
     font-weight: bold;
@@ -73,6 +74,6 @@
 }
 
 .registerButton:hover {
-    background: #1d4ed8;
+    background: #f8be72;
     transform: translateY(-1px);
 }

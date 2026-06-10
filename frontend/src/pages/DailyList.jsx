@@ -24,9 +24,12 @@ export default function DailyList() {
 
     // BackendへのAPI
     const fetchData = async () => {
-        const userId = localStorage.getItem("user_id");
+        // const userId = localStorage.getItem("user_id");
 
-        const response = await fetch(`http://localhost:8080/api/daily/${userId}/${params.startDate}/${params.endDate}`);
+        const response = await fetch(`http://localhost:8080/api/daily/${params.startDate}/${params.endDate}`, {
+            method: "GET",
+            credentials: "include"
+        });
         const data = await response.json();
         setWeekData(data);
         console.log(data);
@@ -59,6 +62,7 @@ export default function DailyList() {
         try {
             const res = await fetch(`http://localhost:8080/api/delete/${selectedDaily.dailyId}`, {
                 method: 'DELETE',
+                credentials: "include"
             });
 
             if (res.ok) {
@@ -68,6 +72,8 @@ export default function DailyList() {
                 const err = await res.json().catch(() => ({}));
                 console.error('delete error', err);
                 alert('削除に失敗しました');
+                alert('ログインしなおして下さい');
+                navigate("/login");
             }
         } catch (e) {
             console.error(e);
@@ -142,7 +148,7 @@ export default function DailyList() {
 
                 {!selectedDaily ? (
                     <>
-                        <h3 className="date">{getSelectedDate()}</h3>
+                        <h3>{getSelectedDate()}</h3>
                         <p>日報はありません</p>
                         <div className="actions" style={{ justifyContent: 'center' }}>
                             <button
@@ -160,7 +166,7 @@ export default function DailyList() {
                     </>
                 ) : (
                     <>
-                        <h3 className="date">{formatDate(selectedDaily.date)}</h3>
+                        <h3>{formatDate(selectedDaily.date)}</h3>
 
                         <div className="section">
                             <div className="sectionItem">
@@ -173,8 +179,8 @@ export default function DailyList() {
 
 
                             {/* 詳細 */}
-                            {selectedDaily.contents.map((item) => (
-                                <div key={item.categoryId} className="sectionItem">
+                            {selectedDaily.contents.map((item, index) => (
+                                <div key={index} className="sectionItem">
                                     <strong className="sectionTitle">
                                         {item.categoryName}
                                     </strong>

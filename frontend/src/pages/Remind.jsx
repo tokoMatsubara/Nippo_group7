@@ -13,7 +13,7 @@ function Remind() {
 
   const fetchYesterdayGoal = async () => {
     try {
-      const userId = localStorage.getItem("user_id");
+      // const userId = localStorage.getItem("user_id");
 
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
@@ -21,16 +21,18 @@ function Remind() {
       const dateStr = yesterday.toISOString().split("T")[0];
 
       const response = await fetch(
-        `http://localhost:8080/api/remind/${userId}`
-      );
+        `http://localhost:8080/api/remind`, {
+          method: "GET",
+          credentials: "include"
+      });
 
       const data = await response.json();
 
       console.log(data);
       console.log(data[0]);
 
-        const goal = data[0].remindContent;
-      
+      const goal = data[0].remindContent;
+
 
       setYesterdayGoal(
         goal || "昨日の目標が登録されていません"
@@ -38,7 +40,7 @@ function Remind() {
 
     } catch (error) {
       console.error(error);
-      setYesterdayGoal("取得に失敗しました");
+      setYesterdayGoal("取得に失敗しました");  
     }
   };
 
@@ -88,13 +90,13 @@ function Remind() {
 
       {/* カード */}
       <div className="card">
-        <h2>前日に立てた今日の目標</h2>
+        <h2 className="remindTitle">前日に立てた今日の目標</h2>
         <p>{yesterdayGoal}</p>
       </div>
 
       <div className="card">
 
-        <h2>リマインド通知設定</h2>
+        <h2 className="remindTitle">リマインド通知設定</h2>
 
         <label>
           <input

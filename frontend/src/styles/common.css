@@ -14,7 +14,7 @@
     padding-right: 0px;
     padding-bottom: 20px;
     background-color: var(--primary4);
-    
+
 }
 
 /* 共通ボタン（青統一） */
@@ -26,7 +26,7 @@
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    box-shadow: 2px 2px 0 #111;
+    box-shadow: 2px 2px 0 #333;
     transition: box-shadow 0.2s ease, transform 0.2s ease
 }
 
@@ -45,18 +45,19 @@
 /* 戻るボタン（統一） */
 .backButton {
     padding: 10px 14px;
-    color: #111;
-    border: 2px solid #111;
+    color: #333;
+    border: 2px solid #333;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    box-shadow: 2px 2px 0 #111;
-    transition: box-shadow 0.2s ease, transform 0.2s ease
+    box-shadow: 2px 2px 0 #333;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    background: #9e9d9d;
 }
 
 .backButton:hover {
     background: #8b909a;
-    box-shadow: 0 0 0 #111;
+    box-shadow: 0 0 0 #333;
     outline: 0;
 }
 
@@ -69,19 +70,19 @@
 /* アラートボタン（赤統一）*/
 .dangerButton {
     padding: 10px 14px;
-    background: #ef4444;
-    color: white;
-    border: 2px solid #111;
+    background: #F99292;
+    color: #333;
+    border: 2px solid #333;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    box-shadow: 2px 2px 0 #111;
+    box-shadow: 2px 2px 0 #333;
     transition: box-shadow 0.2s ease, transform 0.2s ease
 }
 
 .dangerButton:hover {
-    background: #dc2626;
-    box-shadow: 0 0 0 #111;
+    background: #f98b8b;
+    box-shadow: 0 0 0 #333;
     outline: 0;
 }
 
@@ -94,31 +95,31 @@
 /* 追加ボタン（緑統一）*/
 .addButton {
     padding: 10px 14px;
-    background: #22c55e;
-    color: white;
-    border: 2px solid #111;
+    background: #FFC679;
+    color: #333;
+    border: 2px solid #333;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
-    box-shadow: 2px 2px 0 #111;
+    box-shadow: 2px 2px 0 #333;
     transition: box-shadow 0.2s ease, transform 0.2s ease
 }
 
 .addButton:hover {
-    background: #16a34a;
-    box-shadow: 0 0 0 #111;
+    background: #fabd6f;
+    box-shadow: 0 0 0 #333;
     outline: 0;
 }
 
 .addButton:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    background: #86efac;
+    background: #FFC679;
 }
 
 /* 各画面のタイトル用 */
 .header {
-    
+
     width: 100%;
     min-height: 180px;
     /* ← 高さを大きく */
@@ -139,6 +140,7 @@
 .title {
     font-size: 40px;
     font-weight: bold;
+    color: #333;
 }
 
 /* .container {

@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-import java.util.Map;
 import java.util.Optional;
-import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -21,13 +19,10 @@ import com.daily_app.demo.Entity.Daily;
 import com.daily_app.demo.Entity.DailyDetail;
 import com.daily_app.demo.Entity.DailySummary;
 import com.daily_app.demo.Entity.WeeklySummary;
-import com.daily_app.demo.Event.WeeklySummaryEvent;
 import com.daily_app.demo.Repository.DailyDetailRepository;
 import com.daily_app.demo.Repository.DailyRepository;
 import com.daily_app.demo.Repository.WeeklySummaryRepository;
-import org.springframework.context.ApplicationEventPublisher;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class WeeklySummaryService {
@@ -43,8 +38,6 @@ public class WeeklySummaryService {
     @Autowired
     private DailyRepository dailyRepository;
 
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
 
     WeeklySummaryService(WeeklySummaryRepository weeklySummaryRepository) {
         this.weeklySummaryRepository = weeklySummaryRepository;

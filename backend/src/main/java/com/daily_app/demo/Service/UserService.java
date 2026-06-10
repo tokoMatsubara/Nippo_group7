@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
@@ -23,7 +23,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     //パスワードのハッシュ化
-    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
 
     //ユーザー登録ロジック=================================================================
@@ -67,8 +68,6 @@ public class UserService {
 
     public ResponseEntity<LoginResponseDto> login(LoginRequestDto requestDto) {
 
-        System.out.println("--- ログイン認証 本稼働 ---");
-
         // 1. 入力されたメールアドレスでDBを検索
         Optional<User> userOpt = userRepository.findByMailAddress(requestDto.getMailAddress());
 
@@ -82,7 +81,6 @@ public class UserService {
                 LoginResponseDto response = new LoginResponseDto(
                         true,
                         "ログインに成功しました",
-                        user.getUserId(),
                         user.getUserName());
                 return ResponseEntity.ok(response);
             }
@@ -98,12 +96,12 @@ public class UserService {
 
     //リマインド設定ロジック=================================================================
 
-    public ResponseEntity<Map<String, Object>> updateRemindSettings(Integer userId) {
-        System.out.println("ユーザーID: " + userId + " のリマインド設定を更新します（※ここはまだモック状態です）");
+    public ResponseEntity<Map<String, Object>> updateRemindSettings(User user) {
+        System.out.println("ユーザーID: " + user.getUserId() + " のリマインド設定を更新します");
 
         Map<String, Object> response = new HashMap<>();
         response.put("status", "success");
-        response.put("message", "ユーザーID: " + userId + " のリマインド設定を登録しました（モック）");
+        response.put("message", "リマインド設定を登録しました");
 
         return ResponseEntity.ok(response);
     }

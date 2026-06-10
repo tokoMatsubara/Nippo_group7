@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ReportRequestDto {
 
-    private Integer userId;
+    // private Integer userId;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
@@ -15,14 +15,6 @@ public class ReportRequestDto {
     private List<ContentDto> contents;
 
     public ReportRequestDto() {
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public LocalDate getDate() {
