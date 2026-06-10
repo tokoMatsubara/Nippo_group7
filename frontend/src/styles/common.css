@@ -158,6 +158,11 @@
     background-position: center;
 }
 
+.headerTop {
+    display: flex;
+    align-items: center;
+}
+
 .title {
     font-size: 40px;
     font-weight: bold;
