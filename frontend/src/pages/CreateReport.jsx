@@ -132,8 +132,8 @@ function CreateReport() {
         // const userId = localStorage.getItem("user_id");
         const response = await fetch(
           `${API_BASE}/daily/${weekStartStr}/${weekEndStr}`, {
-            method: "GET",
-            credentials: "include"
+          method: "GET",
+          credentials: "include"
         });
         const data = await response.json();
 
@@ -313,6 +313,10 @@ function CreateReport() {
         <div className="submit-area">
           <button className="primaryButton" type="button" onClick={handleSubmit}>
             保存
+          </button>
+
+          <button className="backButton" type="button" onClick={() => navigate(-1)}>
+            キャンセル
           </button>
         </div>
 

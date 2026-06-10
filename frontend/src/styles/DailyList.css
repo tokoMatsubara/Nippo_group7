@@ -49,7 +49,7 @@
 }
 
 .dayButton.active {
-    background: #FFBC61;
+    background: var(--primary2);
     color: white;
 }
 
@@ -68,8 +68,8 @@
 
 /* 今日 */
 .dayButton.today {
-    border: 2px solid #f59e0b;
-    box-shadow: 0 0 6px #fbbf24;
+    border: 2px solid var(--primary2);
+    box-shadow: 0 0 6px var(--primary3);
 }
 
 /* 未来 */
@@ -126,9 +126,8 @@
 .sectionItem {
     margin-bottom: 16px;
     padding: 10px 12px;
-    border-left: 3px solid #FFBC61;
-    background: #FFF4E0;
-    /* うっすら背景 */
+    border-left: 3px solid var(--primary2); 
+    background: var(--primary4); /* うっすら背景 */
     border-radius: 6px;
 }
 
@@ -137,7 +136,7 @@
     display: inline-block;
     font-size: 18px;
     font-weight: 600;
-    color: #F99292;
+    color: var(--primary1); 
     margin-bottom: 6px;
 }
 
