@@ -37,11 +37,12 @@ function Remind() {
       console.log(data[0]);
 
       //const goal = data[0].remindContent;があった場所。履歴を全部渡すためにここ変えます
-      const goal = data[0].remindContent;
+      const goals = data.map(item => item.remindContent);
+
 
 
       setYesterdayGoal(
-        goal || "昨日の目標が登録されていません"
+        goals || "昨日の目標が登録されていません"
       );
 
     } catch (error) {
