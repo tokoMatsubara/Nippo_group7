@@ -91,7 +91,6 @@ export default function Dashboard() {
             {/* ヘッダー */}
             <div className="header">
 
-
                 <h1 className="title">ダッシュボード</h1>
 
             </div>
