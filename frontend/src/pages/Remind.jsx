@@ -6,6 +6,7 @@ function Remind() {
   const navigate = useNavigate();
 
   const [yesterdayGoal, setYesterdayGoal] = useState("");
+  const [pastGoals, setPastGoals] = useState([]); // 過去にリマインドした目標たちを参照するためのもの
   const [notificationEnabled, setNotificationEnabled] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -28,8 +29,8 @@ function Remind() {
 
       const remindResponse = await fetch(
         `http://localhost:8080/api/remind`, {
-          method: "GET",
-          credentials: "include"
+        method: "GET",
+        credentials: "include"
       });
 
       const remindSettingResponse = await fetch(
@@ -54,6 +55,12 @@ function Remind() {
       console.log(remindData[0]);
       console.log(settingData);
 
+      //const goal = data[0].remindContent;があった場所。履歴を全部渡すためにここ変えます
+      const latestGoal = data[0]?.remindContent;
+      const historyGoals = data
+        .slice(1)
+        .map(item => item.remindContent);
+
       const goal = remindData[0].remindContent;
       const [hour, minute] = settingData["remindTime"].split(":");
       setNotificationEnabled(settingData["remindStatus"]);
@@ -61,12 +68,14 @@ function Remind() {
 
 
       setYesterdayGoal(
-        goal || "昨日の目標が登録されていません"
+        latestGoal || "昨日の目標が登録されていません"
       );
+
+      setPastGoals(historyGoals);
 
     } catch (error) {
       console.error(error);
-      setYesterdayGoal("取得に失敗しました");  
+      setYesterdayGoal("取得に失敗しました");
     }
   };
 
@@ -92,13 +101,13 @@ function Remind() {
 
 
   const handleSave = async () => {
-    try{
+    try {
       const response = await fetch("http://localhost:8080/api/remind/settings", {
         method: "PUT",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           remindStatus: notificationEnabled,
-          remindTime:`${String(alarm.hour).padStart(2, '0')}:${String(alarm.minute).padStart(2, '0')}`
+          remindTime: `${String(alarm.hour).padStart(2, '0')}:${String(alarm.minute).padStart(2, '0')}`
         }),
         credentials: "include"
       });
@@ -108,10 +117,10 @@ function Remind() {
       alert("保存しました");
       setIsSaved(true);
 
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-    
+
   };
 
   const handleClose = () => {
@@ -134,6 +143,22 @@ function Remind() {
         <p>{yesterdayGoal}</p>
       </div>
 
+      {/* カード これは、過去のリマインド履歴を出力するためのやつ*/}
+      <div className="card">
+        <h2 className="remindTitle">過去の目標</h2>
+
+        {pastGoals.length > 0 ? (
+          pastGoals.map((goals, index) => (
+            <p key={index}>{goals}</p>
+          ))
+        ) : (
+          <p>過去の目標はありません</p>
+        )}
+      </div>
+
+
+
+
       <div className="card">
 
         <h2 className="remindTitle">リマインド通知設定</h2>
@@ -150,7 +175,7 @@ function Remind() {
           通知を有効にする
         </label>
 
-        
+
         <div className="timeGroup">
 
           <select
