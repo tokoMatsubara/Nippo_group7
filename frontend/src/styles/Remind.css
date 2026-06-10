@@ -34,3 +34,11 @@
     justify-content: center;
     margin-bottom: 10px;
 }
+
+
+/*松原編集。Remind画面の過去の目標の箱の中身だけスクロールできるようにするCSS*/
+.pastGoalsContainer {
+  height: 100px;
+  overflow-y: scroll;
+  width: 100%;
+}

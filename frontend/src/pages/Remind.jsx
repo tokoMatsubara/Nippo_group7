@@ -35,15 +35,15 @@ function Remind() {
 
       const remindSettingResponse = await fetch(
         `http://localhost:8080/api/remind/settings`, {
-          method: "GET",
-          credentials: "include"
+        method: "GET",
+        credentials: "include"
       });
 
-      if(remindResponse.status === 403){
+      if (remindResponse.status === 403) {
         alert("アクセス権限がありません");
         navigate("/login")
       }
-      if(remindSettingResponse.status === 403){
+      if (remindSettingResponse.status === 403) {
         alert("アクセス権限がありません");
         navigate("/login")
       }
@@ -60,10 +60,10 @@ function Remind() {
       const historyGoals = remindData
         .slice(1)
         .map(item => item.remindContent);
-        
+
       const [hour, minute] = settingData["remindTime"].split(":");
       setNotificationEnabled(settingData["remindStatus"]);
-      setAlarm({hour, minute});
+      setAlarm({ hour, minute });
 
 
       setYesterdayGoal(
@@ -145,14 +145,15 @@ function Remind() {
       {/* カード これは、過去のリマインド履歴を出力するためのやつ*/}
       <div className="card">
         <h2 className="remindTitle">過去の目標</h2>
-
-        {pastGoals.length > 0 ? (
-          pastGoals.map((goals, index) => (
-            <p key={index}>{goals}</p>
-          ))
-        ) : (
-          <p>過去の目標はありません</p>
-        )}
+        <div className="pastGoalsContainer">
+          {pastGoals.length > 0 ? (
+            pastGoals.map((goals, index) => (
+              <p key={index}>{goals}</p>
+            ))
+          ) : (
+            <p>過去の目標はありません</p>
+          )}
+        </div>
       </div>
 
 
