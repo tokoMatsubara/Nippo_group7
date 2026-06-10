@@ -1,6 +1,6 @@
 .appLayout {
     min-height: 100vh;
-    background: #FFF4E0;
+    background: var(--primary4);
 }
 
 .appMain {

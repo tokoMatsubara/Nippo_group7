@@ -1,9 +1,11 @@
 import "../styles/Dashboard.css";
-
+import blueBg from "../assets/blue.png";
+import orangeBg from "../assets/orange.png";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+
     const [weeks, setWeeks] = useState([]);
     const [reminder, setReminder] = useState(null);
     const [remindIsRead, setRemindIsRead] = useState(true)
@@ -78,6 +80,7 @@ export default function Dashboard() {
         <>
             {/* ヘッダー */}
             <div className="header">
+
 
                 <h1 className="title">ダッシュボード</h1>
 

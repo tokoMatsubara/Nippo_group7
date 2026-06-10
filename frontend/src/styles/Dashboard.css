@@ -55,7 +55,7 @@
 
 .summaryTitle {
     font-weight: 500;
-    color: #F99292;
+    color: var(--primary1);
     margin-bottom: 4px;
 }
 

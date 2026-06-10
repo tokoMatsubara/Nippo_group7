@@ -11,6 +11,8 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
+
+
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
@@ -28,6 +30,32 @@
   @media (max-width: 1024px) {
     font-size: 16px;
   }
+
+  /* メインカラー（青） */
+
+
+}
+
+body.blueTheme .header {
+    background-image: url("assets/blue.png");
+}
+
+body.orangeTheme .header {
+    background-image: url("assets/orange.png");
+}
+
+body.blueTheme {
+  --primary1: #1B435D;
+  --primary2: #70B8FD;
+  --primary3: #454545;
+  --primary4: #F5FAFF;
+}
+
+body.orangeTheme {
+  --primary1: #F99292;
+  --primary2: #FFBC61;
+  --primary3: #FFC679;
+  --primary4: #FFF4E0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -77,20 +105,24 @@ h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0;
+
   @media (max-width: 1024px) {
     font-size: 36px;
     margin: 20px 0;
   }
 }
+
 h2 {
   font-size: 24px;
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
+
   @media (max-width: 1024px) {
     font-size: 20px;
   }
 }
+
 p {
   margin: 0;
 }
