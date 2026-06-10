@@ -33,7 +33,7 @@ function Remind() {
         credentials: "include"
       });
 
-      if(remindResponse.status === 403){
+      if (remindResponse.status === 403) {
         alert("アクセス権限がありません");
         navigate("/login")
       }
@@ -65,25 +65,25 @@ function Remind() {
   };
 
   const fetchRemindSetting = async () => {
-    try{
+    try {
       const remindSettingResponse = await fetch(
         `http://localhost:8080/api/remind/settings`, {
-          method: "GET",
-          credentials: "include"
+        method: "GET",
+        credentials: "include"
       });
 
-      if(remindSettingResponse.status === 403){
+      if (remindSettingResponse.status === 403) {
         alert("アクセス権限がありません");
         navigate("/login")
       }
 
       const settingData = await remindSettingResponse.json();
       console.log(settingData);
-      
+
       const [hour, minute] = settingData["remindTime"].split(":");
       setNotificationEnabled(settingData["remindStatus"]);
-      setAlarm({hour, minute});
-    }catch(error){
+      setAlarm({ hour, minute });
+    } catch (error) {
       console.error(error);
       setYesterdayGoal("通知設定の取得に失敗しました");
     }
@@ -180,6 +180,7 @@ function Remind() {
         <div className="timeGroup">
 
           <select
+            className="timeSelect"
             value={alarm.hour}
             onChange={(e) =>
               updateAlarm("hour", Number(e.target.value))
@@ -193,6 +194,7 @@ function Remind() {
           <span>時</span>
 
           <select
+            className="timeSelect"
             value={alarm.minute}
             onChange={(e) =>
               updateAlarm("minute", Number(e.target.value))
