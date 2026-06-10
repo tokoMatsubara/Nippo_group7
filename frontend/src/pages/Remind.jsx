@@ -16,11 +16,11 @@ function Remind() {
 
   useEffect(() => {
     fetchYesterdayGoal();
+    fetchRemindSetting();
   }, []);
 
   const fetchYesterdayGoal = async () => {
     try {
-      // const userId = localStorage.getItem("user_id");
 
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
@@ -33,27 +33,15 @@ function Remind() {
         credentials: "include"
       });
 
-      const remindSettingResponse = await fetch(
-        `http://localhost:8080/api/remind/settings`, {
-          method: "GET",
-          credentials: "include"
-      });
-
       if(remindResponse.status === 403){
-        alert("アクセス権限がありません");
-        navigate("/login")
-      }
-      if(remindSettingResponse.status === 403){
         alert("アクセス権限がありません");
         navigate("/login")
       }
 
       const remindData = await remindResponse.json();
-      const settingData = await remindSettingResponse.json();
 
       console.log(remindData);
       console.log(remindData[0]);
-      console.log(settingData);
 
       //const goal = data[0].remindContent;があった場所。履歴を全部渡すためにここ変えます
       const latestGoal = remindData[0]?.remindContent;
@@ -62,9 +50,6 @@ function Remind() {
         .map(item => item.remindContent);
 
       const goal = remindData[0].remindContent;
-      const [hour, minute] = settingData["remindTime"].split(":");
-      setNotificationEnabled(settingData["remindStatus"]);
-      setAlarm({hour, minute});
 
 
       setYesterdayGoal(
@@ -79,15 +64,31 @@ function Remind() {
     }
   };
 
-  // const addAlarm = () => {
-  //   setAlarms([...alarm, { hour: 0, minute: 0 }]);
-  //   setIsSaved(false);
-  // };
+  const fetchRemindSetting = async () => {
+    try{
+      const remindSettingResponse = await fetch(
+        `http://localhost:8080/api/remind/settings`, {
+          method: "GET",
+          credentials: "include"
+      });
 
-  // const removeAlarm = (index) => {
-  //   setAlarms(alarm.filter((_, i) => i !== index));
-  //   setIsSaved(false);
-  // };
+      if(remindSettingResponse.status === 403){
+        alert("アクセス権限がありません");
+        navigate("/login")
+      }
+
+      const settingData = await remindSettingResponse.json();
+      console.log(settingData);
+      
+      const [hour, minute] = settingData["remindTime"].split(":");
+      setNotificationEnabled(settingData["remindStatus"]);
+      setAlarm({hour, minute});
+    }catch(error){
+      console.error(error);
+      setYesterdayGoal("通知設定の取得に失敗しました");
+    }
+  }
+
 
 
   const updateAlarm = (field, value) => {
