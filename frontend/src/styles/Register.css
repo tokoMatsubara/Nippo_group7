@@ -7,6 +7,47 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    /* ほんのり模様（ベース） */
+    background-color: #f8fafc;
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* 左上のぼかし円 */
+.registerContainer::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+
+    background: var(--primary2);
+    filter: blur(120px);
+    opacity: 0.35;
+
+    top: -150px;
+    left: -150px;
+
+    z-index: 0;
+}
+
+/* 右下のぼかし円 */
+.registerContainer::after {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+
+    background: var(--primary1);
+    filter: blur(120px);
+    opacity: 0.35;
+
+    bottom: -150px;
+    right: -150px;
+
+    z-index: 0;
 }
 
 /* カード配置のみ */
@@ -14,6 +55,10 @@
     width: 360px;
     padding: 30px;
     border-radius: 12px;
+    background: var(--primary4);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 /* タイトル */
@@ -22,7 +67,7 @@
     font-size: 22px;
     margin-bottom: 20px;
     font-weight: bold;
-    color: var(--primary1);
+    color: #333;
 }
 
 /* フォーム */
