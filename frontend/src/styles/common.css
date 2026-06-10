@@ -51,7 +51,8 @@
     cursor: pointer;
     position: relative;
     box-shadow: 2px 2px 0 #333;
-    transition: box-shadow 0.2s ease, transform 0.2s ease
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    background: #9e9d9d;
 }
 
 .backButton:hover {
