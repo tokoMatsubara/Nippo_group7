@@ -81,7 +81,7 @@ public class UserController {
      * API-009: リマインド設定登録
      * URL: POST /api/remind/settings/{user_id}
      */
-    @PutMapping("/remind/settings/")
+    @PutMapping("/remind/settings")
     public ResponseEntity<Map<String, Object>> updateRemindSettings(
         @AuthenticationPrincipal CustomUserDetails userDetails, 
         @RequestBody RemindSettingRequestDto requestDto) {

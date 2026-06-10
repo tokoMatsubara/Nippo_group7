@@ -26,6 +26,11 @@ function Remind() {
           credentials: "include"
       });
 
+      if(response.status === 403){
+        alert("アクセス権限がありません");
+        navigate("/login")
+      }
+
       const data = await response.json();
 
       console.log(data);
@@ -47,31 +52,52 @@ function Remind() {
   const [notificationEnabled, setNotificationEnabled] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
 
-  const [alarms, setAlarms] = useState([
+  const [alarm, setAlarm] = useState(
     { hour: 18, minute: 0 }
-  ]);
+  );
 
-  const addAlarm = () => {
-    setAlarms([...alarms, { hour: 0, minute: 0 }]);
+  // const addAlarm = () => {
+  //   setAlarms([...alarm, { hour: 0, minute: 0 }]);
+  //   setIsSaved(false);
+  // };
+
+  // const removeAlarm = (index) => {
+  //   setAlarms(alarm.filter((_, i) => i !== index));
+  //   setIsSaved(false);
+  // };
+
+
+  const updateAlarm = (field, value) => {
+    setAlarm(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+
     setIsSaved(false);
   };
 
-  const removeAlarm = (index) => {
-    setAlarms(alarms.filter((_, i) => i !== index));
-    setIsSaved(false);
-  };
 
-  const updateAlarm = (index, field, value) => {
-    const newAlarms = [...alarms];
-    newAlarms[index][field] = value;
-    setAlarms(newAlarms);
-    setIsSaved(false);
-  };
+  const handleSave = async () => {
+    try{
+      const response = await fetch("http://localhost:8080/api/remind/settings", {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          remindStatus: notificationEnabled,
+          remindTime:`${String(alarm.hour).padStart(2, '0')}:${String(alarm.minute).padStart(2, '0')}`
+        }),
+        credentials: "include"
+      });
 
-  const handleSave = () => {
-    console.log({ notificationEnabled, alarms });
-    alert("保存しました");
-    setIsSaved(true);
+      const data = await response.json();
+      console.log(data);
+      alert("保存しました");
+      setIsSaved(true);
+
+    }catch(error){
+      console.log(error);
+    }
+    
   };
 
   const handleClose = () => {
@@ -110,47 +136,35 @@ function Remind() {
           通知を有効にする
         </label>
 
-        {alarms.map((alarm, index) => (
-          <div key={index} className="timeGroup">
+        
+        <div className="timeGroup">
 
-            <select
-              value={alarm.hour}
-              onChange={(e) =>
-                updateAlarm(index, "hour", Number(e.target.value))
-              }
-            >
-              {[...Array(24)].map((_, i) => (
-                <option key={i} value={i}>{i}</option>
-              ))}
-            </select>
+          <select
+            value={alarm.hour}
+            onChange={(e) =>
+              updateAlarm("hour", Number(e.target.value))
+            }
+          >
+            {[...Array(24)].map((_, i) => (
+              <option key={i} value={i}>{i}</option>
+            ))}
+          </select>
 
-            <span>時</span>
+          <span>時</span>
 
-            <select
-              value={alarm.minute}
-              onChange={(e) =>
-                updateAlarm(index, "minute", Number(e.target.value))
-              }
-            >
-              {[...Array(60)].map((_, i) => (
-                <option key={i} value={i}>{i}</option>
-              ))}
-            </select>
+          <select
+            value={alarm.minute}
+            onChange={(e) =>
+              updateAlarm("minute", Number(e.target.value))
+            }
+          >
+            {[...Array(60)].map((_, i) => (
+              <option key={i} value={i}>{i}</option>
+            ))}
+          </select>
 
-            <span>分</span>
-
-            <button
-              className="dangerButton"
-              onClick={() => removeAlarm(index)}
-            >
-              削除
-            </button>
-          </div>
-        ))}
-
-        <button className="addButton" onClick={addAlarm}>
-          ＋ 通知時間を追加
-        </button>
+          <span>分</span>
+        </div>
 
         {' '}
 
