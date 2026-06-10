@@ -18,6 +18,10 @@ export default function Dashboard() {
 
     useEffect(() => {
         fetchData();
+        const interval = setInterval(() => {
+            fetchData();
+        }, 60000);
+
     }, []);
 
 
@@ -28,17 +32,17 @@ export default function Dashboard() {
 
             const weekRes = await fetch(
                 `http://localhost:8080/api/weekly_list`, {
-                    method: "GET", 
-                    credentials: "include"
-                }
+                method: "GET",
+                credentials: "include"
+            }
             );
             const weekData = await weekRes.json();
 
             const remindIsReadRes = await fetch(
                 `http://localhost:8080/api/remind/is_read`, {
-                    method: "GET",
-                    credentials: "include"
-                }
+                method: "GET",
+                credentials: "include"
+            }
             );
             const remindIsReadData = await remindIsReadRes.json();
 

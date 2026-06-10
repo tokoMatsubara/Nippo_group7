@@ -102,7 +102,7 @@
 
 /* ボタン */
 .logoutBtn {
-    border: 1px solid #ccc;
+    border: 1px solid var(--primary2);
     background: var(--primary2);
     padding: 5px 10px;
     font-size: 12px;

@@ -20,6 +20,10 @@ export default function DailyList() {
 
     useEffect(() => {
         fetchData();
+        const interval = setInterval(() => {
+            fetchData();
+        }, 60000); 
+
     }, []);
 
     // BackendへのAPI
