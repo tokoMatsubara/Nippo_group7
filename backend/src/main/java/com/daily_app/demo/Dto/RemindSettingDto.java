@@ -1,15 +1,15 @@
-package com.daily_app.demo.Dto.Request;
+package com.daily_app.demo.Dto;
 
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class RemindSettingRequestDto {
+public class RemindSettingDto {
     private boolean remindStatus;
     @JsonFormat(pattern = "HH:mm")
     private LocalTime remindTime;
 
-    public RemindSettingRequestDto(boolean remindStatus, LocalTime remindTime){
+    public RemindSettingDto(boolean remindStatus, LocalTime remindTime){
         this.remindStatus = remindStatus;
         this.remindTime = remindTime;
     }
