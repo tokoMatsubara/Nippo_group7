@@ -16,16 +16,13 @@ import jakarta.validation.constraints.NotBlank;
 public class DailyDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     @Column(name = "daily_detail_id")
     private Integer dailyDetailId;
 
-    @NotBlank
     @ManyToOne
     @JoinColumn(name = "daily_id")
     private Daily daily;
 
-    @NotBlank
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
