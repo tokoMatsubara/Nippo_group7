@@ -59,7 +59,7 @@
 }
 
 .dayName {
-    font-size: 12px;
+    font-size: 22px;
 }
 
 .dayMark {
@@ -126,8 +126,9 @@
 .sectionItem {
     margin-bottom: 16px;
     padding: 10px 12px;
-    border-left: 3px solid var(--primary2); 
-    background: var(--primary4); /* うっすら背景 */
+    border-left: 3px solid var(--primary2);
+    background: var(--primary4);
+    /* うっすら背景 */
     border-radius: 6px;
 }
 
@@ -136,7 +137,7 @@
     display: inline-block;
     font-size: 18px;
     font-weight: 600;
-    color: var(--primary1); 
+    color: var(--primary1);
     margin-bottom: 6px;
 }
 
