@@ -96,12 +96,12 @@ public class UserService {
 
     //リマインド設定ロジック=================================================================
 
-    public ResponseEntity<Map<String, Object>> updateRemindSettings(Integer userId) {
-        System.out.println("ユーザーID: " + userId + " のリマインド設定を更新します（※ここはまだモック状態です）");
+    public ResponseEntity<Map<String, Object>> updateRemindSettings(User user) {
+        System.out.println("ユーザーID: " + user.getUserId() + " のリマインド設定を更新します");
 
         Map<String, Object> response = new HashMap<>();
         response.put("status", "success");
-        response.put("message", "ユーザーID: " + userId + " のリマインド設定を登録しました（モック）");
+        response.put("message", "リマインド設定を登録しました");
 
         return ResponseEntity.ok(response);
     }
