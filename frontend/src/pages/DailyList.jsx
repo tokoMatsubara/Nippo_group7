@@ -179,8 +179,8 @@ export default function DailyList() {
 
 
                             {/* 詳細 */}
-                            {selectedDaily.contents.map((item) => (
-                                <div key={item.categoryId} className="sectionItem">
+                            {selectedDaily.contents.map((item, index) => (
+                                <div key={index} className="sectionItem">
                                     <strong className="sectionTitle">
                                         {item.categoryName}
                                     </strong>
