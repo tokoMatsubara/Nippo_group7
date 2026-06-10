@@ -15,17 +15,17 @@ import Remind from "./pages/Remind";
 const applyTheme = (theme) => {
   document.body.classList.remove("blueTheme", "orangeTheme");
 
-  if (theme === "blue") {
-    document.body.classList.add("blueTheme");
+  if (theme === "orange") {
+    document.body.classList.add("orangeTheme");
   } else {
-    document.body.classList.add("orangeTheme"); // デフォルト
+    document.body.classList.add("blueTheme"); // デフォルト
   }
 };
 
 function AppWrapper() {
   // layout崩れ・チラつき防止のため useLayoutEffect
   useLayoutEffect(() => {
-    const theme = localStorage.getItem("theme") || "orange";
+    const theme = localStorage.getItem("theme") || "blue";
     applyTheme(theme);
   }, []);
   return (
