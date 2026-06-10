@@ -1,5 +1,6 @@
 package com.daily_app.demo.Service;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -10,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
+import com.daily_app.demo.Dto.RemindSettingDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
-import com.daily_app.demo.Dto.Request.RemindSettingRequestDto;
 import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
 import com.daily_app.demo.Entity.User;
@@ -97,7 +98,7 @@ public class UserService {
 
     //リマインド設定ロジック=================================================================
 
-    public ResponseEntity<Map<String, Object>> updateRemindSettings(User user, RemindSettingRequestDto request) {
+    public ResponseEntity<Map<String, Object>> updateRemindSettings(User user, RemindSettingDto request) {
         System.out.println("ユーザーID: " + user.getUserId() + " のリマインド設定を更新します");
         Map<String, Object> response = new HashMap<>();
         try{
@@ -114,5 +115,12 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<RemindSettingDto> getRemindSetting(User user){
+        boolean remindStatus = user.getRemindStatus();
+        LocalTime remindTime = user.getRemindTime();
+        RemindSettingDto remindSettingDto = new RemindSettingDto(remindStatus, remindTime);
+        return ResponseEntity.ok(remindSettingDto);
     }
 }
