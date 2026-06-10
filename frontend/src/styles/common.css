@@ -74,6 +74,7 @@
     background: #9e9d9d;
     overflow: hidden;
     color: #333;
+    margin-left: 50px;
 }
 
 .backButton:hover {
@@ -114,6 +115,7 @@
     background: #F99292;
     overflow: hidden;
     color: #333;
+    margin-left: 50px;
 }
 
 .dangerButton:hover {
