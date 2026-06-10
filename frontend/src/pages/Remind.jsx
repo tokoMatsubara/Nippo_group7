@@ -33,17 +33,7 @@ function Remind() {
         credentials: "include"
       });
 
-      const remindSettingResponse = await fetch(
-        `http://localhost:8080/api/remind/settings`, {
-        method: "GET",
-        credentials: "include"
-      });
-
       if (remindResponse.status === 403) {
-        alert("アクセス権限がありません");
-        navigate("/login")
-      }
-      if (remindSettingResponse.status === 403) {
         alert("アクセス権限がありません");
         navigate("/login")
       }
@@ -58,10 +48,7 @@ function Remind() {
       const historyGoals = remindData
         .slice(1)
         .map(item => item.remindContent);
-
-      const [hour, minute] = settingData["remindTime"].split(":");
-      setNotificationEnabled(settingData["remindStatus"]);
-      setAlarm({ hour, minute });
+        
       const goal = remindData[0].remindContent;
 
 
