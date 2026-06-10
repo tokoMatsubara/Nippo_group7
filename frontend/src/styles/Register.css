@@ -22,7 +22,7 @@
     font-size: 22px;
     margin-bottom: 20px;
     font-weight: bold;
-    color: #F99292;
+    color: var(--primary1);
 }
 
 /* フォーム */
@@ -38,10 +38,12 @@
     border: 1px solid #ddd;
     border-radius: 6px;
     outline: none;
+    background: white;
+    color: black;
 }
 
 .registerInput:focus {
-    border-color: #2563eb;
+    border-color: var(--primary1);
 }
 
 /* リンク */
@@ -51,7 +53,7 @@
 }
 
 .registerLink a {
-    color: #4C4C4C;
+    color: var(--primary2);
     text-decoration: none;
 }
 
@@ -65,7 +67,7 @@
     border: none;
     border-radius: 12px;
     /* ← 角をより丸く */
-    background: #FFC679;
+    background: var(--primary2);
     /* ← 青 */
     color: white;
     font-weight: bold;
@@ -74,6 +76,6 @@
 }
 
 .registerButton:hover {
-    background: #f8be72;
+    background: var(--primary2);
     transform: translateY(-1px);
 }
