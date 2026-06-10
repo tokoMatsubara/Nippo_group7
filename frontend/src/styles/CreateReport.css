@@ -23,6 +23,22 @@
     margin: 0 0 8px 0;
 }
 
+/* 日付入力欄 */
+.datebox {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid var(--primary2);
+    border-radius: 4px;
+    background: #fff;
+    color: black;
+}
+
+/* カレンダーアイコン部分 */
+.datebox::-webkit-calendar-picker-indicator {
+    filter: brightness(0) saturate(100%);
+}
+
 /* textarea（最低限UI） */
 .section-card textarea {
     width: 100%;
@@ -32,7 +48,7 @@
     font-size: 15px;
     line-height: 1.6;
 
-    color: var(--text-h);
+    color: black;
     background: #fff;
 
     border: 1px solid var(--border);

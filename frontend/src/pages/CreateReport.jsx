@@ -249,16 +249,10 @@ function CreateReport() {
         <div className="section-card card">
           <h3>日付</h3>
           <input
+            className="datebox"
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "8px",
-              fontSize: "16px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
           />
         </div>
 
