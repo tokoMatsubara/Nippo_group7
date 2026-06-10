@@ -31,6 +31,8 @@
     left: -150px;
 
     z-index: 0;
+
+    pointer-events: none;
 }
 
 /* 右下のぼかし円 */
@@ -48,10 +50,14 @@
     right: -150px;
 
     z-index: 0;
+
+    pointer-events: none;
 }
 
 /* カード配置のみ */
 .registerBox {
+    position: relative;
+    z-index: 10;
     width: 360px;
     padding: 30px;
     border-radius: 12px;

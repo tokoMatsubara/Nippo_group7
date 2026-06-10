@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useLayoutEffect } from "react";
 
 import Layout from "./components/Layout";
 
@@ -10,7 +11,23 @@ import CreateReport from "./pages/CreateReport";
 import DailyList from "./pages/DailyList";
 import Remind from "./pages/Remind";
 
+// テーマ適用関数（純粋関数）
+const applyTheme = (theme) => {
+  document.body.classList.remove("blueTheme", "orangeTheme");
+
+  if (theme === "orange") {
+    document.body.classList.add("orangeTheme");
+  } else {
+    document.body.classList.add("blueTheme"); // デフォルト
+  }
+};
+
 function AppWrapper() {
+  // layout崩れ・チラつき防止のため useLayoutEffect
+  useLayoutEffect(() => {
+    const theme = localStorage.getItem("theme") || "blue";
+    applyTheme(theme);
+  }, []);
   return (
     <BrowserRouter>
       <App />
