@@ -3,7 +3,6 @@ package com.daily_app.demo.Entity;
 
 import java.time.LocalTime;
 import java.util.List;
-import javax.validation.constraints.*;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,21 +12,28 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotBlank
     @Column(name = "user_id")
     private Integer userId;
 
+    @NotBlank
     @Column(name = "user_name")
     private String userName;
 
+    @NotBlank
     @Column(name = "password")
     private String password;
 
+    @Email
+    @NotBlank
     @Column(name = "mail_address")
     private String mailAddress;
 

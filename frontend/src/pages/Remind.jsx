@@ -7,6 +7,12 @@ function Remind() {
 
   const [yesterdayGoal, setYesterdayGoal] = useState("");
   const [pastGoals, setPastGoals] = useState([]); // 過去にリマインドした目標たちを参照するためのもの
+  const [notificationEnabled, setNotificationEnabled] = useState(true);
+  const [isSaved, setIsSaved] = useState(false);
+
+  const [alarm, setAlarm] = useState(
+    { hour: 18, minute: 0 }
+  );
 
   useEffect(() => {
     fetchYesterdayGoal();
@@ -21,21 +27,33 @@ function Remind() {
 
       const dateStr = yesterday.toISOString().split("T")[0];
 
-      const response = await fetch(
+      const remindResponse = await fetch(
         `http://localhost:8080/api/remind`, {
         method: "GET",
         credentials: "include"
       });
 
-      if (response.status === 403) {
+      const remindSettingResponse = await fetch(
+        `http://localhost:8080/api/remind/settings`, {
+          method: "GET",
+          credentials: "include"
+      });
+
+      if(remindResponse.status === 403){
+        alert("アクセス権限がありません");
+        navigate("/login")
+      }
+      if(remindSettingResponse.status === 403){
         alert("アクセス権限がありません");
         navigate("/login")
       }
 
-      const data = await response.json();
+      const remindData = await remindResponse.json();
+      const settingData = await remindSettingResponse.json();
 
-      console.log(data);
-      console.log(data[0]);
+      console.log(remindData);
+      console.log(remindData[0]);
+      console.log(settingData);
 
       //const goal = data[0].remindContent;があった場所。履歴を全部渡すためにここ変えます
       const latestGoal = data[0]?.remindContent;
@@ -43,6 +61,10 @@ function Remind() {
         .slice(1)
         .map(item => item.remindContent);
 
+      const goal = remindData[0].remindContent;
+      const [hour, minute] = settingData["remindTime"].split(":");
+      setNotificationEnabled(settingData["remindStatus"]);
+      setAlarm({hour, minute});
 
 
       setYesterdayGoal(
@@ -56,13 +78,6 @@ function Remind() {
       setYesterdayGoal("取得に失敗しました");
     }
   };
-
-  const [notificationEnabled, setNotificationEnabled] = useState(true);
-  const [isSaved, setIsSaved] = useState(false);
-
-  const [alarm, setAlarm] = useState(
-    { hour: 18, minute: 0 }
-  );
 
   // const addAlarm = () => {
   //   setAlarms([...alarm, { hour: 0, minute: 0 }]);
