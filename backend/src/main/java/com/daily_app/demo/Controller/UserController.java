@@ -64,7 +64,7 @@ public class UserController {
 
             ResponseCookie cookie = ResponseCookie.from("accessToken", token)
                 .httpOnly(true).secure(false).path("/")
-                .maxAge(Duration.ofHours(1)).sameSite("Strict").build();
+                .maxAge(Duration.ofHours(1)).sameSite("Lax").build();
         
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
             return userService.login(requestDto);
