@@ -22,6 +22,7 @@
     flex-direction: row;
     gap: 10px;
     margin-bottom: 20px;
+    color: black;
 
     overflow-x: auto;
     /* スマホ対策（横スクロールOK） */
@@ -34,6 +35,7 @@
     align-items: center;
     justify-content: center;
     gap: 2px;
+    color: black;
 
     padding: 8px 10px;
     border: none;
@@ -46,6 +48,7 @@
 
 .dayButton:hover {
     background: #d1d5db;
+    color: black;
 }
 
 .dayButton.active {

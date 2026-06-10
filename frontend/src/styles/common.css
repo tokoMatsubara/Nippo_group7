@@ -14,7 +14,6 @@
     padding-right: 0px;
     padding-bottom: 20px;
     background-color: var(--primary4);
-
 }
 
 /* 共通ボタン（青統一） */
@@ -140,22 +139,70 @@
 
 /* 各画面のタイトル用 */
 .header {
-
     width: 100%;
     min-height: 180px;
-    /* ← 高さを大きく */
     padding: 40px 32px;
 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* 下寄せでタイトルっぽく */
 
     position: relative;
     overflow: hidden;
 
-    background-size: cover;
-    background-position: center;
+    /* 🎨 ベースは primary2 */
+    background: linear-gradient(180deg,
+            var(--primary2),
+            var(--primary2));
+}
+
+.header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.9) 0%, transparent 55%),
+        radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.7) 0%, transparent 50%),
+        radial-gradient(circle at 90% 40%, rgba(255, 255, 255, 0.5) 0%, transparent 45%);
+
+    z-index: 0;
+}
+
+.header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        repeating-linear-gradient(135deg,
+            rgba(255, 255, 255, 0.45) 0px,
+            rgba(255, 255, 255, 0.45) 2px,
+            transparent 2px,
+            transparent 10px),
+        radial-gradient(circle,
+            rgba(255, 255, 255, 0.7) 2px,
+            transparent 2px);
+
+    background-size: auto, 18px 18px;
+    opacity: 0.75;
+
+    z-index: 0;
+}
+
+.header>* {
+    position: relative;
+    z-index: 1;
+}
+
+
+body {
+  background: linear-gradient(
+    180deg,
+    rgba(170, 165, 209, 0.18) 0%,
+    rgba(255, 255, 255, 1) 60%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }
 
 .headerTop {
@@ -252,4 +299,5 @@
 
 .button:hover {
     box-shadow: 0px 30px 30px #999;
+    transform: translateY(-2px);
 }

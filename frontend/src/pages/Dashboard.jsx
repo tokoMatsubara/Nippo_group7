@@ -96,49 +96,52 @@ export default function Dashboard() {
             </div>
 
             {/* リマインド */}
-            <section className="card">
+            <div className="body">
 
-                <h2 className="remindTitle">明日の目標と課題</h2>
+                <section className="card">
 
-                {reminder?.insights?.nextActions?.length ? (
-                    <ul className="list">
-                        {reminder.insights.nextActions.map((item, i) => (
-                            <li key={i}>{item}</li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>データなし</p>
-                )}
-            </section>
+                    <h2 className="remindTitle">明日の目標と課題</h2>
 
-            {/* 週一覧 */}
-            <section className="section">
+                    {reminder?.insights?.nextActions?.length ? (
+                        <ul className="list">
+                            {reminder.insights.nextActions.map((item, i) => (
+                                <li key={i}>{item}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>データなし</p>
+                    )}
+                </section>
 
-                <h2 className="weekTitle">週一覧</h2>
+                {/* 週一覧 */}
+                <section className="section">
 
-                {weeks.map((week) => (
-                    <div
-                        key={week.startDate}
-                        className="button"
-                        onClick={() => handleWeekClick(week)}
-                    >
-                        <div className="weekContent">
+                    <h2 className="weekTitle">週一覧</h2>
 
-                            <div className="weekTitle">
-                                {formatDate(week.startDate)} ~ {formatDate(week.endDate)}
+                    {weeks.map((week) => (
+                        <div
+                            key={week.startDate}
+                            className="button"
+                            onClick={() => handleWeekClick(week)}
+                        >
+                            <div className="weekContent">
+
+                                <div className="weekTitle">
+                                    {formatDate(week.startDate)} ~ {formatDate(week.endDate)}
+                                </div>
+                                <h4 className="summaryTitle">週次要約</h4>
+                                <div className="weekSummary">
+                                    {week.content}
+                                </div>
                             </div>
-                            <h4 className="summaryTitle">週次要約</h4>
-                            <div className="weekSummary">
-                                {week.content}
+                            <div className="weekArrow">
+                                ›
                             </div>
-                        </div>
-                        <div className="weekArrow">
-                            ›
-                        </div>
 
-                    </div>
-                ))}
-            </section>
+                        </div>
+                    ))}
+                </section>
+            </div>
 
         </>
     );
