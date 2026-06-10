@@ -1,8 +1,8 @@
 // 松原編集
-    // ApiたたかれたらリマインドDBからデータを取ってくる処理これはサービス
-    // サービスを使う処理をかく
-    // リマインドからとってくるってやつはUserのログインのやつの簡易バージョンをとってくればいいけど
-    // 特定の時刻を取ってくるってのが難しい。 
+// ApiたたかれたらリマインドDBからデータを取ってくる処理これはサービス
+// サービスを使う処理をかく
+// リマインドからとってくるってやつはUserのログインのやつの簡易バージョンをとってくればいいけど
+// 特定の時刻を取ってくるってのが難しい。 
 
 package com.daily_app.demo.Controller;
 
@@ -17,12 +17,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-
 
 @RestController
-@RequestMapping("/api") 
-@CrossOrigin(origins = "http://localhost:5173") 
+@RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:5173")
 public class RemindController {
 
     @Autowired
@@ -34,7 +32,7 @@ public class RemindController {
      */
     @GetMapping("/remind")
     public ResponseEntity<List<RemindResponseDto>> getUserReminds(
-        @AuthenticationPrincipal CustomUserDetails userDetails) {
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         Integer userId = userDetails.getId();
         System.out.println("ユーザーID: " + userId + " が通知を取りにきました。");
 
@@ -45,8 +43,8 @@ public class RemindController {
 
     @GetMapping("/remind/is_read")
     public ResponseEntity<RemindIsReadDto> getMethodName(
-        @AuthenticationPrincipal CustomUserDetails userDetails) {
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
         return remindService.remindIsRead(userDetails.getId());
     }
-    
+
 }

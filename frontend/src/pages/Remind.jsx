@@ -31,6 +31,7 @@ function Remind() {
       console.log(data);
       console.log(data[0]);
 
+      //const goal = data[0].remindContent;があった場所。履歴を全部渡すためにここ変えます
       const goal = data[0].remindContent;
 
 

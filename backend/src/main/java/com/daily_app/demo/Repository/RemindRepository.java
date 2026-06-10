@@ -20,7 +20,7 @@ public interface RemindRepository extends JpaRepository<Remind, Integer>{
 
     List<Remind> findByUser_UserIdOrderByRemindIdDesc(Integer userId);
 
-
     List<Remind> findByUser_UserId(Integer userId);
+    
     
 }
