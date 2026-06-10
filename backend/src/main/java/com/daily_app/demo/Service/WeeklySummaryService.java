@@ -115,36 +115,6 @@ public class WeeklySummaryService {
                 endOfWeek.plusDays(1));
     }
 
-    // =========================================
-    // ③ raw → LLM用DTO変換
-    // =========================================
-    // private List<DailyDto> convertToDailyDto(List<DailyQueryDto> rawList) {
-
-    // Map<Integer, DailyDto> map = new LinkedHashMap<>();
-
-    // for (DailyQueryDto q : rawList) {
-
-    // // 初回だけ日単位DTO作成
-    // map.computeIfAbsent(q.getDailyId(), id -> {
-    // DailyDto dto = new DailyDto();
-    // dto.setDate(q.getDailyDate());
-    // dto.setSummary(q.getDailySummaryContent());
-    // dto.setContents(new ArrayList<>());
-    // return dto;
-    // });
-
-    // // 内容追加
-    // map.get(q.getDailyId())
-    // .getContents()
-    // .add(new ContentDto(
-    // q.getCategoryId(),
-    // q.getCategoryName(),
-    // q.getContent()));
-    // }
-
-    // return new ArrayList<>(map.values());
-    // }
-
     public List<DailyDto> toDailyDtoList(List<Daily> dailyList) {
         List<DailyDto> dailyDtoList = new ArrayList<DailyDto>();
 
