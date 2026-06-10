@@ -12,7 +12,7 @@ public class LoginResponseDto {
     private String message;
 
     // ★追加（ユーザー情報）
-    private Integer userId;
+    // private Integer userId;
     private String userName;
 
     // デフォルトコンストラクタ
@@ -26,10 +26,10 @@ public class LoginResponseDto {
     }
 
     // ★追加コンストラクタ（推奨）
-    public LoginResponseDto(Boolean success, String message, Integer userId, String userName) {
+    public LoginResponseDto(Boolean success, String message, String userName) {
         this.success = success;
         this.message = message;
-        this.userId = userId;
+        // this.userId = userId;
         this.userName = userName;
     }
 
@@ -50,14 +50,14 @@ public class LoginResponseDto {
         this.message = message;
     }
 
-    // ★追加
-    public Integer getUserId() {
-        return userId;
-    }
+    // // ★追加
+    // public Integer getUserId() {
+    //     return userId;
+    // }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+    // public void setUserId(Integer userId) {
+    //     this.userId = userId;
+    // }
 
     // ★追加
     public String getUserName() {

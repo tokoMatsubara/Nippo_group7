@@ -13,7 +13,7 @@ export default function Login() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8080/api/login", {
+            const res = await fetch("http://localhost:8080/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -21,7 +21,8 @@ export default function Login() {
                 body: JSON.stringify({
                     mail_address: email,
                     password: password
-                })
+                }),
+                credentials: "include"
             });
 
             if (!res.ok) {
@@ -34,7 +35,7 @@ export default function Login() {
 
             console.log("ログイン成功:", data);
 
-            localStorage.setItem("user_id", data.userId);
+            // localStorage.setItem("user_id", data.userId);
             localStorage.setItem("user_name", data.userName);
 
             navigate("/dashboard");
@@ -49,7 +50,7 @@ export default function Login() {
 
             <div className="loginBox card">
 
-                <h1 className="loginTitle">ログイン</h1>
+                <h1 className="loginTitle">日報ツール</h1>
 
                 <form className="loginForm" onSubmit={handleLogin}>
 
@@ -72,11 +73,15 @@ export default function Login() {
                         ログイン
                     </button>
 
-                </form>
+                    <button
+                        className="registerButton"
+                        type="button"
+                        onClick={() => navigate("/register")}
+                    >
+                        新規登録
+                    </button>
 
-                <p className="loginLink">
-                    <Link to="/register">新規登録</Link>
-                </p>
+                </form>
 
             </div>
 

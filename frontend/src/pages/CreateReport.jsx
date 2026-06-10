@@ -129,10 +129,12 @@ function CreateReport() {
       const weekEndStr = toYmd(weekEnd);
 
       try {
-        const userId = localStorage.getItem("user_id");
+        // const userId = localStorage.getItem("user_id");
         const response = await fetch(
-          `${API_BASE}/daily/${userId}/${weekStartStr}/${weekEndStr}`
-        );
+          `${API_BASE}/daily/${weekStartStr}/${weekEndStr}`, {
+          method: "GET",
+          credentials: "include"
+        });
         const data = await response.json();
 
         // 前日の日報を探す
@@ -179,13 +181,13 @@ function CreateReport() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const storedUserId = localStorage.getItem("user_id");
-      const userId = storedUserId ? Number(storedUserId) : null;
-      if (!userId) {
-        alert("ログインしてください");
-        navigate("/login");
-        return;
-      }
+      // const storedUserId = localStorage.getItem("user_id");
+      // const userId = storedUserId ? Number(storedUserId) : null;
+      // if (!userId) {
+      //   alert("ログインしてください");
+      //   navigate("/login");
+      //   return;
+      // }
       const contentsPayload = [
         { categoryId: 1, content: form.learned },
         { categoryId: 2, content: form.goodPoint },
@@ -201,7 +203,6 @@ function CreateReport() {
       const payload = editDaily
         ? { dailyId, contents: contentsPayload }
         : {
-          userId,
           date,
           contents: contentsPayload,
         };
@@ -212,6 +213,7 @@ function CreateReport() {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
+        credentials: "include"
       });
       const data = await res.json();
       setResult(data);
@@ -221,10 +223,14 @@ function CreateReport() {
         navigate(-1);
       } else {
         alert(editDaily ? "更新に失敗しました" : "保存に失敗しました");
+        alert("ログインしてください");
+        navigate("/login");
+        return;
       }
     } catch (err) {
       console.error(err);
       setResult({ status: "error" });
+      navigate("/login");
     } finally {
       setLoading(false);
     }
@@ -307,6 +313,10 @@ function CreateReport() {
         <div className="submit-area">
           <button className="primaryButton" type="button" onClick={handleSubmit}>
             保存
+          </button>
+
+          <button className="backButton" type="button" onClick={() => navigate(-1)}>
+            キャンセル
           </button>
         </div>
 
