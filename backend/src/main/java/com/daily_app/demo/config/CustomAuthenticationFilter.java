@@ -52,7 +52,6 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
             }
         }
         
-        System.out.println("カスタムフィルター終了");
 
         filterchain.doFilter(request, response);
     }
