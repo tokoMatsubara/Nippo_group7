@@ -52,7 +52,7 @@ public class DailyCrudService {
     // #region
     @Transactional
     public WeeklyListResponseDto weeklyListResponse(Integer userId) {
-        List<WeeklySummary> weeklySummaries = weeklySummaryRepository.findByUserId(userId);
+        List<WeeklySummary> weeklySummaries = weeklySummaryRepository.findByUserIdOrderByWeekStartDateDesc(userId);
         return WeeklyListResponseDto.EntityToResponseDto(weeklySummaries);
     }
     // #endregion

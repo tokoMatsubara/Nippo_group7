@@ -85,6 +85,6 @@ public class UserController {
         @AuthenticationPrincipal CustomUserDetails userDetails) {
         System.out.println("ユーザーID: " + userDetails.getId() + " のリマインド設定を更新します（※ここはまだモック状態です）");
         
-        return userService.updateRemindSettings(userDetails.getId());
+        return userService.updateRemindSettings(userDetails.getUser());
     }
 }
