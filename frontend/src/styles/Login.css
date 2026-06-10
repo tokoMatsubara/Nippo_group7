@@ -22,7 +22,7 @@
     font-size: 22px;
     margin-bottom: 20px;
     font-weight: bold;
-    color: #F99292;
+    color: var(--primary2);
 }
 
 /* フォーム */
@@ -38,11 +38,13 @@
     border: 1px solid #ddd;
     border-radius: 6px;
     outline: none;
+    background: white;
+    color: black;
 }
 
 /* フォーカス */
 .loginInput:focus {
-    border-color: #F6B352;
+    border-color: var(--primary2);
 }
 
 /* リンク */
@@ -52,7 +54,7 @@
 }
 
 .loginLink a {
-    color: #F6B352;
+    color: var(--primary2);
     text-decoration: none;
 }
 
@@ -66,7 +68,7 @@
     border: none;
     border-radius: 12px;
     /* ← 角をより丸く */
-    background: #F99292;
+    background: var(--primary1);
     /* ← 青 */
     color: white;
     font-weight: bold;
@@ -75,6 +77,6 @@
 }
 
 .loginButton:hover {
-    background: #fa8a8a;
+    background: var(--primary1);
     transform: translateY(-1px);
 }
