@@ -19,102 +19,121 @@
 
 /* 共通ボタン（青統一） */
 .primaryButton {
+    min-width: 130px;
+    height: 40px;
+    color: #fff;
     padding: 10px 14px;
-    background: var(--primary2);
-    color: white;
-    border: 2px solid #111;
-    border-radius: 6px;
+    font-weight: bold;
     cursor: pointer;
+    transition: all 0.3s ease;
     position: relative;
-    box-shadow: 2px 2px 0 #333;
-    transition: box-shadow 0.2s ease, transform 0.2s ease
+    display: inline-block;
+    outline: none;
+    border-radius: 6px;
+    z-index: 0;
+    background: var(--primary2);
+    overflow: hidden;
+    color: #333;
 }
 
 .primaryButton:hover {
-    background: var(--primary1);
-    box-shadow: 0 0 0 #111;
-    outline: 0;
+    color: #fff;
 }
 
-.primaryButton:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background: #93c5fd;
+.primaryButton:hover:after {
+    width: 100%;
+}
+
+.primaryButton:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    transition: all 0.3s ease;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: var(--primary1);
 }
 
 /* 戻るボタン（統一） */
+
 .backButton {
+    min-width: 130px;
+    height: 40px;
+    color: #fff;
     padding: 10px 14px;
-    color: #333;
-    border: 2px solid #333;
-    border-radius: 6px;
+    font-weight: bold;
     cursor: pointer;
+    transition: all 0.3s ease;
     position: relative;
-    box-shadow: 2px 2px 0 #333;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+    outline: none;
+    border-radius: 6px;
+    z-index: 0;
     background: #9e9d9d;
+    overflow: hidden;
+    color: #333;
 }
 
 .backButton:hover {
-    background: #8b909a;
-    box-shadow: 0 0 0 #333;
-    outline: 0;
+    color: #fff;
 }
 
-.backButton:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background: #d1d5db;
+.backButton:hover:after {
+    width: 100%;
+}
+
+.backButton:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    transition: all 0.3s ease;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: #8b909a;
 }
 
 /* アラートボタン（赤統一）*/
+
 .dangerButton {
+    min-width: 130px;
+    height: 40px;
+    color: #fff;
     padding: 10px 14px;
-    background: #F99292;
-    color: #333;
-    border: 2px solid #333;
-    border-radius: 6px;
+    font-weight: bold;
     cursor: pointer;
+    transition: all 0.3s ease;
     position: relative;
-    box-shadow: 2px 2px 0 #333;
-    transition: box-shadow 0.2s ease, transform 0.2s ease
+    display: inline-block;
+    outline: none;
+    border-radius: 6px;
+    z-index: 0;
+    background: #F99292;
+    overflow: hidden;
+    color: #333;
 }
 
 .dangerButton:hover {
-    background: #f98b8b;
-    box-shadow: 0 0 0 #333;
-    outline: 0;
+    color: #fff;
 }
 
-.dangerButton:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background: #fca5a5;
+.dangerButton:hover:after {
+    width: 100%;
 }
 
-/* 追加ボタン（緑統一）*/
-.addButton {
-    padding: 10px 14px;
-    background: #FFC679;
-    color: #333;
-    border: 2px solid #333;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    box-shadow: 2px 2px 0 #333;
-    transition: box-shadow 0.2s ease, transform 0.2s ease
-}
-
-.addButton:hover {
-    background: #fabd6f;
-    box-shadow: 0 0 0 #333;
-    outline: 0;
-}
-
-.addButton:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background: #FFC679;
+.dangerButton:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    transition: all 0.3s ease;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: #c56060;
 }
 
 /* 各画面のタイトル用 */
