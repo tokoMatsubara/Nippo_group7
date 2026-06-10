@@ -13,8 +13,8 @@
     padding-left: 0px;
     padding-right: 0px;
     padding-bottom: 20px;
-    background-color: #FFF4E0;
-
+    background-color: var(--primary4);
+    
 }
 
 /* 共通ボタン（青統一） */
@@ -51,7 +51,8 @@
     cursor: pointer;
     position: relative;
     box-shadow: 2px 2px 0 #333;
-    transition: box-shadow 0.2s ease, transform 0.2s ease
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    background: #9e9d9d;
 }
 
 .backButton:hover {
@@ -132,7 +133,6 @@
     position: relative;
     overflow: hidden;
 
-    background-image: url("../assets/orange.png");
     background-size: cover;
     background-position: center;
 }
@@ -155,7 +155,7 @@
     word-wrap: break-word;
     background-color: #FFF4E0;
     background-clip: border-box;
-    border: 5px solid #FFC679;
+    border: 2px solid var(--primary2);
     border-radius: 0.25rem;
     box-shadow: 0 10px 20px #ccc;
     color: #333;
@@ -193,7 +193,7 @@
     word-wrap: break-word;
     background-color: #FFF4E0;
     background-clip: border-box;
-    border: 5px solid #FFC679;
+    border: 2px solid var(--primary2);
     border-radius: 0.25rem;
     box-shadow: 0 10px 20px #ccc;
     color: #333;
