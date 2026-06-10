@@ -179,17 +179,21 @@ export default function DailyList() {
 
 
                             {/* 詳細 */}
-                            {selectedDaily.contents.map((item) => (
-                                <div key={item.categoryId} className="sectionItem">
-                                    <strong className="sectionTitle">
-                                        {item.categoryName}
-                                    </strong>
+                            {selectedDaily.contents
+                                .slice()
+                                .sort((a, b) => a.categoryId - b.categoryId)
+                                .map((item, index) => (
+                                    <div key={item.categoryId} className="sectionItem">
+                                        <strong className="sectionTitle">
+                                            {item.categoryName}
+                                        </strong>
 
-                                    <p className="sectionValue">
-                                        {item.content}
-                                    </p>
-                                </div>
-                            ))}
+                                        <p className="sectionValue">
+                                            {item.content}
+                                        </p>
+                                    </div>
+                                ))
+                            }
                         </div>
 
                         {/* 共通ボタン化 */}

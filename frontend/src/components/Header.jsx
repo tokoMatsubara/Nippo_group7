@@ -65,12 +65,15 @@ export default function Header() {
                 {/* 必要ならボタン遷移にする */}
                 {/* <NavLink to="/daily-list/2026-01-01/2026-01-31">一覧</NavLink> */}
             </nav>
-            <ThemeToggle />
+            
 
             <div className="headerRight">
+                <ThemeToggle />
                 <span className="userName">
                     {userName || "ゲスト"}
                 </span>
+
+                
 
                 <button className="logoutBtn" onClick={handleLogout}>
                     ログアウト

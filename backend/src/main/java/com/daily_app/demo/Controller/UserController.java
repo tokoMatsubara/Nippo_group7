@@ -3,6 +3,7 @@ package com.daily_app.demo.Controller;
 
 import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
+import com.daily_app.demo.Dto.Request.RemindSettingRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
 import com.daily_app.demo.Service.UserService;
 import com.daily_app.demo.config.CustomUserDetails;
@@ -80,11 +81,12 @@ public class UserController {
      * API-009: リマインド設定登録
      * URL: POST /api/remind/settings/{user_id}
      */
-    @PostMapping("/remind/settings/")
+    @PutMapping("/remind/settings")
     public ResponseEntity<Map<String, Object>> updateRemindSettings(
-        @AuthenticationPrincipal CustomUserDetails userDetails) {
+        @AuthenticationPrincipal CustomUserDetails userDetails, 
+        @RequestBody RemindSettingRequestDto requestDto) {
         System.out.println("ユーザーID: " + userDetails.getId() + " のリマインド設定を更新します（※ここはまだモック状態です）");
         
-        return userService.updateRemindSettings(userDetails.getUser());
+        return userService.updateRemindSettings(userDetails.getUser(), requestDto);
     }
 }

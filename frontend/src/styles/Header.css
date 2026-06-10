@@ -109,12 +109,29 @@
     color: #333;
 
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
 }
 
 .logoutBtn:hover {
-    background: #FFF4E0;
-    border-color: #999;
+    color: var(--primary1);
+    transform: translateY(-2px);
+}
+
+.logoutBtn::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 0%;
+    height: 2px;
+    background: var(--primary1);
+
+    transition: width 0.3s ease;
+}
+
+.logoutBtn:hover::after {
+    width: 100%;
 }
 
 .navItemWithBadge {
