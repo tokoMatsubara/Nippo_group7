@@ -20,7 +20,6 @@ import jakarta.validation.constraints.NotBlank;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     @Column(name = "user_id")
     private Integer userId;
 

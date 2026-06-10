@@ -5,7 +5,6 @@ import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
 import com.daily_app.demo.Dto.RemindSettingDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
-import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Service.UserService;
 import com.daily_app.demo.config.CustomUserDetails;
 import com.daily_app.demo.config.JwtTokenProvider;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
