@@ -1,11 +1,13 @@
 import { useNavigate, NavLink } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "../styles/Header.css";
+import ThemeToggle from "./ThemeToggle";
 import logoIcon from "../assets/a_clean_flat_modern_vector_icon_on_a_white_backgro.png";
-
+import { useLocation } from "react-router-dom";
 export default function Header() {
     const navigate = useNavigate();
     const [remindIsRead, setRemindIsRead] = useState(true);
+    const location = useLocation();
 
     const userName = localStorage.getItem("user_name");
 
@@ -63,6 +65,7 @@ export default function Header() {
                 {/* 必要ならボタン遷移にする */}
                 {/* <NavLink to="/daily-list/2026-01-01/2026-01-31">一覧</NavLink> */}
             </nav>
+            <ThemeToggle />
 
             <div className="headerRight">
                 <span className="userName">
