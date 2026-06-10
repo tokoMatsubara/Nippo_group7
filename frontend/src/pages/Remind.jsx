@@ -56,12 +56,11 @@ function Remind() {
       console.log(settingData);
 
       //const goal = data[0].remindContent;があった場所。履歴を全部渡すためにここ変えます
-      const latestGoal = data[0]?.remindContent;
-      const historyGoals = data
+      const latestGoal = remindData[0]?.remindContent;
+      const historyGoals = remindData
         .slice(1)
         .map(item => item.remindContent);
-
-      const goal = remindData[0].remindContent;
+        
       const [hour, minute] = settingData["remindTime"].split(":");
       setNotificationEnabled(settingData["remindStatus"]);
       setAlarm({hour, minute});
