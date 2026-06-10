@@ -12,7 +12,7 @@ import com.daily_app.demo.Entity.WeeklySummary;
 @Repository
 public interface WeeklySummaryRepository extends JpaRepository<WeeklySummary, Long> {
 
-    List<WeeklySummary> findByUserId(Integer id);
+    List<WeeklySummary> findByUserIdOrderByWeekStartDateDesc(Integer id);
 
     Optional<WeeklySummary> findByUserIdAndWeekStartDate(
             Integer userId,
