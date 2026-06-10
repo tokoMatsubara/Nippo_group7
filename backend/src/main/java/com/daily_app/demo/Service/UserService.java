@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
+import com.daily_app.demo.Dto.Request.RemindSettingRequestDto;
 import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
 import com.daily_app.demo.Entity.User;
@@ -96,13 +97,22 @@ public class UserService {
 
     //リマインド設定ロジック=================================================================
 
-    public ResponseEntity<Map<String, Object>> updateRemindSettings(User user) {
+    public ResponseEntity<Map<String, Object>> updateRemindSettings(User user, RemindSettingRequestDto request) {
         System.out.println("ユーザーID: " + user.getUserId() + " のリマインド設定を更新します");
-
         Map<String, Object> response = new HashMap<>();
-        response.put("status", "success");
-        response.put("message", "リマインド設定を登録しました");
+        try{
+            user.setRemindStatus(request.getRemindStatus());
+            user.setRemindTime(request.getRemindTime());
+            userRepository.save(user);
 
+            response.put("status", "success");
+            response.put("message", "リマインド設定を登録しました");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            response.put("status", "error");
+            response.put("message", "リマインド設定を登録しました");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
         return ResponseEntity.ok(response);
     }
 }
