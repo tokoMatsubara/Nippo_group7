@@ -184,7 +184,7 @@ public class DailyCrudService {
         daily.setDailyDetails(details);
 
         try {
-            if(userId != daily.getUser().getUserId()){
+            if(!daily.getUser().getUserId().equals(userId)){
                 throw new Exception("違うユーザーの日報を更新しようとしています。");
             }
             dailyRepository.save(daily);
@@ -210,7 +210,7 @@ public class DailyCrudService {
         Integer userId = user.getUserId();
         LocalDate date = daily.getDailyDate();
         try {
-            if(userId != daily.getUser().getUserId()){
+            if(!daily.getUser().getUserId().equals(userId)){
                 throw new Exception("違うユーザーの日報を削除しようとしています。");
             }
             dailyRepository.deleteById(dailyId);
