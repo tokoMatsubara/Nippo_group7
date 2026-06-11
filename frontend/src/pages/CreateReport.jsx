@@ -239,8 +239,12 @@ function CreateReport() {
   return (
     <div className="daily-page">
       <header className="header">
-        <div>
+        <div className="headerTop">
           <h1 className="title">日報{editDaily ? "編集" : "作成"}</h1>
+
+          <button className="backButton" type="button" onClick={() => navigate(-1)}>
+            キャンセル
+          </button>
         </div>
       </header>
 

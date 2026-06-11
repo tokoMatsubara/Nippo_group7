@@ -22,7 +22,7 @@ export default function DailyList() {
         fetchData();
         const interval = setInterval(() => {
             fetchData();
-        }, 60000); 
+        }, 60000);
 
     }, []);
 
@@ -152,7 +152,9 @@ export default function DailyList() {
 
                 {!selectedDaily ? (
                     <>
-                        <h3>{getSelectedDate()}</h3>
+                        <div className="dayName">
+                            <h3>{formatDate(getSelectedDate())}</h3>
+                        </div>
                         <p>日報はありません</p>
                         <div className="actions" style={{ justifyContent: 'center' }}>
                             <button
@@ -170,7 +172,9 @@ export default function DailyList() {
                     </>
                 ) : (
                     <>
-                        <h3>{formatDate(selectedDaily.date)}</h3>
+                        <div className="dayName">
+                            <h3>{formatDate(selectedDaily.date)}</h3>
+                        </div>
 
                         <div className="section">
                             <div className="sectionItem">
