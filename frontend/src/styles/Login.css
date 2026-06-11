@@ -132,3 +132,10 @@
     background: var(--primary1);
     transform: translateY(-1px);
 }
+
+.loginIcon {
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 0 auto 20px auto;
+}

@@ -38,7 +38,8 @@ public class ReminderScheduler {
         LocalTime start = nowDateTime.toLocalTime().truncatedTo(ChronoUnit.MINUTES);
         LocalTime end = start.plusMinutes(1).minusNanos(1);
         
-        List<User> users = userRepository.findByRemindTimeBetween(start, end);
+        // 通知オンオフのための機能の編集です。
+        List<User> users = userRepository.findByRemindTimeBetweenAndRemindStatusTrue(start, end);
 
         if (!users.isEmpty()) {
             remindService.createReminds(users); //ここが9:30から一分前後じゃないと入らない
