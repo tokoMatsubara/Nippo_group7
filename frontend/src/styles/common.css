@@ -12,7 +12,7 @@
     /* ← ヘッダー高さ分 */
     padding-left: 0px;
     padding-right: 0px;
-    padding-bottom: 20px;
+    padding-bottom: 0px;
     background-color: var(--primary4);
 }
 
@@ -197,12 +197,10 @@
 
 
 body {
-  background: linear-gradient(
-    180deg,
-    rgba(170, 165, 209, 0.18) 0%,
-    rgba(255, 255, 255, 1) 60%,
-    rgba(255, 255, 255, 1) 100%
-  );
+    background: linear-gradient(180deg,
+            rgba(170, 165, 209, 0.18) 0%,
+            rgba(255, 255, 255, 1) 60%,
+            rgba(255, 255, 255, 1) 100%);
 }
 
 .headerTop {
