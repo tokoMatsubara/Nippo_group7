@@ -54,7 +54,8 @@
 .weekTitle {
     font-size: 25px;
     font-weight: bold;
-    margin-bottom: 1px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     color: #333;
 }
 
