@@ -1,0 +1,11 @@
+.appLayout {
+    min-height: 100vh;
+    background: var(--primary4);
+}
+
+.appMain {
+    padding-top: 70px;
+    /* Header分 */
+    padding-left: 20px;
+    padding-right: 20px;
+}

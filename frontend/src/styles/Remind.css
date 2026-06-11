@@ -1,0 +1,45 @@
+/* ===== レイアウト依存を削除 ===== */
+
+.remindHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* ===== フォーム系は維持 ===== */
+
+.formRow {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timeSelect {
+    width: 60px;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+}
+
+.timeGroup {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+
+/*松原編集。Remind画面の過去の目標の箱の中身だけスクロールできるようにするCSS*/
+.pastGoalsContainer {
+  height: 100px;
+  overflow-y: scroll;
+  width: 100%;
+}

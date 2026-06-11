@@ -1,0 +1,153 @@
+* {
+    box-sizing: border-box;
+}
+
+/* 戻るボタンを右配置 */
+.topRight {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+/* 週エリア */
+
+.weekSummary {
+    color: #111;
+    margin-bottom: 18px;
+}
+
+/* 曜日ボタン（画面固有なので残す） */
+.dayButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: black;
+
+    overflow-x: auto;
+    /* スマホ対策（横スクロールOK） */
+    white-space: nowrap;
+}
+
+.dayButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: black;
+
+    padding: 8px 10px;
+    border: none;
+    border-radius: 8px;
+    background: #e5e7eb;
+    cursor: pointer;
+    min-width: 60px;
+    transition: 0.2s;
+}
+
+.dayButton:hover {
+    background: #d1d5db;
+    color: black;
+}
+
+.dayButton.active {
+    background: var(--primary2);
+    color: white;
+}
+
+.dayDate {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.dayName {
+    font-size: 22px;
+}
+
+.dayMark {
+    font-size: 12px;
+}
+
+/* 今日 */
+.dayButton.today {
+    border: 2px solid var(--primary2);
+    box-shadow: 0 0 6px var(--primary3);
+}
+
+/* 未来 */
+.dayButton.future {
+    background: #f3f4f6;
+    color: #9ca3af;
+    opacity: 0.7;
+}
+
+/* 未来はホバーしても変化させない */
+.dayButton.future:hover {
+    background: #f3f4f6;
+    box-shadow: none;
+    transform: none;
+}
+
+.dayButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.actions button {
+    min-width: 120px;
+    text-align: center;
+}
+
+/* 詳細 */
+.section {
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* .sectionTitle {
+    font-weight: bold;
+}
+
+.sectionValue {
+    color: #333;
+    white-space: pre-wrap;
+}
+
+.sectionItem {
+    margin-bottom: 12px;
+} */
+/* 項目ブロック */
+.sectionItem {
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    border-left: 3px solid var(--primary2);
+    background: var(--primary4);
+    /* うっすら背景 */
+    border-radius: 6px;
+}
+
+/* カテゴリ名（ラベル） */
+.sectionTitle {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary1);
+    margin-bottom: 6px;
+}
+
+/* 内容 */
+.sectionValue {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}

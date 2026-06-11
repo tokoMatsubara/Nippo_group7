@@ -1,0 +1,72 @@
+/* =========================
+   Dashboard Layout Only
+========================= */
+
+/* セクション間隔 */
+.section {
+    width: 100%;
+    max-width: 1126px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* 週一覧は左詰め */
+.weekCard {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* リマインドタイトル */
+.remindTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* リスト */
+.list {
+    padding-left: 18px;
+}
+
+/* 週カード（Dashboard専用UI） */
+.weekCard {
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.weekCard:hover {
+    transform: translateY(-2px);
+}
+
+.weekArrow {
+    font-size: 30px;
+    color: #9ca3af;
+
+    transition: all 0.2s ease;
+}
+
+/* テキスト */
+.weekTitle {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.summaryTitle {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--primary1);
+    margin-bottom: 4px;
+}
+
+.weekSummary {
+    color: #374151;
+    line-height: 1.75;
+}

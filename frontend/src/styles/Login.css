@@ -1,0 +1,134 @@
+/* =========================
+   Login Layout Only
+========================= */
+
+.loginContainer {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    /* ほんのり模様（ベース） */
+    background-color: #f8fafc;
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 20px 20px;
+
+}
+
+/* 左上のぼかし円 */
+.loginContainer::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+
+    background: var(--primary2);
+    filter: blur(120px);
+    opacity: 0.35;
+
+    top: -150px;
+    left: -150px;
+
+    z-index: 0;
+
+    pointer-events: none;
+}
+
+/* 右下のぼかし円 */
+.loginContainer::after {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+
+    background: var(--primary1);
+    filter: blur(120px);
+    opacity: 0.35;
+
+    bottom: -150px;
+    right: -150px;
+
+    z-index: 0;
+
+    pointer-events: none;
+}
+
+/* Login Card */
+.loginBox {
+    position: relative;
+    z-index: 10;
+    width: 360px;
+    padding: 30px;
+    border-radius: 12px;
+    background: var(--primary4);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* タイトル */
+.loginTitle {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* フォーム */
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 入力フィールド（最低限のみ） */
+.loginInput {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    background: white;
+    color: black;
+}
+
+/* フォーカス */
+.loginInput:focus {
+    border-color: var(--primary2);
+}
+
+/* リンク */
+.loginLink {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.loginLink a {
+    color: var(--primary2);
+    text-decoration: none;
+}
+
+.loginLink a:hover {
+    text-decoration: underline;
+}
+
+/* ボタン */
+.loginButton {
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    /* ← 角をより丸く */
+    background: var(--primary1);
+    /* ← 青 */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.loginButton:hover {
+    background: var(--primary1);
+    transform: translateY(-1px);
+}

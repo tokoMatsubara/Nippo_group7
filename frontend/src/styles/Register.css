@@ -1,0 +1,132 @@
+/* =========================
+   Register Layout Only
+========================= */
+
+.registerContainer {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    /* ほんのり模様（ベース） */
+    background-color: #f8fafc;
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* 左上のぼかし円 */
+.registerContainer::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+
+    background: var(--primary2);
+    filter: blur(120px);
+    opacity: 0.35;
+
+    top: -150px;
+    left: -150px;
+
+    z-index: 0;
+
+    pointer-events: none;
+}
+
+/* 右下のぼかし円 */
+.registerContainer::after {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+
+    background: var(--primary1);
+    filter: blur(120px);
+    opacity: 0.35;
+
+    bottom: -150px;
+    right: -150px;
+
+    z-index: 0;
+
+    pointer-events: none;
+}
+
+/* カード配置のみ */
+.registerBox {
+    position: relative;
+    z-index: 10;
+    width: 360px;
+    padding: 30px;
+    border-radius: 12px;
+    background: var(--primary4);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* タイトル */
+.registerTitle {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* フォーム */
+.registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 入力 */
+.registerInput {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    background: white;
+    color: black;
+}
+
+.registerInput:focus {
+    border-color: var(--primary1);
+}
+
+/* リンク */
+.registerLink {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.registerLink a {
+    color: var(--primary2);
+    text-decoration: none;
+}
+
+.registerLink a:hover {
+    text-decoration: underline;
+}
+
+/* ボタン */
+.registerButton {
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    /* ← 角をより丸く */
+    background: var(--primary2);
+    /* ← 青 */
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.registerButton:hover {
+    background: var(--primary2);
+    transform: translateY(-1px);
+}
