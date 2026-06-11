@@ -2,6 +2,7 @@ package com.daily_app.demo.Service;
 
 import com.daily_app.demo.Repository.DailyRepository;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +115,21 @@ public class DailyCrudService {
 
     @Transactional
     public Map<String, String> reportDaily(User user, ReportRequestDto reportRequest) {
+        try{
+            LocalDate requestDay = reportRequest.getDate();
+            LocalDate today = LocalDate.now();
+            if(requestDay.isAfter(today)){
+                throw new Exception("未来の日報を記述しようとしています");
+            }
+
+            DayOfWeek requestDow = requestDay.getDayOfWeek();
+            if(requestDow == DayOfWeek.SATURDAY || requestDow == DayOfWeek.SUNDAY){
+                throw new Exception("休日の日報を記述しようとしています");
+            }
+        }catch(Exception e){
+            return Map.of("status", "failed", "message", e.getMessage());
+        }
+
         Integer userId = user.getUserId();
         Daily daily = new Daily(user, reportRequest.getDate());
 
