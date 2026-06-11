@@ -1,5 +1,5 @@
 // ログイン画面
-
+import logoIcon from "../assets/logo.png";
 import "../styles/Login.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -50,7 +50,7 @@ export default function Login() {
 
             <div className="loginBox card">
 
-                <h1 className="loginTitle">日報ツール</h1>
+                <img src={logoIcon} alt="logo" className="loginIcon" />
 
                 <form className="loginForm" onSubmit={handleLogin}>
 
