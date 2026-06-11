@@ -48,26 +48,28 @@ body.orangeTheme .header {
 body.blueTheme {
   --primary1: #1B435D;
   --primary2: #70B8FD;
-
+  --primary3: black;
   --primary4: #70bbfd3e;
 }
 
 body.greenTheme {
   --primary1: #77AF9C;
   --primary2: #8CD790;
+  --primary3: black;
   --primary4: #8cd79037;
 }
 
 body.orangeTheme {
   --primary1: #F99292;
   --primary2: #FFBC61;
+  --primary3: black;
   --primary4: #FFF4E0;
 }
 
 body.purpleTheme {
   --primary1: #665990;
   --primary2: #AAA5D1;
-  --primary3: #0c0000;
+  --primary3: black;
   --primary4: #aaa5d142;
 }
 
