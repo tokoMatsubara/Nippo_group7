@@ -8,24 +8,21 @@ const themes = [
 ];
 
 export default function ThemeToggle() {
-    const [theme, setTheme] = useState("blueTheme");
+    const [theme, setTheme] = useState(() => {
+        return localStorage.getItem("theme") || "blueTheme";
+    });
+
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
 
-    // 初期化
-    useEffect(() => {
-        const savedTheme = localStorage.getItem("theme") || "blueTheme";
-        setTheme(savedTheme);
-    }, []);
-
-    // テーマ適用
-    useEffect(() => {
+    // UI操作だけ（副作用削除）
+    const changeTheme = (t) => {
+        setTheme(t);
+        localStorage.setItem("theme", t);
         document.body.classList.remove(...themes);
-        document.body.classList.add(theme);
-        localStorage.setItem("theme", theme);
-    }, [theme]);
+        document.body.classList.add(t);
+    };
 
-    // 外側クリックで閉じる
     useEffect(() => {
         const handleClickOutside = (e) => {
             if (ref.current && !ref.current.contains(e.target)) {
@@ -39,7 +36,6 @@ export default function ThemeToggle() {
 
     return (
         <div className="themeWrapper" ref={ref}>
-            {/* ボタン */}
             <button
                 className="themeButton"
                 onClick={() => setOpen(!open)}
@@ -47,7 +43,6 @@ export default function ThemeToggle() {
                 Theme
             </button>
 
-            {/* ドロップダウン */}
             {open && (
                 <div className="themeDropdown">
                     {themes.map((t) => (
@@ -55,7 +50,7 @@ export default function ThemeToggle() {
                             key={t}
                             className={`themeItem ${theme === t ? "active" : ""}`}
                             onClick={() => {
-                                setTheme(t);
+                                changeTheme(t);
                                 setOpen(false);
                             }}
                             style={{

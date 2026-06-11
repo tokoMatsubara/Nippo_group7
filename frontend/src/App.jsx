@@ -12,20 +12,17 @@ import DailyList from "./pages/DailyList";
 import Remind from "./pages/Remind";
 
 // テーマ適用関数（純粋関数）
-const applyTheme = (theme) => {
-  document.body.classList.remove("blueTheme", "orangeTheme");
+const themes = ["blueTheme", "orangeTheme", "greenTheme", "purpleTheme"];
 
-  if (theme === "orange") {
-    document.body.classList.add("orangeTheme");
-  } else {
-    document.body.classList.add("blueTheme"); // デフォルト
-  }
+const applyTheme = (theme) => {
+  document.body.classList.remove(...themes);
+  document.body.classList.add(theme || "blueTheme");
 };
 
 function AppWrapper() {
   // layout崩れ・チラつき防止のため useLayoutEffect
   useLayoutEffect(() => {
-    const theme = localStorage.getItem("theme") || "blue";
+    const theme = localStorage.getItem("theme") || "blueTheme";
     applyTheme(theme);
   }, []);
   return (
