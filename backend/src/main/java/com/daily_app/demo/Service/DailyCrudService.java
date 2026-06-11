@@ -147,7 +147,6 @@ public class DailyCrudService {
 
         try {
             dailyRepository.save(daily);
-            dailySummaryService.generateSummary(daily, reportRequest.getContents());
         } catch (DataIntegrityViolationException e) {
             System.err.println(e.getMessage());
             return Map.of("status", "failed", "message", "日報の登録に失敗しました");
