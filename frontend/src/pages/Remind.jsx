@@ -120,7 +120,7 @@ function Remind() {
 
   const handleSave = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/remind/settings", {
+      const res = await fetch("http://localhost:8080/api/remind/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

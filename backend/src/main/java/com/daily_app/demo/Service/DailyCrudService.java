@@ -11,6 +11,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -114,7 +116,7 @@ public class DailyCrudService {
     // #region
 
     @Transactional
-    public Map<String, String> reportDaily(User user, ReportRequestDto reportRequest) {
+    public ResponseEntity<Map<String, String>> reportDaily(User user, ReportRequestDto reportRequest) {
         try{
             LocalDate requestDay = reportRequest.getDate();
             LocalDate today = LocalDate.now();
@@ -127,7 +129,7 @@ public class DailyCrudService {
                 throw new Exception("休日の日報を記述しようとしています");
             }
         }catch(Exception e){
-            return Map.of("status", "failed", "message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("status", "failed", "message", e.getMessage()));
         }
 
         Integer userId = user.getUserId();
@@ -149,13 +151,13 @@ public class DailyCrudService {
             dailyRepository.save(daily);
         } catch (DataIntegrityViolationException e) {
             System.err.println(e.getMessage());
-            return Map.of("status", "failed", "message", "日報の登録に失敗しました");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("status", "failed", "message", "日報の登録に失敗しました"));
         }
         dailySummaryService.generateSummary(daily, reportRequest.getContents());
         eventPublisher.publishEvent(
                 new WeeklySummaryEvent(userId, reportRequest.getDate()));
 
-        return Map.of("status", "success", "message", "日報の登録に成功しました");
+        return ResponseEntity.ok(Map.of("status", "success", "message", "日報の登録に成功しました"));
     }
     // #endregion
 
@@ -181,7 +183,7 @@ public class DailyCrudService {
         daily.setDailyDetails(details);
 
         try {
-            if(userId != daily.getUser().getUserId()){
+            if(!daily.getUser().getUserId().equals(userId)){
                 throw new Exception("違うユーザーの日報を更新しようとしています。");
             }
             dailyRepository.save(daily);
@@ -207,7 +209,7 @@ public class DailyCrudService {
         Integer userId = user.getUserId();
         LocalDate date = daily.getDailyDate();
         try {
-            if(userId != daily.getUser().getUserId()){
+            if(!daily.getUser().getUserId().equals(userId)){
                 throw new Exception("違うユーザーの日報を削除しようとしています。");
             }
             dailyRepository.deleteById(dailyId);

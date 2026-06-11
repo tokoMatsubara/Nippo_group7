@@ -1,6 +1,7 @@
 package com.daily_app.demo.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class DailyController {
     }
 
     @PostMapping("/report")
-    public Map<String, String> createReport(
+    public ResponseEntity<Map<String, String>> createReport(
         @AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ReportRequestDto request) {
         return dailyCrud.reportDaily(userDetails.getUser(), request);
     }
