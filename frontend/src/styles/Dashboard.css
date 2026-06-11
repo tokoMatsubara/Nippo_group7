@@ -4,6 +4,9 @@
 
 /* セクション間隔 */
 .section {
+    width: 100%;
+    max-width: 1126px;
+    margin: 0 auto;
     margin-bottom: 20px;
     text-align: left;
 }

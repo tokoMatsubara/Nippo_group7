@@ -2,8 +2,9 @@
 
 .appWrapper {
     min-height: 100vh;
-    background: #f7f8fa;
+    background: white;
     font-family: sans-serif;
+    background-color: var(--primary4);
 }
 
 /* Header分の余白確保（超重要） */
@@ -13,7 +14,7 @@
     padding-left: 0px;
     padding-right: 0px;
     padding-bottom: 0px;
-    background-color: var(--primary4);
+    /* background-color: var(--primary4); */
 }
 
 /* 共通ボタン（青統一） */
@@ -221,6 +222,9 @@ body {
 
 /* カード */
 .card {
+    width: 100%;
+    max-width: 1126px;
+    margin: 0 auto;
     text-align: left;
     position: relative;
     word-wrap: break-word;
@@ -258,6 +262,8 @@ body {
 
 /* card用ボタン */
 .button {
+    max-width: 1126px;
+    margin: 0 auto;
     display: flex;
     text-align: left;
     position: relative;
