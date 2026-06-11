@@ -49,25 +49,28 @@ body.orangeTheme .header {
 body.blueTheme {
   --primary1: #1B435D;
   --primary2: #70B8FD;
-
-  --primary4: #70b9fd69;
+  --primary3: black;
+  --primary4: #70bbfd3e;
 }
 
 body.greenTheme {
   --primary1: #77AF9C;
   --primary2: #8CD790;
+  --primary3: black;
   --primary4: #8cd79037;
 }
 
 body.orangeTheme {
   --primary1: #F99292;
   --primary2: #FFBC61;
+  --primary3: black;
   --primary4: #FFF4E0;
 }
 
 body.purpleTheme {
   --primary1: #665990;
   --primary2: #AAA5D1;
+  --primary3: black;
   --primary4: #aaa5d142;
 }
 
@@ -75,15 +78,15 @@ body.purpleTheme {
   :root {
     --text: #9ca3af;
     --text-h: #f3f4f6;
-    --bg: #16171d;
+    --bg: white;
     --border: #2e303a;
     --code-bg: #1f2028;
     --accent: #c084fc;
     --accent-bg: rgba(192, 132, 252, 0.15);
     --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    --social-bg: white;
+    /* --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px; */
   }
 
   #social .button-icon {
@@ -96,7 +99,7 @@ body {
 }
 
 #root {
-  width: 1126px;
+  width: 100%;
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
@@ -105,6 +108,9 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+}
+.container {
+
 }
 
 h1,

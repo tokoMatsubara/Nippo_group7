@@ -2,8 +2,9 @@
 
 .appWrapper {
     min-height: 100vh;
-    background: #f7f8fa;
+    background: white;
     font-family: sans-serif;
+    background-color: var(--primary4);
 }
 
 /* Header分の余白確保（超重要） */
@@ -12,8 +13,9 @@
     /* ← ヘッダー高さ分 */
     padding-left: 0px;
     padding-right: 0px;
-    padding-bottom: 20px;
-    background-color: var(--primary4);
+    padding-bottom: 0px;
+    margin-bottom: 30px;
+    /* background-color: var(--primary4); */
 }
 
 /* 共通ボタン（青統一） */
@@ -197,12 +199,10 @@
 
 
 body {
-  background: linear-gradient(
-    180deg,
-    rgba(170, 165, 209, 0.18) 0%,
-    rgba(255, 255, 255, 1) 60%,
-    rgba(255, 255, 255, 1) 100%
-  );
+    background: linear-gradient(180deg,
+            rgba(170, 165, 209, 0.18) 0%,
+            rgba(255, 255, 255, 1) 60%,
+            rgba(255, 255, 255, 1) 100%);
 }
 
 .headerTop {
@@ -223,6 +223,9 @@ body {
 
 /* カード */
 .card {
+    width: 100%;
+    max-width: 1126px;
+    margin: 0 auto;
     text-align: left;
     position: relative;
     word-wrap: break-word;
@@ -260,6 +263,8 @@ body {
 
 /* card用ボタン */
 .button {
+    max-width: 1126px;
+    margin: 0 auto;
     display: flex;
     text-align: left;
     position: relative;

@@ -38,7 +38,7 @@
     width: 28px;
     height: 28px;
     object-fit: contain;
-    color: #333;
+    background-color: var(--primary2);
 }
 
 /* ナビ */
@@ -59,7 +59,7 @@
 
 /* hoverアニメーション */
 .navLinks a:hover {
-    color: var(--primary1);
+    color: var(--primary3);
     transform: translateY(-2px);
 }
 
@@ -72,7 +72,7 @@
 
     width: 0%;
     height: 2px;
-    background: var(--primary1);
+    background: var(--primary3);
 
     transition: width 0.3s ease;
 }
@@ -84,7 +84,7 @@
 
 /* active */
 .navLinks a.active {
-    color: var(--primary1);
+    color: var(--primary3);
     font-weight: 600;
 }
 
@@ -113,7 +113,7 @@
 }
 
 .logoutBtn:hover {
-    color: var(--primary1);
+    color: var(--primary3);
     transform: translateY(-2px);
 }
 
@@ -125,7 +125,7 @@
 
     width: 0%;
     height: 2px;
-    background: var(--primary1);
+    background: var(--primary3);
 
     transition: width 0.3s ease;
 }
@@ -237,7 +237,7 @@
 }
 
 .themeButton:hover {
-    color: var(--primary1);
+    color: var(--primary3);
     transform: translateY(-2px);
 }
 
@@ -249,7 +249,7 @@
 
     width: 0%;
     height: 2px;
-    background: var(--primary1);
+    background: var(--primary3);
 
     transition: width 0.3s ease;
 }

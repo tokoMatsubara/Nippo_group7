@@ -19,6 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -36,7 +38,15 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll() // api/authから始まるものだけ開放
                 .anyRequest().authenticated() 
-            ).addFilterBefore(customAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            )
+            .exceptionHandling(ex -> 
+                ex.authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("{\"message\":\"認証が必要です\"}");
+                })
+            )
+            .addFilterBefore(customAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

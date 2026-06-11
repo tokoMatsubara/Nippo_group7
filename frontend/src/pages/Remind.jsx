@@ -27,18 +27,19 @@ function Remind() {
 
       const dateStr = yesterday.toISOString().split("T")[0];
 
-      const remindResponse = await fetch(
+      const res = await fetch(
         `http://localhost:8080/api/remind`, {
         method: "GET",
         credentials: "include"
       });
 
-      if (remindResponse.status === 403) {
-        alert("アクセス権限がありません");
-        navigate("/login")
+      if (!res.ok) {
+        const error = new Error(`HTTP ${res.status}`);
+        error.status = res.status;   // ← これを足すのが肝
+        throw error;
       }
 
-      const remindData = await remindResponse.json();
+      const remindData = await res.json();
 
       console.log(remindData);
       console.log(remindData[0]);
@@ -48,8 +49,6 @@ function Remind() {
       const historyGoals = remindData
         .slice(1)
         .map(item => item.remindContent);
-        
-      const goal = remindData[0].remindContent;
 
 
       setYesterdayGoal(
@@ -58,34 +57,51 @@ function Remind() {
 
       setPastGoals(historyGoals);
 
-    } catch (error) {
-      console.error(error);
-      setYesterdayGoal("取得に失敗しました");
+    } catch (err) {
+      console.error(err);
+      if(err.status === 401){
+        console.error("401認証エラー");
+        alert("認証エラーです。ログインしなおしてください");
+        navigate("/login");
+      }else{
+        console.error("Failed to data");
+        alert('データの取得に失敗しました');
+        setYesterdayGoal("通知設定の取得に失敗しました");
+      }
     }
   };
 
   const fetchRemindSetting = async () => {
     try {
-      const remindSettingResponse = await fetch(
+      const res = await fetch(
         `http://localhost:8080/api/remind/settings`, {
         method: "GET",
         credentials: "include"
       });
 
-      if (remindSettingResponse.status === 403) {
-        alert("アクセス権限がありません");
-        navigate("/login")
+      if (!res.ok) {
+        const error = new Error(`HTTP ${res.status}`);
+        error.status = res.status;   // ← これを足すのが肝
+        throw error;
       }
 
-      const settingData = await remindSettingResponse.json();
+      const settingData = await res.json();
       console.log(settingData);
 
       const [hour, minute] = settingData["remindTime"].split(":");
       setNotificationEnabled(settingData["remindStatus"]);
       setAlarm({ hour: Number(hour), minute:Number(minute) });
-    } catch (error) {
-      console.error(error);
-      setYesterdayGoal("通知設定の取得に失敗しました");
+    } catch (err) {
+      console.error(err);
+      if(err.status === 401){
+        console.error("401認証エラー");
+        alert("認証エラーです。ログインしなおしてください");
+        navigate("/login");
+      }else{
+        console.error("Failed to data");
+        alert('データの取得に失敗しました');
+        setYesterdayGoal("通知設定の取得に失敗しました");
+      }
     }
   }
 
@@ -113,13 +129,27 @@ function Remind() {
         credentials: "include"
       });
 
+      if (!res.ok) {
+        const error = new Error(`HTTP ${res.status}`);
+        error.status = res.status;   // ← これを足すのが肝
+        throw error;
+      }
+
       const data = await response.json();
       console.log(data);
       alert("保存しました");
       setIsSaved(true);
 
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
+      if(err.status === 401){
+        console.error("401認証エラー");
+        alert("認証エラーです。ログインしなおしてください");
+        navigate("/login");
+      }else{
+        console.error("Failed to save settings");
+        alert('リマインド設定に失敗しました');
+      }
     }
 
   };
