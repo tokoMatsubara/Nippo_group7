@@ -8,10 +8,15 @@
   --accent-bg: rgba(170, 59, 255, 0.1);
   --accent-border: rgba(170, 59, 255, 0.5);
   --social-bg: rgba(244, 243, 236, 0.5);
+  --primary2-opacity: 0.5;
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-
+  /* ドロップアウトの文字用 */
+  --blue-primary2: #70B8FD;
+  --orange-primary2: #FFBC61;
+  --green-primary2: #8CD790;
+  --purple-primary2: #AAA5D1;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -31,31 +36,39 @@
     font-size: 16px;
   }
 
-  /* メインカラー（青） */
-
-
 }
 
-body.blueTheme .header {
+/* body.blueTheme .header {
     background-image: url("assets/blue.png");
 }
 
 body.orangeTheme .header {
     background-image: url("assets/orange.png");
-}
+} */
 
 body.blueTheme {
   --primary1: #1B435D;
   --primary2: #70B8FD;
-  --primary3: #454545;
-  --primary4: #F5FAFF;
+
+  --primary4: #70b9fd69;
+}
+
+body.greenTheme {
+  --primary1: #77AF9C;
+  --primary2: #8CD790;
+  --primary4: #8cd79037;
 }
 
 body.orangeTheme {
   --primary1: #F99292;
   --primary2: #FFBC61;
-  --primary3: #FFC679;
   --primary4: #FFF4E0;
+}
+
+body.purpleTheme {
+  --primary1: #665990;
+  --primary2: #AAA5D1;
+  --primary4: #aaa5d142;
 }
 
 @media (prefers-color-scheme: dark) {

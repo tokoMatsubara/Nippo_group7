@@ -82,7 +82,7 @@ function Remind() {
 
       const [hour, minute] = settingData["remindTime"].split(":");
       setNotificationEnabled(settingData["remindStatus"]);
-      setAlarm({ hour, minute });
+      setAlarm({ hour: Number(hour), minute:Number(minute) });
     } catch (error) {
       console.error(error);
       setYesterdayGoal("通知設定の取得に失敗しました");
