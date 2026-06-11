@@ -98,21 +98,6 @@ export default function Dashboard() {
             {/* リマインド */}
             <div className="body">
 
-                <section className="card">
-
-                    <h2 className="remindTitle">明日の目標と課題</h2>
-
-                    {reminder?.insights?.nextActions?.length ? (
-                        <ul className="list">
-                            {reminder.insights.nextActions.map((item, i) => (
-                                <li key={i}>{item}</li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>データなし</p>
-                    )}
-                </section>
-
                 {/* 週一覧 */}
                 <section className="section">
 
