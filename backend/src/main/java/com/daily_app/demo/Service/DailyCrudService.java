@@ -137,17 +137,19 @@ public class DailyCrudService {
 
         List<DailyDetail> details = new ArrayList<DailyDetail>();
 
-        for (com.daily_app.demo.Dto.Request.ContentDto dailyDetailContent : reportRequest.getContents()) {
-            Category category = categoryRepository.findById(dailyDetailContent.getCategoryId())
-                    .orElseThrow(
-                            () -> new RuntimeException("Category not found: " + dailyDetailContent.getCategoryId()));
-            details.add(new DailyDetail(daily, category, dailyDetailContent.getContent()));
-        }
-
-        daily.getDailyDetails().addAll(details);
-        System.out.println("details size = " + details.size());
-
+    
         try {
+            for (com.daily_app.demo.Dto.Request.ContentDto dailyDetailContent : reportRequest.getContents()) {
+                Category category = categoryRepository.findById(dailyDetailContent.getCategoryId())
+                        .orElseThrow(
+                                () -> new RuntimeException("Category not found: " + dailyDetailContent.getCategoryId()));
+                details.add(new DailyDetail(daily, category, dailyDetailContent.getContent()));
+            }
+
+            daily.getDailyDetails().addAll(details);
+            System.out.println("details size = " + details.size());
+
+        
             dailyRepository.save(daily);
         } catch (DataIntegrityViolationException e) {
             System.err.println(e.getMessage());
@@ -172,17 +174,17 @@ public class DailyCrudService {
         LocalDate date = daily.getDailyDate();
         List<DailyDetail> details = daily.getDailyDetails();
 
-        for (DailyDetail detail : details) {
-            for (com.daily_app.demo.Dto.Request.ContentDto content : updateRequest.getContents()) {
-                if (detail.getCategory().getCategoryId() == content.getCategoryId()) {
-                    detail.setContent(content.getContent());
+        try {
+            for (DailyDetail detail : details) {
+                for (com.daily_app.demo.Dto.Request.ContentDto content : updateRequest.getContents()) {
+                    if (detail.getCategory().getCategoryId() == content.getCategoryId()) {
+                        detail.setContent(content.getContent());
+                    }
                 }
             }
-        }
 
-        daily.setDailyDetails(details);
+            daily.setDailyDetails(details);
 
-        try {
             if(!daily.getUser().getUserId().equals(userId)){
                 throw new Exception("違うユーザーの日報を更新しようとしています。");
             }
