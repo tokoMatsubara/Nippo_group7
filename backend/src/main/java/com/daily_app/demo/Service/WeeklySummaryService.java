@@ -179,6 +179,7 @@ public class WeeklySummaryService {
                 ・日本語
                 ・簡潔
                 ・箇条書き禁止
+                ・総文字数は書かないで
                 """.formatted(input);
     }
 
