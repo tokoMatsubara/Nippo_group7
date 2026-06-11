@@ -58,6 +58,9 @@ export default function ThemeToggle() {
                                 setTheme(t);
                                 setOpen(false);
                             }}
+                            style={{
+                                color: `var(--${t.replace("Theme", "").toLowerCase()}-primary2)`
+                            }}
                         >
                             {t.replace("Theme", "")}
                         </div>
