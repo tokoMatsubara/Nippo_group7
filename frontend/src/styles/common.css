@@ -285,6 +285,7 @@ body {
     margin-bottom: 30px;
     padding: 16px;
     user-select: none;
+    cursor: pointer;
 }
 
 .button-image {
