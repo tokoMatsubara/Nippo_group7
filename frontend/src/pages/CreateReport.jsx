@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/CreateReport.css";
+import logoIcon from "../assets/nippo_create.png";
 
 const API_BASE = "http://localhost:8080/api";
 
@@ -240,11 +241,13 @@ function CreateReport() {
     <div className="daily-page">
       <header className="header">
         <div className="headerTop">
-          <h1 className="title">日報{editDaily ? "編集" : "作成"}</h1>
-
-          <button className="backButton" type="button" onClick={() => navigate(-1)}>
-            キャンセル
-          </button>
+          <div className="headerTitle">
+            <h1 className="title">日報{editDaily ? "編集" : "作成"}</h1>
+            <img src={logoIcon} alt="logo" className="logoIcon" />
+            <button className="backButton" type="button" onClick={() => navigate(-1)}>
+              キャンセル
+            </button>
+          </div>
         </div>
       </header>
 

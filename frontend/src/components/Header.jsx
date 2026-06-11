@@ -45,7 +45,7 @@ export default function Header() {
 
             <div className="logo" onClick={() => navigate("/dashboard")}>
 
-                <img src={logoIcon} alt="logo" className="logoIcon" />
+                <img src={logoIcon} alt="logo" className="headerlogoIcon" />
 
                 日報アプリ
             </div>

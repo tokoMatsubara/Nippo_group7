@@ -3,6 +3,7 @@ import blueBg from "../assets/blue.png";
 import orangeBg from "../assets/orange.png";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logoIcon from "../assets/nippo_dash.png";
 
 export default function Dashboard() {
 
@@ -90,9 +91,10 @@ export default function Dashboard() {
         <>
             {/* ヘッダー */}
             <div className="header">
-
-                <h1 className="title">ダッシュボード</h1>
-
+                <div className="headerTitle">
+                    <h1 className="title">ダッシュボード</h1>
+                    <img src={logoIcon} alt="logo" className="logoIcon" />
+                </div>
             </div>
 
             {/* リマインド */}
