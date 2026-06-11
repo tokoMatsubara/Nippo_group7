@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Remind.css";
+import logoIcon from "../assets/nippo_remind.png";
 
 function Remind() {
   const navigate = useNavigate();
@@ -59,11 +60,11 @@ function Remind() {
 
     } catch (err) {
       console.error(err);
-      if(err.status === 401){
+      if (err.status === 401) {
         console.error("401認証エラー");
         alert("認証エラーです。ログインしなおしてください");
         navigate("/login");
-      }else{
+      } else {
         console.error("Failed to data");
         alert('データの取得に失敗しました');
         setYesterdayGoal("通知設定の取得に失敗しました");
@@ -90,14 +91,14 @@ function Remind() {
 
       const [hour, minute] = settingData["remindTime"].split(":");
       setNotificationEnabled(settingData["remindStatus"]);
-      setAlarm({ hour: Number(hour), minute:Number(minute) });
+      setAlarm({ hour: Number(hour), minute: Number(minute) });
     } catch (err) {
       console.error(err);
-      if(err.status === 401){
+      if (err.status === 401) {
         console.error("401認証エラー");
         alert("認証エラーです。ログインしなおしてください");
         navigate("/login");
-      }else{
+      } else {
         console.error("Failed to data");
         alert('データの取得に失敗しました');
         setYesterdayGoal("通知設定の取得に失敗しました");
@@ -142,11 +143,11 @@ function Remind() {
 
     } catch (err) {
       console.error(err);
-      if(err.status === 401){
+      if (err.status === 401) {
         console.error("401認証エラー");
         alert("認証エラーです。ログインしなおしてください");
         navigate("/login");
-      }else{
+      } else {
         console.error("Failed to save settings");
         alert('リマインド設定に失敗しました');
       }
@@ -163,8 +164,11 @@ function Remind() {
 
       {/* ヘッダーエリア */}
       <div className="header">
+        <div className="headerTitle">
+          <h1 className="title">リマインド</h1>
+          <img src={logoIcon} alt="logo" className="logoIcon" />
+        </div>
 
-        <h1 className="title">🔔 リマインド</h1>
 
       </div>
 
