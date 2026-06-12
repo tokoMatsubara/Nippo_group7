@@ -18,11 +18,10 @@
     /* background-color: var(--primary4); */
 }
 
-/* 共通ボタン（青統一） */
+/* ===== 共通ボタン ===== */
 .primaryButton {
     min-width: 130px;
     height: 40px;
-    color: #fff;
     padding: 10px 14px;
     font-weight: bold;
     cursor: pointer;
@@ -32,19 +31,22 @@
     outline: none;
     border-radius: 6px;
     z-index: 0;
-    background: var(--primary2);
     overflow: hidden;
+
+    background: var(--primary2);
     color: #333;
 }
 
-.primaryButton:hover {
+/* ===== hoverアニメーション（通常時のみ） ===== */
+.primaryButton:not(.saved):hover {
     color: #fff;
 }
 
-.primaryButton:hover:after {
+.primaryButton:not(.saved):hover:after {
     width: 100%;
 }
 
+/* ===== 背景スライド用疑似要素 ===== */
 .primaryButton:after {
     content: "";
     position: absolute;
@@ -55,6 +57,20 @@
     width: 0;
     height: 100%;
     background: var(--primary1);
+}
+
+/* ===== 保存済み状態 ===== */
+.primaryButton.saved {
+    background-color: #9aa0a6;
+    color: #fff;
+    opacity: 0.8;
+
+    cursor: default;
+}
+
+/* saved時はアニメーション完全停止 */
+.primaryButton.saved:after {
+    width: 0;
 }
 
 /* 戻るボタン（統一） */
