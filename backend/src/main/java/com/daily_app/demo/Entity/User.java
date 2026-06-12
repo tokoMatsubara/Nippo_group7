@@ -15,13 +15,20 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+
+
+
 @Entity
 @Table(name = "users")
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Integer userId;
+    
+    @Column(name = "user_theme")
+    private String userThema = "blue";
 
     @NotBlank
     @Column(name = "user_name")
@@ -65,6 +72,10 @@ public class User {
         return userId;
     }
 
+    public String getUserTheme(){
+        return userThema;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -89,6 +100,10 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void setUserTheme(String userThema){
+        this.userThema = userThema;
     }
 
     public void setPassword(String password) {
