@@ -60,6 +60,9 @@ export default function Header() {
                         <span className="redDot" />
                     )}
                 </NavLink>
+                <NavLink to="/profile">
+                    プロフィール
+                </NavLink>
 
                 {/* 日付付きルートは固定リンクにしにくいので例だけ */}
                 {/* 必要ならボタン遷移にする */}
