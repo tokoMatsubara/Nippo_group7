@@ -1,16 +1,26 @@
 // ログイン画面
 import logoIcon from "../assets/logo.png";
 import "../styles/Login.css";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const params = useParams();
+
+    useEffect(() => {
+
+        const registeredEmail = localStorage.getItem("email");
+        if(registeredEmail !== null){
+            setEmail(registeredEmail);
+        }
+    }, [])
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        localStorage.removeItem("email");
 
         try {
             const res = await fetch("http://localhost:8080/api/auth/login", {
