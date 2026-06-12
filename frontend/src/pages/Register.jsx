@@ -8,9 +8,15 @@ export default function Register() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (password !== confirmPassword) {
+            alert("パスワードが一致しません");
+            return;
+        }
 
         try {
             const res = await fetch("http://localhost:8080/api/auth/create", {
@@ -72,6 +78,14 @@ export default function Register() {
                         placeholder="パスワード"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                    />
+
+                    <input
+                        className="registerInput"
+                        type="password"
+                        placeholder="パスワード（確認）"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                     />
 
                     <button className="registerButton" type="submit">

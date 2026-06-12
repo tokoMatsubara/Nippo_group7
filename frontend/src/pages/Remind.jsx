@@ -245,7 +245,11 @@ function Remind() {
 
         {' '}
 
-        <button className="primaryButton" onClick={handleSave} disabled={isSaved}>
+        <button
+          className={`primaryButton ${isSaved ? "saved" : ""}`}
+          onClick={handleSave}
+          disabled={isSaved}
+        >
           {isSaved ? "保存済み" : "保存"}
         </button>
 
