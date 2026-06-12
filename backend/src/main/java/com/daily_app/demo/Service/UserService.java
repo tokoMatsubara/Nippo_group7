@@ -20,12 +20,7 @@ import com.daily_app.demo.Repository.UserRepository;
 @Controller
 public class UserService {
 
-    // 1. 作成したUserRepositoryをインジェクション（読み込み）します
-    @Autowired
-    private UserRepository userRepository;
-    // パスワードのハッシュ化
-    @Autowired
-    PasswordEncoder passwordEncoder;
+   
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -112,8 +107,7 @@ public class UserService {
 
             response.put("status", "success");
             response.put("message", "リマインド設定を登録しました");
-        } catch (Exception e) {
-            System.out.println("ユーザーの設定を変更が正常に変更されました");
+      
             return ResponseEntity.ok(response);
             
         }catch(Exception e){
