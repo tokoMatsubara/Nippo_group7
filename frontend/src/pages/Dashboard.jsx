@@ -132,7 +132,7 @@ export default function Dashboard() {
                 <div className="headerTitle">
                     <h1 className="title">ダッシュボード</h1>
                     <div className="logoIcon-wrapper">
-                        <img src={logoIcon} alt="logo" className="logoIcon" />
+                        <img src={logoIcon} alt="logo" className="dash-logoIcon" />
                     </div>
                 </div>
             </div>
