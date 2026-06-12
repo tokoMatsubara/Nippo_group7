@@ -72,5 +72,5 @@ public class UserCreateRequestDto {
 
     public void setUserTheme(String userTheme) {
         this.userTheme = userTheme;
-    }
+    } 
 }
