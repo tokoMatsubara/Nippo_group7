@@ -46,7 +46,7 @@
 .weekArrow {
     font-size: 30px;
     color: #9ca3af;
-
+    margin-left: auto;
     transition: all 0.2s ease;
 }
 
@@ -69,4 +69,43 @@
 .weekSummary {
     color: #374151;
     line-height: 1.75;
+}
+
+.logoIcon-wrapper {
+  display: inline-block;
+  /* 3秒かけて移動し、アニメーション終了時の位置（100%の状態）をそのままキープする */
+  animation: pigeon-move 3s cubic-bezier(0.25, 1, 0.5, 1) forwards; 
+}
+
+/* ② 【上下担当】その場でひょこひょこ走る設定 */
+.logoIcon {
+  width: 80px; /* ロゴのサイズ（自由に調整してください） */
+  height: auto;
+  display: block;
+  /* 0.6秒のひょこひょこ運動を無限に繰り返す */
+  animation: pigeon-dash 0.6s infinite ease-in-out;
+}
+
+/* --- アニメーションの定義 --- */
+
+/* 1. 走っているような「ひょこひょこ感」を出す上下の動き */
+@keyframes pigeon-dash {
+  0%, 100% {
+    transform: translateY(0); /* 通常位置 */
+  }
+  50% {
+    transform: translateY(-8px) rotate(-5deg); /* 少し上に浮き、左にちょっと傾く */
+  }
+}
+
+/* 2. 画面の右端から、文字のすぐ横（本来の場所）へ移動する動き */
+@keyframes pigeon-move {
+  0% {
+    /* スタート時：画面の右端（画面幅分、右にオフセット） */
+    transform: translateX(100vw); 
+  }
+  100% {
+    /* 終了時：本来表示されるべき文字のすぐ右横でストップ */
+    transform: translateX(0); 
+  }
 }
