@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/Profile.css";
 
 export default function Profile() {
 
@@ -63,9 +64,14 @@ export default function Profile() {
     };
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div className="container">
 
-            <h2>プロフィール編集</h2>
+            <div className="header">
+                <div className="profileTitle">
+                    <h2 className="title">プロフィール編集</h2>
+                </div>
+            </div>
+
 
             <div>
                 <label>ユーザー名</label>
@@ -109,7 +115,9 @@ export default function Profile() {
 
             <br />
 
-            <button onClick={handleSave}>
+            <button
+                className="primaryButton"
+                onClick={handleSave}>
                 保存
             </button>
 

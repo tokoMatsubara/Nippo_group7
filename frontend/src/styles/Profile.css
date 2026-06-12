@@ -1,0 +1,48 @@
+/* =========================
+   Profile Layout Only
+========================= */
+
+/* プロフィールタイトル */
+.profileTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* フォーム */
+.profileForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* 入力フィールド（最低限のみ） */
+.profileInput {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    background: white;
+    color: black;
+}
+
+/* フォーカス */
+.profileInput:focus {
+    border-color: var(--primary2);
+}
+
+/* リンク */
+.profileLink {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.profileLink a {
+    color: var(--primary2);
+    text-decoration: none;
+}
+
+.profileLink a:hover {
+    text-decoration: underline;
+}
