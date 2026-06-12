@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateReport from "./pages/CreateReport";
 import DailyList from "./pages/DailyList";
 import Remind from "./pages/Remind";
+import Profile from "./pages/Profile";
 
 // テーマ適用関数（純粋関数）
 const applyTheme = (theme) => {
@@ -81,9 +82,20 @@ function App() {
         }
       />
 
+      <Route
+        path="/profile"
+        element={
+          <Layout>
+            <Profile />
+          </Layout>
+        }
+      />
+
       {/* fallback */}
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
+
+    
   );
 }
 

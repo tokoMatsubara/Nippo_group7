@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.util.Map;
-import org.springframework.web.bind.annotation.GetMapping;
-
 
 @RestController
 @RequestMapping("/api")
@@ -39,6 +37,7 @@ public class UserController {
 
     @Autowired
     private JwtTokenProvider tokenProvider;
+
 
     /**
      * API-006: ユーザー登録
@@ -56,22 +55,23 @@ public class UserController {
      * URL: POST /api/login
      */
     @PostMapping("/auth/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto,
+            HttpServletResponse response) {
         System.out.println("--- ログイン認証 本稼働 ---");
-        try{
+        try {
             Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(requestDto.getMailAddress(), requestDto.getPassword()));
-            
+                    new UsernamePasswordAuthenticationToken(requestDto.getMailAddress(), requestDto.getPassword()));
+
             String token = tokenProvider.generateToken(authentication.getName());
             System.out.println(token);
 
             ResponseCookie cookie = ResponseCookie.from("accessToken", token)
-                .httpOnly(true).secure(false).path("/")
-                .maxAge(Duration.ofHours(20)).sameSite("Lax").build();
-        
+                    .httpOnly(true).secure(false).path("/")
+                    .maxAge(Duration.ofHours(20)).sameSite("Lax").build();
+
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
             return userService.login(requestDto);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             System.out.println("プリントしてます");
             LoginResponseDto loginResponse = new LoginResponseDto(false, "メールアドレスまたはパスワードが間違っています");
@@ -85,18 +85,34 @@ public class UserController {
      */
     @PutMapping("/remind/settings")
     public ResponseEntity<Map<String, Object>> updateRemindSettings(
-        @AuthenticationPrincipal CustomUserDetails userDetails, 
-        @RequestBody RemindSettingDto requestDto) {
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestBody RemindSettingDto requestDto) {
         System.out.println("ユーザーID: " + userDetails.getId() + " のリマインド設定を更新します（※ここはまだモック状態です）");
-        
+
         return userService.updateRemindSettings(userDetails.getUser(), requestDto);
     }
 
     @GetMapping("/remind/settings")
     public ResponseEntity<RemindSettingDto> getMethodName(
-        @AuthenticationPrincipal CustomUserDetails userDetails) {
-        
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
         return userService.getRemindSetting(userDetails.getUser());
     }
-    
+
+    // ユーザーネームが画面上で変更できるようにする
+    @PutMapping("/user/profile")
+    public ResponseEntity<Map<String, Object>> updateUserName(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestBody UserCreateRequestDto requestDto) {
+
+        System.out.println("=== /api/user/profile 到達 ===");
+        System.out.println("ログインユーザーID: " + userDetails.getId());
+
+
+        return userService.updateProfile(
+                userDetails.getUser(),
+                requestDto);
+    }
+
+
 }

@@ -24,14 +24,13 @@ public class UserService {
     // 1. 作成したUserRepositoryをインジェクション（読み込み）します
     @Autowired
     private UserRepository userRepository;
-    //パスワードのハッシュ化
+    // パスワードのハッシュ化
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    // ユーザー登録ロジック=================================================================
 
-    //ユーザー登録ロジック=================================================================
-
-    public ResponseEntity<Map<String, Object>> createUser(UserCreateRequestDto requestDto){
+    public ResponseEntity<Map<String, Object>> createUser(UserCreateRequestDto requestDto) {
         Map<String, Object> response = new HashMap<>();
 
         // 【追加】同じメールアドレスが既に登録されていないかチェック
@@ -65,8 +64,7 @@ public class UserService {
         return ResponseEntity.ok(response);
     }
 
-
-    //ログインロジック=================================================================
+    // ログインロジック=================================================================
 
     public ResponseEntity<LoginResponseDto> login(LoginRequestDto requestDto) {
 
@@ -96,19 +94,19 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
-    //リマインド設定ロジック=================================================================
+    // リマインド設定ロジック=================================================================
 
     public ResponseEntity<Map<String, Object>> updateRemindSettings(User user, RemindSettingDto request) {
         System.out.println("ユーザーID: " + user.getUserId() + " のリマインド設定を更新します");
         Map<String, Object> response = new HashMap<>();
-        try{
+        try {
             user.setRemindStatus(request.getRemindStatus());
             user.setRemindTime(request.getRemindTime());
             userRepository.save(user);
 
             response.put("status", "success");
             response.put("message", "リマインド設定を登録しました");
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             response.put("status", "error");
             response.put("message", "リマインド設定を登録しました");
@@ -117,10 +115,68 @@ public class UserService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<RemindSettingDto> getRemindSetting(User user){
+    public ResponseEntity<RemindSettingDto> getRemindSetting(User user) {
         boolean remindStatus = user.getRemindStatus();
         LocalTime remindTime = user.getRemindTime();
         RemindSettingDto remindSettingDto = new RemindSettingDto(remindStatus, remindTime);
         return ResponseEntity.ok(remindSettingDto);
     }
+
+    // ユーザーネーム・メアド・パスワードが画面上で変更できるようにする
+    public ResponseEntity<Map<String, Object>> updateProfile(User user, UserCreateRequestDto requestDto) {
+
+
+        // ちゃんとデータ渡せてるか見るための
+        System.out.println("=== updateProfile開始 ===");
+        System.out.println("userId: " + user.getUserId());
+        System.out.println("userName: " + requestDto.getUserName());
+        System.out.println("mailAddress: " + requestDto.getMailAddress());
+
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            user.setUserName(requestDto.getUserName());
+
+            if (requestDto.getMailAddress() != null) {
+                user.setMailAddress(requestDto.getMailAddress());
+            }
+
+            if (requestDto.getPassword() != null &&
+                    !requestDto.getPassword().isBlank()) {
+
+                String hashedPassword = passwordEncoder.encode(requestDto.getPassword());
+
+                user.setPassword(hashedPassword);
+            }
+            
+            System.out.println("保存前");
+            System.out.println(user.getUserName());
+            System.out.println(user.getMailAddress());
+
+            userRepository.save(user);
+
+            System.out.println("保存後");
+            System.out.println(user.getUserName());
+            System.out.println(user.getMailAddress());
+
+
+
+            response.put("status", "success");
+            response.put("message", "ユーザー名を更新しました");
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+
+            response.put("status", "error");
+            response.put("message", "ユーザー名の更新に失敗しました");
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
+  
+
+   
 }

@@ -21,8 +21,8 @@ export default function Header() {
 
             const remindIsReadRes = await fetch(
                 `http://localhost:8080/api/remind/is_read`, {
-                    method: "GET",
-                    credentials: "include"
+                method: "GET",
+                credentials: "include"
             });
             const remindIsReadData = await remindIsReadRes.json();
             console.log(JSON.stringify(remindIsReadData, null, 2));
@@ -60,12 +60,15 @@ export default function Header() {
                         <span className="redDot" />
                     )}
                 </NavLink>
+                <NavLink to="/profile">
+                    プロフィール
+                </NavLink>
 
                 {/* 日付付きルートは固定リンクにしにくいので例だけ */}
                 {/* 必要ならボタン遷移にする */}
                 {/* <NavLink to="/daily-list/2026-01-01/2026-01-31">一覧</NavLink> */}
             </nav>
-            
+
 
             <div className="headerRight">
                 <ThemeToggle />
@@ -73,7 +76,7 @@ export default function Header() {
                     {userName || "ゲスト"}
                 </span>
 
-                
+
 
                 <button className="logoutBtn" onClick={handleLogout}>
                     ログアウト
