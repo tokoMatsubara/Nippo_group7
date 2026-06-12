@@ -4,7 +4,7 @@ package com.daily_app.demo.Dto.Request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class UserCreateRequestDto {
+public class UserInfoRequestDto {
 
     /**
      * ユーザーの名前
@@ -31,10 +31,10 @@ public class UserCreateRequestDto {
 
 
 
-    public UserCreateRequestDto() {
+    public UserInfoRequestDto() {
     }
 
-    public UserCreateRequestDto(String userName,
+    public UserInfoRequestDto(String userName,
                                 String mailAddress,
                                 String password) {
         this.userName = userName;

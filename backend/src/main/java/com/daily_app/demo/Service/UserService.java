@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import com.daily_app.demo.Dto.RemindSettingDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
-import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
+import com.daily_app.demo.Dto.Request.UserInfoRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Repository.UserRepository;
@@ -31,7 +31,7 @@ public class UserService {
 
     // ユーザー登録ロジック=================================================================
 
-    public ResponseEntity<Map<String, Object>> createUser(UserCreateRequestDto requestDto) {
+    public ResponseEntity<Map<String, Object>> createUser(UserInfoRequestDto requestDto) {
         Map<String, Object> response = new HashMap<>();
 
         // 【追加】同じメールアドレスが既に登録されていないかチェック
@@ -126,7 +126,7 @@ public class UserService {
     }
 
     // ユーザーネーム・メアド・パスワードが画面上で変更できるようにする
-    public ResponseEntity<Map<String, Object>> updateProfile(User user, UserCreateRequestDto requestDto) {
+    public ResponseEntity<Map<String, Object>> updateProfile(User user, UserInfoRequestDto requestDto) {
 
 
         // ちゃんとデータ渡せてるか見るための
