@@ -4,6 +4,7 @@ import orangeBg from "../assets/orange.png";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logoIcon from "../assets/nippo_dash.png";
+import cryIcon from "../assets/cry_nippo.png";
 
 export default function Dashboard() {
 
@@ -137,38 +138,51 @@ export default function Dashboard() {
                 </div>
             </div>
 
-            {/* リマインド */}
             <div className="body">
+                {weeks.length === 0 ? (
+                    <div className="cry">
+                        <img src={cryIcon} alt="logo" className="cryIcon" />
+                        <button onClick={() => navigate("/create-report", {
+                                    state: {
+                                        date: new Date().toISOString().split("T")[0],
+                                        returnPath: `/dashboard`,
+                                    },
+                                })}className="primaryButton">日報作成</button>
 
-                {/* 週一覧 */}
-                <section className="section">
+                    </div>
+                ) : (
+                    <section className="section">
 
-                    <h2 className="weekTitle">週一覧</h2>
+                        <h2 className="weekTitle">週一覧</h2>
 
-                    {weeks.map((week) => (
-                        <div
-                            key={week.startDate}
-                            className="button"
-                            onClick={() => handleWeekClick(week)}
-                        >
-                            <div className="weekContent">
+                        {weeks.map((week) => (
+                            <div
+                                key={week.startDate}
+                                className="button"
+                                onClick={() => handleWeekClick(week)}
+                            >
+                                <div className="weekContent">
 
-                                <div className="weekTitle">
-                                    {formatDate(week.startDate)} ~ {formatDate(week.endDate)}
+                                    <div className="weekTitle">
+                                        {formatDate(week.startDate)} ~ {formatDate(week.endDate)}
+                                    </div>
+                                    <h4 className="summaryTitle">週次要約</h4>
+                                    <div className="weekSummary">
+                                        {week.content}
+                                    </div>
                                 </div>
-                                <h4 className="summaryTitle">週次要約</h4>
-                                <div className="weekSummary">
-                                    {week.content}
+                                <div className="weekArrow">
+                                    ›
                                 </div>
-                            </div>
-                            <div className="weekArrow">
-                                ›
-                            </div>
 
-                        </div>
-                    ))}
-                </section>
-            </div>
+                            </div>
+                        ))}
+                    </section>
+                )
+                }
+
+
+            </div >
 
         </>
     );
