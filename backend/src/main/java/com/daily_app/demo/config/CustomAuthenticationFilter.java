@@ -26,7 +26,12 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
     @Autowired
     private CustomUserDetailsService userDetailsService;
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider tokenProvider;
+
+    public CustomAuthenticationFilter(CustomUserDetailsService userDetailsService, JwtTokenProvider tokenProvider){
+        this.userDetailsService = userDetailsService;
+        this.tokenProvider = tokenProvider;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -38,7 +43,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
         // トークンが無い / 空ならここで認証処理せず次のフィルターへ
         if (StringUtils.hasText(token)) {
             try {
-                String mailAddress = jwtTokenProvider.getMailAddress(token);
+                String mailAddress = tokenProvider.getMailAddress(token);
                 // ... SecurityContext に Authentication をセット
                 CustomUserDetails userDetails = userDetailsService.loadUserByUsername(mailAddress);
             
