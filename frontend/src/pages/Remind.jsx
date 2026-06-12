@@ -136,7 +136,7 @@ function Remind() {
         throw error;
       }
 
-      const data = await response.json();
+      const data = await res.json();
       console.log(data);
       alert("保存しました");
       setIsSaved(true);

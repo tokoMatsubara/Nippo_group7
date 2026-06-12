@@ -86,7 +86,6 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> updateRemindSettings(
         @AuthenticationPrincipal CustomUserDetails userDetails, 
         @RequestBody RemindSettingDto requestDto) {
-        System.out.println("ユーザーID: " + userDetails.getId() + " のリマインド設定を更新します（※ここはまだモック状態です）");
         
         return userService.updateRemindSettings(userDetails.getUser(), requestDto);
     }
