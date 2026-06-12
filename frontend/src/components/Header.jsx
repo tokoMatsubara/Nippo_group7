@@ -35,7 +35,7 @@ export default function Header() {
     };
 
     const handleLogout = () => {
-        // localStorage.removeItem("user_id");
+        localStorage.removeItem("email");
         localStorage.removeItem("user_name");
         navigate("/login");
     };

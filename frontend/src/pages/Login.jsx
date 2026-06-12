@@ -20,7 +20,6 @@ export default function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        localStorage.removeItem("email");
 
         try {
             const res = await fetch("http://localhost:8080/api/auth/login", {
@@ -42,6 +41,7 @@ export default function Login() {
             }
 
             const data = await res.json();
+            localStorage.setItem("email", email);
 
             console.log("ログイン成功:", data);
 
