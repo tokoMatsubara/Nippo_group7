@@ -34,11 +34,10 @@
     opacity: 0.7;
 }
 
-.logoIcon {
-    width: 28px;
-    height: 28px;
+.headerlogoIcon {
+    width: 50px;
+    height: 50px;
     object-fit: contain;
-    color: #333;
 }
 
 /* ナビ */
@@ -59,7 +58,7 @@
 
 /* hoverアニメーション */
 .navLinks a:hover {
-    color: var(--primary1);
+    color: var(--primary3);
     transform: translateY(-2px);
 }
 
@@ -72,7 +71,7 @@
 
     width: 0%;
     height: 2px;
-    background: var(--primary1);
+    background: var(--primary3);
 
     transition: width 0.3s ease;
 }
@@ -84,7 +83,7 @@
 
 /* active */
 .navLinks a.active {
-    color: var(--primary1);
+    color: var(--primary3);
     font-weight: 600;
 }
 
@@ -113,7 +112,7 @@
 }
 
 .logoutBtn:hover {
-    color: var(--primary1);
+    color: var(--primary3);
     transform: translateY(-2px);
 }
 
@@ -125,7 +124,7 @@
 
     width: 0%;
     height: 2px;
-    background: var(--primary1);
+    background: var(--primary3);
 
     transition: width 0.3s ease;
 }
@@ -215,4 +214,73 @@
 
 .switch input:checked + .slider:before {
   transform: translateX(22px);
+}
+
+.themeWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.themeButton {
+    position: relative;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+
+    background-color: var(--primary2);
+    color: #333;
+
+    transition: all 0.25s ease;
+}
+
+.themeButton:hover {
+    color: var(--primary3);
+    transform: translateY(-2px);
+}
+
+.themeButton::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    width: 0%;
+    height: 2px;
+    background: var(--primary3);
+
+    transition: width 0.3s ease;
+}
+
+.themeButton:hover::after {
+    width: 100%;
+}
+
+.themeDropdown {
+    position: absolute;
+    top: 110%;
+    right: 0;
+
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+
+    min-width: 120px;
+    overflow: hidden;
+    z-index: 100;
+}
+
+.themeItem {
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.themeItem:hover {
+    background: #f3f4f6;
+}
+
+.themeItem.active {
+    background: #e5e7eb;
+    font-weight: bold;
 }

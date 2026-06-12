@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Remind.css";
+import logoIcon from "../assets/nippo_remind.png";
 
 function Remind() {
   const navigate = useNavigate();
@@ -27,18 +28,19 @@ function Remind() {
 
       const dateStr = yesterday.toISOString().split("T")[0];
 
-      const remindResponse = await fetch(
+      const res = await fetch(
         `http://localhost:8080/api/remind`, {
         method: "GET",
         credentials: "include"
       });
 
-      if (remindResponse.status === 403) {
-        alert("アクセス権限がありません");
-        navigate("/login")
+      if (!res.ok) {
+        const error = new Error(`HTTP ${res.status}`);
+        error.status = res.status;   // ← これを足すのが肝
+        throw error;
       }
 
-      const remindData = await remindResponse.json();
+      const remindData = await res.json();
 
       console.log(remindData);
       console.log(remindData[0]);
@@ -48,8 +50,6 @@ function Remind() {
       const historyGoals = remindData
         .slice(1)
         .map(item => item.remindContent);
-        
-      const goal = remindData[0].remindContent;
 
 
       setYesterdayGoal(
@@ -58,34 +58,51 @@ function Remind() {
 
       setPastGoals(historyGoals);
 
-    } catch (error) {
-      console.error(error);
-      setYesterdayGoal("取得に失敗しました");
+    } catch (err) {
+      console.error(err);
+      if (err.status === 401) {
+        console.error("401認証エラー");
+        alert("認証エラーです。ログインしなおしてください");
+        navigate("/login");
+      } else {
+        console.error("Failed to data");
+        alert('データの取得に失敗しました');
+        setYesterdayGoal("通知設定の取得に失敗しました");
+      }
     }
   };
 
   const fetchRemindSetting = async () => {
     try {
-      const remindSettingResponse = await fetch(
+      const res = await fetch(
         `http://localhost:8080/api/remind/settings`, {
         method: "GET",
         credentials: "include"
       });
 
-      if (remindSettingResponse.status === 403) {
-        alert("アクセス権限がありません");
-        navigate("/login")
+      if (!res.ok) {
+        const error = new Error(`HTTP ${res.status}`);
+        error.status = res.status;   // ← これを足すのが肝
+        throw error;
       }
 
-      const settingData = await remindSettingResponse.json();
+      const settingData = await res.json();
       console.log(settingData);
 
       const [hour, minute] = settingData["remindTime"].split(":");
       setNotificationEnabled(settingData["remindStatus"]);
-      setAlarm({ hour, minute });
-    } catch (error) {
-      console.error(error);
-      setYesterdayGoal("通知設定の取得に失敗しました");
+      setAlarm({ hour: Number(hour), minute: Number(minute) });
+    } catch (err) {
+      console.error(err);
+      if (err.status === 401) {
+        console.error("401認証エラー");
+        alert("認証エラーです。ログインしなおしてください");
+        navigate("/login");
+      } else {
+        console.error("Failed to data");
+        alert('データの取得に失敗しました');
+        setYesterdayGoal("通知設定の取得に失敗しました");
+      }
     }
   }
 
@@ -103,7 +120,7 @@ function Remind() {
 
   const handleSave = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/remind/settings", {
+      const res = await fetch("http://localhost:8080/api/remind/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -113,13 +130,27 @@ function Remind() {
         credentials: "include"
       });
 
-      const data = await response.json();
+      if (!res.ok) {
+        const error = new Error(`HTTP ${res.status}`);
+        error.status = res.status;   // ← これを足すのが肝
+        throw error;
+      }
+
+      const data = await res.json();
       console.log(data);
       alert("保存しました");
       setIsSaved(true);
 
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
+      if (err.status === 401) {
+        console.error("401認証エラー");
+        alert("認証エラーです。ログインしなおしてください");
+        navigate("/login");
+      } else {
+        console.error("Failed to save settings");
+        alert('リマインド設定に失敗しました');
+      }
     }
 
   };
@@ -133,8 +164,11 @@ function Remind() {
 
       {/* ヘッダーエリア */}
       <div className="header">
+        <div className="headerTitle">
+          <h1 className="title">リマインド</h1>
+          <img src={logoIcon} alt="logo" className="logoIcon" />
+        </div>
 
-        <h1 className="title">🔔 リマインド</h1>
 
       </div>
 
@@ -211,7 +245,11 @@ function Remind() {
 
         {' '}
 
-        <button className="primaryButton" onClick={handleSave} disabled={isSaved}>
+        <button
+          className={`primaryButton ${isSaved ? "saved" : ""}`}
+          onClick={handleSave}
+          disabled={isSaved}
+        >
           {isSaved ? "保存済み" : "保存"}
         </button>
 

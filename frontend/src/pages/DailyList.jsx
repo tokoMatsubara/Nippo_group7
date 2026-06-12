@@ -22,21 +22,38 @@ export default function DailyList() {
         fetchData();
         const interval = setInterval(() => {
             fetchData();
-        }, 60000); 
-
+        }, 60000);
+        return () => clearInterval(interval);
     }, []);
 
     // BackendへのAPI
     const fetchData = async () => {
         // const userId = localStorage.getItem("user_id");
+        try{
+            const res = await fetch(`http://localhost:8080/api/daily/${params.startDate}/${params.endDate}`, {
+                method: "GET",
+                credentials: "include"
+            });
 
-        const response = await fetch(`http://localhost:8080/api/daily/${params.startDate}/${params.endDate}`, {
-            method: "GET",
-            credentials: "include"
-        });
-        const data = await response.json();
-        setWeekData(data);
-        console.log(data);
+            if(!res.ok){
+                const error = new Error(`HTTP ${res.status}`);
+                error.status = res.status;   // ← これを足すのが肝
+                throw error;
+            }
+
+            const data = await res.json();
+            setWeekData(data);
+            console.log(data);
+        }catch(err){
+            if(err.status === 401){
+                console.error("401認証エラー");
+                alert("認証エラーです。ログインしなおしてください");
+                navigate("/login");
+            }else{
+                alert("日報取得に失敗しました");
+                console.error("Failed to get daily list");
+            }
+        }
     }
 
     const selectedDaily = weekData.days.find(
@@ -69,19 +86,22 @@ export default function DailyList() {
                 credentials: "include"
             });
 
-            if (res.ok) {
-                alert('削除しました');
-                await fetchData();
-            } else {
-                const err = await res.json().catch(() => ({}));
-                console.error('delete error', err);
-                alert('削除に失敗しました');
-                alert('ログインしなおして下さい');
-                navigate("/login");
+            if (!res.ok) {
+                const error = new Error(`HTTP ${res.status}`);
+                error.status = res.status;   // ← これを足すのが肝
+                throw error;
             }
-        } catch (e) {
-            console.error(e);
-            alert('削除に失敗しました');
+            alert('削除しました');
+            await fetchData();
+        } catch (err) {
+            if(err.status === 401){
+                console.error("401認証エラー");
+                alert("認証エラーです。ログインしなおしてください");
+                navigate("/login");
+            }else{
+                console.error("Failed to delete daily report");
+                alert('削除に失敗しました');
+            }
         }
     };
 
@@ -152,7 +172,9 @@ export default function DailyList() {
 
                 {!selectedDaily ? (
                     <>
-                        <h3>{getSelectedDate()}</h3>
+                        <div className="dayName">
+                            <h3>{formatDate(getSelectedDate())}</h3>
+                        </div>
                         <p>日報はありません</p>
                         <div className="actions" style={{ justifyContent: 'center' }}>
                             <button
@@ -170,7 +192,9 @@ export default function DailyList() {
                     </>
                 ) : (
                     <>
-                        <h3>{formatDate(selectedDaily.date)}</h3>
+                        <div className="dayName">
+                            <h3>{formatDate(selectedDaily.date)}</h3>
+                        </div>
 
                         <div className="section">
                             <div className="sectionItem">

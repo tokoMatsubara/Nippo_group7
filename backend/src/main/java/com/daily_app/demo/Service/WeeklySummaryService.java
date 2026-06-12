@@ -8,7 +8,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -28,25 +27,27 @@ import com.daily_app.demo.Repository.WeeklySummaryRepository;
 public class WeeklySummaryService {
 
     private final WeeklySummaryRepository weeklySummaryRepository;
-
-    @Autowired
-    private CallLlmService callLlmService;
-
-    @Autowired
-    private DailyDetailRepository dailyDetailRepository;
-
-    @Autowired
-    private DailyRepository dailyRepository;
+    private final CallLlmService callLlmService;
+    private final DailyDetailRepository dailyDetailRepository;
+    private final DailyRepository dailyRepository;
 
 
-    WeeklySummaryService(WeeklySummaryRepository weeklySummaryRepository) {
+    WeeklySummaryService(
+        WeeklySummaryRepository weeklySummaryRepository,
+        DailyRepository dailyRepository,
+        DailyDetailRepository dailyDetailRepository,
+        CallLlmService callLlmService) {
+
         this.weeklySummaryRepository = weeklySummaryRepository;
+        this.dailyRepository = dailyRepository;
+        this.dailyDetailRepository = dailyDetailRepository;
+        this.callLlmService = callLlmService;
     }
 
     public void handleWeeklySummary(Integer userId, LocalDate date) {
 
         LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = date.with(DayOfWeek.SUNDAY);
+        LocalDate endOfWeek = date.with(DayOfWeek.FRIDAY);
 
         Optional<WeeklySummary> existing = weeklySummaryRepository.findByUserIdAndWeekStartDate(userId, startOfWeek);
 
@@ -179,6 +180,9 @@ public class WeeklySummaryService {
                 ・日本語
                 ・簡潔
                 ・箇条書き禁止
+                ・総文字数は書かないで
+                ・絵文字禁止
+                ・要約の内容以外のコミュニケーション出力禁止
                 """.formatted(input);
     }
 

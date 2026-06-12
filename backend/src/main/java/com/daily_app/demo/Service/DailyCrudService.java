@@ -2,14 +2,16 @@ package com.daily_app.demo.Service;
 
 import com.daily_app.demo.Repository.DailyRepository;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,20 +34,25 @@ import com.daily_app.demo.Repository.WeeklySummaryRepository;
 @Service
 public class DailyCrudService {
 
-    @Autowired
-    private DailyRepository dailyRepository;
-    @Autowired
-    private WeeklySummaryRepository weeklySummaryRepository;
-    // @Autowired
-    // private DailyDetailRepository dailyDetailRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final DailyRepository dailyRepository;
+    private final WeeklySummaryRepository weeklySummaryRepository;
+    private final CategoryRepository categoryRepository;
+    private final DailySummaryService dailySummaryService;
+    private final ApplicationEventPublisher eventPublisher;
 
-    @Autowired
-    private DailySummaryService dailySummaryService;
+    public DailyCrudService(
+        DailyRepository dailyRepository,
+        WeeklySummaryRepository weeklySummaryRepository,
+        CategoryRepository categoryRepository,
+        DailySummaryService dailySummaryService,
+        ApplicationEventPublisher eventPublisher){
 
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
+        this.dailyRepository = dailyRepository;
+        this.weeklySummaryRepository = weeklySummaryRepository;
+        this.categoryRepository = categoryRepository;
+        this.dailySummaryService = dailySummaryService;
+        this.eventPublisher = eventPublisher; 
+    }
 
     // weekly response
     // ====================================================================
@@ -113,12 +120,31 @@ public class DailyCrudService {
     // #region
 
     @Transactional
-    public Map<String, String> reportDaily(User user, ReportRequestDto reportRequest) {
+    public ResponseEntity<Map<String, String>> reportDaily(User user, ReportRequestDto reportRequest)
+        throws DataIntegrityViolationException {
+        if (dailyRepository.existsByUserAndDailyDate(user, reportRequest.getDate())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("status", "failed", "message", "この日付の日報は既に登録されています"));
+        }
+        
+        LocalDate requestDay = reportRequest.getDate();
+        LocalDate today = LocalDate.now();
+        if(requestDay.isAfter(today)){
+            throw new DataIntegrityViolationException("未来の日報を記述しようとしています");
+        }
+
+        DayOfWeek requestDow = requestDay.getDayOfWeek();
+        if(requestDow == DayOfWeek.SATURDAY || requestDow == DayOfWeek.SUNDAY){
+            throw new DataIntegrityViolationException("休日の日報を記述しようとしています");
+        }
+
         Integer userId = user.getUserId();
         Daily daily = new Daily(user, reportRequest.getDate());
 
         List<DailyDetail> details = new ArrayList<DailyDetail>();
 
+    
+        
         for (com.daily_app.demo.Dto.Request.ContentDto dailyDetailContent : reportRequest.getContents()) {
             Category category = categoryRepository.findById(dailyDetailContent.getCategoryId())
                     .orElseThrow(
@@ -129,18 +155,15 @@ public class DailyCrudService {
         daily.getDailyDetails().addAll(details);
         System.out.println("details size = " + details.size());
 
-        try {
-            dailyRepository.save(daily);
-            dailySummaryService.generateSummary(daily, reportRequest.getContents());
-        } catch (DataIntegrityViolationException e) {
-            System.err.println(e.getMessage());
-            return Map.of("status", "failed", "message", "日報の登録に失敗しました");
-        }
+    
+        // DBに登録処理
+        dailyRepository.save(daily);
+
         dailySummaryService.generateSummary(daily, reportRequest.getContents());
         eventPublisher.publishEvent(
                 new WeeklySummaryEvent(userId, reportRequest.getDate()));
 
-        return Map.of("status", "success", "message", "日報の登録に成功しました");
+        return ResponseEntity.ok(Map.of("status", "success", "message", "日報の登録に成功しました"));
     }
     // #endregion
 
@@ -148,7 +171,7 @@ public class DailyCrudService {
     // report=============================================================
     // #region
     @Transactional
-    public Map<String, String> updateDaily(User user, ReportUpdateRequestDto updateRequest) {
+    public Map<String, String> updateDaily(User user, ReportUpdateRequestDto updateRequest) throws DataIntegrityViolationException {
         Daily daily = dailyRepository.findById(updateRequest.getDailyId())
                 .orElseThrow(() -> new RuntimeException("Daily not found: " + updateRequest.getDailyId()));
         Integer userId = user.getUserId();
@@ -165,15 +188,12 @@ public class DailyCrudService {
 
         daily.setDailyDetails(details);
 
-        try {
-            if(userId != daily.getUser().getUserId()){
-                throw new Exception("違うユーザーの日報を更新しようとしています。");
-            }
-            dailyRepository.save(daily);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return Map.of("status", "failed", "message", "日報の更新に失敗しました");
+        if(!daily.getUser().getUserId().equals(userId)){
+            return Map.of("status", "failed", "message", "違うユーザーの日報を更新しようとしています");
         }
+
+        dailyRepository.save(daily);
+        
 
         dailySummaryService.generateSummary(daily, updateRequest.getContents());
         eventPublisher.publishEvent(
@@ -186,20 +206,17 @@ public class DailyCrudService {
     // report=============================================================
     // #region
     @Transactional
-    public Map<String, String> deleteDaily(User user, Integer dailyId) {
+    public Map<String, String> deleteDaily(User user, Integer dailyId) throws DataIntegrityViolationException {
         Daily daily = dailyRepository.findById(dailyId)
                 .orElseThrow(() -> new RuntimeException("Daily not found: " + dailyId));
         Integer userId = user.getUserId();
         LocalDate date = daily.getDailyDate();
-        try {
-            if(userId != daily.getUser().getUserId()){
-                throw new Exception("違うユーザーの日報を削除しようとしています。");
-            }
-            dailyRepository.deleteById(dailyId);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return Map.of("status", "failed", "message", "日報の削除に失敗しました");
+        if(!daily.getUser().getUserId().equals(userId)){
+            return Map.of("status", "failed", "message", "違うユーザーの日報を削除しようとしています");
         }
+           
+        dailyRepository.deleteById(dailyId);
+
         eventPublisher.publishEvent(
                 new WeeklySummaryEvent(userId, date));
         return Map.of("status", "success", "message", "日報の削除に成功しました");

@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/CreateReport.css";
+import logoIcon from "../assets/nippo_create.png";
 
 const API_BASE = "http://localhost:8080/api";
 
@@ -130,12 +131,19 @@ function CreateReport() {
 
       try {
         // const userId = localStorage.getItem("user_id");
-        const response = await fetch(
+        const res = await fetch(
           `${API_BASE}/daily/${weekStartStr}/${weekEndStr}`, {
           method: "GET",
           credentials: "include"
         });
-        const data = await response.json();
+
+        if(!res.ok){
+          const error = new Error(`HTTP ${res.status}`);
+          error.status = res.status;   // ← これを足すのが肝
+          throw error;
+        }
+
+        const data = await res.json();
 
         // 前日の日報を探す
         const previousDaily = data.days?.find(
@@ -155,8 +163,14 @@ function CreateReport() {
           setYesterdayGoal("前日の日報はありません");
         }
       } catch (err) {
-        console.error("Failed to fetch yesterday's goal:", err);
-        setYesterdayGoal("前日の日報はありません");
+        if(err.status === 401){
+          console.log("401認証エラー");
+          alert("認証エラーです。ログインしなおしてください");
+          navigate("/login");
+        }else{
+          console.error("Failed to fetch yesterday's goal:", err);
+          setYesterdayGoal("前日の日報はありません");
+        }
       }
     };
 
@@ -181,13 +195,6 @@ function CreateReport() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      // const storedUserId = localStorage.getItem("user_id");
-      // const userId = storedUserId ? Number(storedUserId) : null;
-      // if (!userId) {
-      //   alert("ログインしてください");
-      //   navigate("/login");
-      //   return;
-      // }
       const contentsPayload = [
         { categoryId: 1, content: form.learned },
         { categoryId: 2, content: form.goodPoint },
@@ -215,22 +222,28 @@ function CreateReport() {
         body: JSON.stringify(payload),
         credentials: "include"
       });
+
+      if(!res.ok){
+        const error = new Error(`HTTP ${res.status}`);
+        error.status = res.status;   // ← これを足すのが肝
+        throw error;
+      }
+
       const data = await res.json();
       setResult(data);
+      alert(editDaily ? "更新しました" : "保存しました");
+      navigate(-1);
 
-      if (res.ok) {
-        alert(editDaily ? "更新しました" : "保存しました");
-        navigate(-1);
-      } else {
-        alert(editDaily ? "更新に失敗しました" : "保存に失敗しました");
-        alert("ログインしてください");
-        navigate("/login");
-        return;
-      }
     } catch (err) {
-      console.error(err);
+      if(err.status === 401){
+        console.log("401認証エラー");
+        alert("認証エラーです。ログインしなおしてください");
+        navigate("/login");
+      }else{
+        console.error("Failed to create report:", err);
+        alert(editDaily ? "更新に失敗しました" : "保存に失敗しました");
+      }
       setResult({ status: "error" });
-      navigate("/login");
     } finally {
       setLoading(false);
     }
@@ -239,8 +252,14 @@ function CreateReport() {
   return (
     <div className="daily-page">
       <header className="header">
-        <div>
-          <h1 className="title">日報{editDaily ? "編集" : "作成"}</h1>
+        <div className="headerTop">
+          <div className="headerTitle">
+            <h1 className="title">日報{editDaily ? "編集" : "作成"}</h1>
+            <img src={logoIcon} alt="logo" className="logoIcon" />
+            <button className="backButton" type="button" onClick={() => navigate(-1)}>
+              キャンセル
+            </button>
+          </div>
         </div>
       </header>
 
