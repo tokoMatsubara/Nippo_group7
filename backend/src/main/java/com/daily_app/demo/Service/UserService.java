@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +26,13 @@ public class UserService {
     // パスワードのハッシュ化
     @Autowired
     PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     // ユーザー登録ロジック=================================================================
 
@@ -107,12 +113,15 @@ public class UserService {
             response.put("status", "success");
             response.put("message", "リマインド設定を登録しました");
         } catch (Exception e) {
+            System.out.println("ユーザーの設定を変更が正常に変更されました");
+            return ResponseEntity.ok(response);
+            
+        }catch(Exception e){
             System.out.println(e.getMessage());
             response.put("status", "error");
-            response.put("message", "リマインド設定を登録しました");
+            response.put("message", "リマインド設定が失敗しました");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<RemindSettingDto> getRemindSetting(User user) {

@@ -11,7 +11,6 @@ import com.daily_app.demo.config.JwtTokenProvider;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -27,17 +26,21 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-// @CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
-    @Autowired
     private UserService userService;
-    @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
     private JwtTokenProvider tokenProvider;
 
+    public UserController(
+        UserService userService,
+        AuthenticationManager authenticationManager,
+        JwtTokenProvider tokenProvider){
+
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
+    }
 
     /**
      * API-006: ユーザー登録
@@ -89,6 +92,9 @@ public class UserController {
             @RequestBody RemindSettingDto requestDto) {
         System.out.println("ユーザーID: " + userDetails.getId() + " のリマインド設定を更新します（※ここはまだモック状態です）");
 
+        @AuthenticationPrincipal CustomUserDetails userDetails, 
+        @RequestBody RemindSettingDto requestDto) {
+        
         return userService.updateRemindSettings(userDetails.getUser(), requestDto);
     }
 

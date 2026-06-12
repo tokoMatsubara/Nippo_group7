@@ -2,7 +2,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "../styles/Header.css";
 import ThemeToggle from "./ThemeToggle";
-import logoIcon from "../assets/a_clean_flat_modern_vector_icon_on_a_white_backgro.png";
+import logoIcon from "../assets/nippo_chan.png";
 import { useLocation } from "react-router-dom";
 export default function Header() {
     const navigate = useNavigate();
@@ -45,9 +45,9 @@ export default function Header() {
 
             <div className="logo" onClick={() => navigate("/dashboard")}>
 
-                <img src={logoIcon} alt="logo" className="logoIcon" />
+                <img src={logoIcon} alt="logo" className="headerlogoIcon" />
 
-                日報アプリ
+                Daily Note
             </div>
 
             <nav className="navLinks">

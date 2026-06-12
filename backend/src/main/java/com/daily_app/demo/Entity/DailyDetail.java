@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="daily_details")
@@ -27,7 +26,6 @@ public class DailyDetail {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @NotBlank
     @Column(name = "content")
     private String content;
 

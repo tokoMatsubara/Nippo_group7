@@ -1,6 +1,6 @@
 package com.daily_app.demo.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +17,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5173")
 public class DailyController {
 
-    @Autowired
-    private DailyCrudService dailyCrud;
+    private final DailyCrudService dailyCrud;
 
-    // @Autowired
-    // private DailySummaryService dailySummaryService;
+    public DailyController(DailyCrudService dailyCrudService){
+        this.dailyCrud = dailyCrudService;
+    }
+
 
     @GetMapping("/weekly_list")
     public WeeklyListResponseDto getWeeklyList(@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -40,7 +40,7 @@ public class DailyController {
     }
 
     @PostMapping("/report")
-    public Map<String, String> createReport(
+    public ResponseEntity<Map<String, String>> createReport(
         @AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ReportRequestDto request) {
         return dailyCrud.reportDaily(userDetails.getUser(), request);
     }
@@ -56,13 +56,4 @@ public class DailyController {
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Integer daily_id) {
         return dailyCrud.deleteDaily(userDetails.getUser(), daily_id);
     }
-
-    // @PostMapping("/summary")
-    // public Map<String, String> generateSummary(@RequestBody ReportRequestDto
-    // request) {
-    // String summary = dailySummaryService.generateSummary(request);
-    // // 他のメソッドに合わせて Map<String, String>（JSON形式）で返却します
-    // return Collections.singletonMap("summary", summary);
-    // }
-
 }
