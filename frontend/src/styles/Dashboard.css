@@ -73,39 +73,51 @@
 
 .logoIcon-wrapper {
   display: inline-block;
-  /* 3秒かけて移動し、アニメーション終了時の位置（100%の状態）をそのままキープする */
-  animation: pigeon-move 3s cubic-bezier(0.25, 1, 0.5, 1) forwards; 
+  /* 往復で1セット（例: 6秒）。alternateは外して linear infinite にします */
+  animation: pigeon-move-perfect 6s linear infinite; 
 }
 
 /* ② 【上下担当】その場でひょこひょこ走る設定 */
 .logoIcon {
-  width: 80px; /* ロゴのサイズ（自由に調整してください） */
+  width: 80px;
   height: auto;
   display: block;
-  /* 0.6秒のひょこひょこ運動を無限に繰り返す */
   animation: pigeon-dash 0.6s infinite ease-in-out;
 }
 
 /* --- アニメーションの定義 --- */
 
-/* 1. 走っているような「ひょこひょこ感」を出す上下の動き */
+/* 1. ひょこひょこ感（上下の動き） */
 @keyframes pigeon-dash {
   0%, 100% {
-    transform: translateY(0); /* 通常位置 */
+    transform: translateY(0);
   }
   50% {
-    transform: translateY(-8px) rotate(-5deg); /* 少し上に浮き、左にちょっと傾く */
+    transform: translateY(-8px) rotate(-5deg);
   }
 }
-
-/* 2. 画面の右端から、文字のすぐ横（本来の場所）へ移動する動き */
-@keyframes pigeon-move {
+/* 2. 右端から文字の横への往復（向きの反転付き） */
+@keyframes pigeon-move-perfect {
+  /* === 行き：右端から左（文字の横）へ進む === */
   0% {
-    /* スタート時：画面の右端（画面幅分、右にオフセット） */
-    transform: translateX(100vw); 
+    transform: translateX(calc(100vw - 200px)) scaleX(1); /* 右端スタート：左を向く */
   }
+  49% {
+    transform: translateX(0) scaleX(1); /* 左に到着する直前：左を向いたまま */
+  }
+  
+  /* === ターン：左端でクルッと右を向く === */
+  50% {
+    transform: translateX(0) scaleX(-1); /* 左端：右に反転！ */
+  }
+  
+  /* === 帰り：左から右端へ戻る === */
+  99% {
+    transform: translateX(calc(100vw - 200px)) scaleX(-1); /* 右端に戻る直前：右を向いたまま */
+  }
+  
+  /* === ターン：右端でクルッと左を向く === */
   100% {
-    /* 終了時：本来表示されるべき文字のすぐ右横でストップ */
-    transform: translateX(0); 
+    transform: translateX(calc(100vw - 200px)) scaleX(1); /* 右端：左に反転してループへ */
   }
 }
