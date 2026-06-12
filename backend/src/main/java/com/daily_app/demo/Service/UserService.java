@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,12 +20,13 @@ import com.daily_app.demo.Repository.UserRepository;
 @Controller
 public class UserService {
 
-    // 1. 作成したUserRepositoryをインジェクション（読み込み）します
-    @Autowired
-    private UserRepository userRepository;
-    //パスワードのハッシュ化
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
     //ユーザー登録ロジック=================================================================

@@ -11,7 +11,6 @@ import com.daily_app.demo.Dto.Response.RemindResponseDto;
 import com.daily_app.demo.Service.RemindService;
 import com.daily_app.demo.config.CustomUserDetails;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +21,11 @@ import java.util.List;
 @RequestMapping("/api")
 public class RemindController {
 
-    @Autowired
-    private RemindService remindService;
+    private final RemindService remindService;
+
+    public RemindController(RemindService remindService){
+        this.remindService = remindService;
+    }
 
     /**
      * API: ログインしているユーザーの通知一覧を取得する

@@ -11,7 +11,6 @@ import com.daily_app.demo.config.JwtTokenProvider;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -31,13 +30,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/api")
 public class UserController {
 
-    @Autowired
     private UserService userService;
-    @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
     private JwtTokenProvider tokenProvider;
+
+    public UserController(
+        UserService userService,
+        AuthenticationManager authenticationManager,
+        JwtTokenProvider tokenProvider){
+
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.tokenProvider = tokenProvider;
+    }
 
     /**
      * API-006: ユーザー登録

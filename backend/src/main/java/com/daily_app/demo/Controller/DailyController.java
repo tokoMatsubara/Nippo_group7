@@ -1,6 +1,5 @@
 package com.daily_app.demo.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +19,12 @@ import java.util.Map;
 @RequestMapping("/api")
 public class DailyController {
 
-    @Autowired
-    private DailyCrudService dailyCrud;
+    private final DailyCrudService dailyCrud;
 
-    // @Autowired
-    // private DailySummaryService dailySummaryService;
+    public DailyController(DailyCrudService dailyCrudService){
+        this.dailyCrud = dailyCrudService;
+    }
+
 
     @GetMapping("/weekly_list")
     public WeeklyListResponseDto getWeeklyList(@AuthenticationPrincipal CustomUserDetails userDetails) {

@@ -9,7 +9,6 @@ import com.daily_app.demo.Repository.DailySummaryRepository;
 
 import jakarta.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -20,15 +19,19 @@ import java.util.stream.Collectors;
 @Service
 public class DailySummaryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final CallLlmService callLlmService;
+    private final DailySummaryRepository dailySummaryRepository;
 
-    // 1. CallLlmServiceを利用するためにフィールドを定義
-    @Autowired
-    private CallLlmService callLlmService;
+    public DailySummaryService(
+        CategoryRepository categoryRepository,
+        DailySummaryRepository dailySummaryRepository,
+        CallLlmService callLlmService){
 
-    @Autowired
-    private DailySummaryRepository dailySummaryRepository;
+        this.categoryRepository = categoryRepository;
+        this.dailySummaryRepository = dailySummaryRepository;
+        this.callLlmService = callLlmService;
+    }
 
     /**
      * ReportRequestDtoを入力として受け取り、LLM用の要約を生成して返すメソッド
