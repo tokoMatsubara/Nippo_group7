@@ -1,7 +1,6 @@
 // 松原編集
 package com.daily_app.demo.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.daily_app.demo.Entity.User;
 
@@ -18,8 +17,11 @@ import java.util.List;
 public class RemindMessageGenerator {
 
    // 日報の提出状況を確認するために、日報のレポジトリを注入
-   @Autowired
-   private DailyRepository dailyRepository;
+    private final DailyRepository dailyRepository;
+
+    public RemindMessageGenerator(DailyRepository dailyRepository){
+        this.dailyRepository = dailyRepository;
+    }
 
    private static final ZoneId ZONE = ZoneId.of("Asia/Tokyo");
 

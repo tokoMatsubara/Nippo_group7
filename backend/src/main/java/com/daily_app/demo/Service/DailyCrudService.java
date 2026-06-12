@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -35,20 +34,25 @@ import com.daily_app.demo.Repository.WeeklySummaryRepository;
 @Service
 public class DailyCrudService {
 
-    @Autowired
-    private DailyRepository dailyRepository;
-    @Autowired
-    private WeeklySummaryRepository weeklySummaryRepository;
-    // @Autowired
-    // private DailyDetailRepository dailyDetailRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final DailyRepository dailyRepository;
+    private final WeeklySummaryRepository weeklySummaryRepository;
+    private final CategoryRepository categoryRepository;
+    private final DailySummaryService dailySummaryService;
+    private final ApplicationEventPublisher eventPublisher;
 
-    @Autowired
-    private DailySummaryService dailySummaryService;
+    public DailyCrudService(
+        DailyRepository dailyRepository,
+        WeeklySummaryRepository weeklySummaryRepository,
+        CategoryRepository categoryRepository,
+        DailySummaryService dailySummaryService,
+        ApplicationEventPublisher eventPublisher){
 
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
+        this.dailyRepository = dailyRepository;
+        this.weeklySummaryRepository = weeklySummaryRepository;
+        this.categoryRepository = categoryRepository;
+        this.dailySummaryService = dailySummaryService;
+        this.eventPublisher = eventPublisher; 
+    }
 
     // weekly response
     // ====================================================================
