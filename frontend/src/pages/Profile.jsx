@@ -66,7 +66,7 @@ export default function Profile() {
     };
 
     return (
-        <div className="container">
+        <div className="profileContainer">
 
             <div className="header">
                 <div className="profileTitle">
@@ -74,54 +74,55 @@ export default function Profile() {
                 </div>
             </div>
 
+            <div className="profileBox profilecard">
 
-            <div>
-                <label>ユーザー名</label>
+                <form className="profileForm">
+                    <div>
+                        <label>ユーザー名</label>
+
+                        <input
+                            className="profileInput"
+                            placeholder="ユーザー名"
+                            value={userName}
+                            onChange={(e) =>
+                                setUserName(e.target.value)
+                            }
+                        />
+                    </div>
+
+
+                    <div>
+                        <label>メールアドレス</label>
+                        <input
+                            className="profileInput"
+                            placeholder="メールアドレス"
+                            value={mailAddress}
+                            onChange={(e) =>
+                                setMailAddress(e.target.value)
+                            }
+                        />
+                    </div>
+
+                    <div>
+                        <label>新しいパスワード</label>
+                        <input
+                            className="profileInput"
+                            placeholder="パスワード"
+                            value={password}
+                            onChange={(e) =>
+                                setPassword(e.target.value)
+                            }
+                        />
+                    </div>
+
+                </form>
                 <br />
-                <input
-                    type="text"
-                    value={userName}
-                    onChange={(e) =>
-                        setUserName(e.target.value)
-                    }
-                />
+                <button
+                    className="primaryButton"
+                    onClick={handleSave}>
+                    保存
+                </button>
             </div>
-
-            <br />
-
-            <div>
-                <label>メールアドレス</label>
-                <br />
-                <input
-                    type="email"
-                    value={mailAddress}
-                    onChange={(e) =>
-                        setMailAddress(e.target.value)
-                    }
-                />
-            </div>
-
-            <br />
-
-            <div>
-                <label>新しいパスワード</label>
-                <br />
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) =>
-                        setPassword(e.target.value)
-                    }
-                />
-            </div>
-
-            <br />
-
-            <button
-                className="primaryButton"
-                onClick={handleSave}>
-                保存
-            </button>
 
         </div>
     );
