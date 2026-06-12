@@ -72,43 +72,64 @@
 }
 
 .logoIcon-wrapper {
-  display: inline-block;
-  animation: pigeon-move-perfect 6s linear infinite; 
+    display: inline-block;
+    animation: pigeon-move-perfect 6s linear infinite;
 }
 
 .dash-logoIcon {
-  width: 80px;
-  height: auto;
-  display: block;
-  animation: pigeon-dash 0.6s infinite ease-in-out;
+    width: 80px;
+    height: auto;
+    display: block;
+    animation: pigeon-dash 0.6s infinite ease-in-out;
 }
 
 @keyframes pigeon-dash {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px) rotate(-5deg);
-  }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px) rotate(-5deg);
+    }
 }
 
 @keyframes pigeon-move-perfect {
-  0% {
-    transform: translateX(calc(100vw - 200px)) scaleX(1); 
-  }
-  49% {
-    transform: translateX(0) scaleX(1); 
-  }
-  
-  50% {
-    transform: translateX(0) scaleX(-1);
-  }
-  
-  99% {
-    transform: translateX(calc(100vw - 200px)) scaleX(-1); 
-  }
-  
-  100% {
-    transform: translateX(calc(100vw - 200px)) scaleX(1);
-  }
+    0% {
+        transform: translateX(calc(100vw - 200px)) scaleX(1);
+    }
+
+    49% {
+        transform: translateX(0) scaleX(1);
+    }
+
+    50% {
+        transform: translateX(0) scaleX(-1);
+    }
+
+    99% {
+        transform: translateX(calc(100vw - 200px)) scaleX(-1);
+    }
+
+    100% {
+        transform: translateX(calc(100vw - 200px)) scaleX(1);
+    }
+}
+
+.cry {
+    display: flex;
+    align-items: center;
+    /* 縦中央揃え */
+    gap: 12px;
+    justify-content: center;
+    /* 画像とボタンの間隔 */
+
+}
+
+.cryIcon {
+    max-width: 420px;
+    width: 60%;
+    height: auto;
+    display: block;
 }
