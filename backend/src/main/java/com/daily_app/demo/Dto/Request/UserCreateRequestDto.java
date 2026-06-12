@@ -23,6 +23,14 @@ public class UserCreateRequestDto {
      */
     private String password;
 
+    /**
+     * ユーザーのテーマカラー（追加項目）
+     */
+    @JsonProperty("user_theme")
+    private String userTheme;
+
+
+
     public UserCreateRequestDto() {
     }
 
@@ -56,5 +64,13 @@ public class UserCreateRequestDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserTheme() {
+        return userTheme;
+    }
+
+    public void setUserTheme(String userTheme) {
+        this.userTheme = userTheme;
     }
 }
