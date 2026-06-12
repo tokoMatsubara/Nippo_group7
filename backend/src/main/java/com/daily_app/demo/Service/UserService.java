@@ -48,7 +48,7 @@ public class UserService {
         // リマインド初期値：status=false, time=null (User.javaのコンストラクタを利用)
         User newUser = new User(
                 requestDto.getUserName(),
-                hashedPassword, // ※将来的に暗号化推奨
+                hashedPassword, 
                 requestDto.getMailAddress(),
                 false,
                 java.time.LocalTime.of(9, 0));

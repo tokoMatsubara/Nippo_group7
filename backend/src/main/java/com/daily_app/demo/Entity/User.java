@@ -30,6 +30,9 @@ public class User {
     @Column(name = "user_theme")
     private String userThema = "blue";
 
+    @Column(name = "role")
+    private String role = "USER";
+
     @NotBlank
     @Column(name = "user_name")
     private String userName;
@@ -88,6 +91,10 @@ public class User {
         return mailAddress;
     }
 
+    public String getRole() {
+        return role;
+    }
+
     public boolean getRemindStatus() {
         return remindStatus;
     }
@@ -112,6 +119,10 @@ public class User {
 
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setRemindStatus(boolean remindStatus) {
