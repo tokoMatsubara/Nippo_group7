@@ -93,9 +93,20 @@ public class DailySummaryService {
                 .collect(Collectors.joining("\n・", "・", ""));
 
         // 3. LLMに送るためのプロンプト（命令文）を組み立てる
-        String prompt = "以下の日報内容を、簡潔に3行程度で要約してください。\n日報の要約内容以外を絶対に出力しないでください。\n絵文字を出力しないでください\n\n"
-                      + "[日報内容]\n" 
-                      + combinedContent;
+        String prompt = """
+                以下は一日分の日報です。
+                この内容を120文字以内、簡潔に3行程度で簡潔に要約してください。
+
+                ### 日報データ
+                %s
+
+                ### 出力ルール
+                ・日本語
+                ・簡潔
+                ・箇条書き禁止
+                ・絵文字禁止
+                ・日報要約の内容以外のコミュニケーション出力禁止
+                """.formatted(combinedContent);
         return prompt;
     }
 }

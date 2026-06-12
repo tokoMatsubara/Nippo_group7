@@ -46,7 +46,7 @@ public class WeeklySummaryService {
     public void handleWeeklySummary(Integer userId, LocalDate date) {
 
         LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = date.with(DayOfWeek.SUNDAY);
+        LocalDate endOfWeek = date.with(DayOfWeek.FRIDAY);
 
         Optional<WeeklySummary> existing = weeklySummaryRepository.findByUserIdAndWeekStartDate(userId, startOfWeek);
 
@@ -180,6 +180,8 @@ public class WeeklySummaryService {
                 ・簡潔
                 ・箇条書き禁止
                 ・総文字数は書かないで
+                ・絵文字禁止
+                ・要約の内容以外のコミュニケーション出力禁止
                 """.formatted(input);
     }
 
