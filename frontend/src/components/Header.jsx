@@ -47,7 +47,7 @@ export default function Header() {
 
                 <img src={logoIcon} alt="logo" className="headerlogoIcon" />
 
-                日報アプリ
+                Daily Note
             </div>
 
             <nav className="navLinks">
