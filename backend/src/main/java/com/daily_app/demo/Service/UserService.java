@@ -1,3 +1,4 @@
+//トオコ編集中マジで難しい。いまはTransactionalのアノテーション付けたところ。
 package com.daily_app.demo.Service;
 
 import java.time.LocalTime;
@@ -8,7 +9,8 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.daily_app.demo.Dto.RemindSettingDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
@@ -17,7 +19,7 @@ import com.daily_app.demo.Dto.Response.LoginResponseDto;
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Repository.UserRepository;
 
-@Controller
+@Service
 public class UserService {
 
    
@@ -30,7 +32,7 @@ public class UserService {
     }
 
     // ユーザー登録ロジック=================================================================
-
+    @Transactional
     public ResponseEntity<Map<String, Object>> createUser(UserInfoRequestDto requestDto) {
         Map<String, Object> response = new HashMap<>();
 
