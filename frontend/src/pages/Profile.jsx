@@ -49,10 +49,16 @@ export default function Profile() {
                 );
 
                 alert("プロフィールを更新しました");
+            } else {
+
+                alert(data.message);
+
             }
 
         } catch (error) {
             console.error(error);
+            alert("通信エラーが発生しました。時間をおいて再度お試しください。");
+
         }
     };
 

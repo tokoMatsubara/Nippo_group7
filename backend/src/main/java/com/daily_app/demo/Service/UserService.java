@@ -136,6 +136,27 @@ public class UserService {
         Map<String, Object> response = new HashMap<>();
 
         try {
+
+            // メールアドレス重複チェック
+        if (requestDto.getMailAddress() != null &&
+            !requestDto.getMailAddress().isBlank()) {
+
+            Optional<User> existingUser =
+                userRepository.findByMailAddress(requestDto.getMailAddress());
+
+            if (existingUser.isPresent() &&
+                !existingUser.get().getUserId().equals(user.getUserId())) {
+
+                response.put("status", "error");
+                response.put("message", "このメールアドレスは既に使用されています。");
+
+                return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(response);
+            }
+        }
+
+
             user.setUserName(requestDto.getUserName());
 
             if (requestDto.getMailAddress() != null) {
