@@ -46,7 +46,7 @@
 .weekArrow {
     font-size: 30px;
     color: #9ca3af;
-
+    margin-left: auto;
     transition: all 0.2s ease;
 }
 
@@ -69,4 +69,46 @@
 .weekSummary {
     color: #374151;
     line-height: 1.75;
+}
+
+.logoIcon-wrapper {
+  display: inline-block;
+  animation: pigeon-move-perfect 6s linear infinite; 
+}
+
+.dash-logoIcon {
+  width: 80px;
+  height: auto;
+  display: block;
+  animation: pigeon-dash 0.6s infinite ease-in-out;
+}
+
+@keyframes pigeon-dash {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-5deg);
+  }
+}
+
+@keyframes pigeon-move-perfect {
+  0% {
+    transform: translateX(calc(100vw - 200px)) scaleX(1); 
+  }
+  49% {
+    transform: translateX(0) scaleX(1); 
+  }
+  
+  50% {
+    transform: translateX(0) scaleX(-1);
+  }
+  
+  99% {
+    transform: translateX(calc(100vw - 200px)) scaleX(-1); 
+  }
+  
+  100% {
+    transform: translateX(calc(100vw - 200px)) scaleX(1);
+  }
 }

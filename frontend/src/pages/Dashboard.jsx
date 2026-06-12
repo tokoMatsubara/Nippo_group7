@@ -30,7 +30,7 @@ export default function Dashboard() {
     }, []);
 
     const fetchWeeklyData = async () => {
-        try{
+        try {
             setLoading(true);
             const res = await fetch(
                 `http://localhost:8080/api/weekly_list`, {
@@ -53,18 +53,18 @@ export default function Dashboard() {
             );
             setWeeks(uniqueWeeks);
 
-        }catch(err){
+        } catch (err) {
             console.error(err);
-            if(err.status === 401){
+            if (err.status === 401) {
                 console.error("401認証エラー");
                 alert("認証エラーです。ログインしなおしてください");
                 navigate("/login");
-            }else{
+            } else {
                 console.error("Failed to data");
                 alert('データの取得に失敗しました');
             }
 
-        }finally{
+        } finally {
             setLoading(false);
         }
     }
@@ -92,11 +92,11 @@ export default function Dashboard() {
 
         } catch (err) {
             console.error(err);
-            if(err.status === 401){
+            if (err.status === 401) {
                 console.error("401認証エラー");
                 alert("認証エラーです。ログインしなおしてください");
                 navigate("/login");
-            }else{
+            } else {
                 console.error("Failed to data");
                 alert('データの取得に失敗しました');
             }
@@ -131,7 +131,9 @@ export default function Dashboard() {
             <div className="header">
                 <div className="headerTitle">
                     <h1 className="title">ダッシュボード</h1>
-                    <img src={logoIcon} alt="logo" className="logoIcon" />
+                    <div className="logoIcon-wrapper">
+                        <img src={logoIcon} alt="logo" className="dash-logoIcon" />
+                    </div>
                 </div>
             </div>
 
