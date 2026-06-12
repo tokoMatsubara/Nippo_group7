@@ -1,0 +1,86 @@
+/* =========================
+   Profile Layout Only
+========================= */
+
+.profileContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* プロフィールタイトル */
+.profileTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.profilecard {
+    width: 100%;
+    max-width: 1126px;
+    margin: 0 auto;
+    position: relative;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 2px solid var(--primary2);
+    border-radius: 0.25rem;
+    box-shadow: 0 10px 20px #ccc;
+    color: #333;
+    text-decoration: none;
+    transition: 0.5s;
+    margin-bottom: 30px;
+    padding: 16px;
+}
+
+.profileBox {
+    width: 360px;
+    max-width: 90vw;
+    padding: 30px;
+}
+
+/* フォーム */
+.profileForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.profileForm div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* 入力フィールド（最低限のみ） */
+.profileInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    background: white;
+    color: black;
+}
+
+/* フォーカス */
+.profileInput:focus {
+    border-color: var(--primary2);
+}
+
+/* リンク */
+.profileLink {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.profileLink a {
+    color: var(--primary2);
+    text-decoration: none;
+}
+
+.profileLink a:hover {
+    text-decoration: underline;
+}
