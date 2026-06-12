@@ -56,13 +56,4 @@ public class DailyController {
         @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Integer daily_id) {
         return dailyCrud.deleteDaily(userDetails.getUser(), daily_id);
     }
-
-    // @PostMapping("/summary")
-    // public Map<String, String> generateSummary(@RequestBody ReportRequestDto
-    // request) {
-    // String summary = dailySummaryService.generateSummary(request);
-    // // 他のメソッドに合わせて Map<String, String>（JSON形式）で返却します
-    // return Collections.singletonMap("summary", summary);
-    // }
-
 }
