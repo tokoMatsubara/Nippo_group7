@@ -116,20 +116,22 @@ public class DailyCrudService {
     // #region
 
     @Transactional
-    public ResponseEntity<Map<String, String>> reportDaily(User user, ReportRequestDto reportRequest) {
-        try{
-            LocalDate requestDay = reportRequest.getDate();
-            LocalDate today = LocalDate.now();
-            if(requestDay.isAfter(today)){
-                throw new Exception("未来の日報を記述しようとしています");
-            }
+    public ResponseEntity<Map<String, String>> reportDaily(User user, ReportRequestDto reportRequest)
+        throws DataIntegrityViolationException {
+        if (dailyRepository.existsByUserAndDailyDate(user, reportRequest.getDate())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("status", "failed", "message", "この日付の日報は既に登録されています"));
+        }
+        
+        LocalDate requestDay = reportRequest.getDate();
+        LocalDate today = LocalDate.now();
+        if(requestDay.isAfter(today)){
+            throw new DataIntegrityViolationException("未来の日報を記述しようとしています");
+        }
 
-            DayOfWeek requestDow = requestDay.getDayOfWeek();
-            if(requestDow == DayOfWeek.SATURDAY || requestDow == DayOfWeek.SUNDAY){
-                throw new Exception("休日の日報を記述しようとしています");
-            }
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("status", "failed", "message", e.getMessage()));
+        DayOfWeek requestDow = requestDay.getDayOfWeek();
+        if(requestDow == DayOfWeek.SATURDAY || requestDow == DayOfWeek.SUNDAY){
+            throw new DataIntegrityViolationException("休日の日報を記述しようとしています");
         }
 
         Integer userId = user.getUserId();
@@ -138,23 +140,21 @@ public class DailyCrudService {
         List<DailyDetail> details = new ArrayList<DailyDetail>();
 
     
-        try {
-            for (com.daily_app.demo.Dto.Request.ContentDto dailyDetailContent : reportRequest.getContents()) {
-                Category category = categoryRepository.findById(dailyDetailContent.getCategoryId())
-                        .orElseThrow(
-                                () -> new RuntimeException("Category not found: " + dailyDetailContent.getCategoryId()));
-                details.add(new DailyDetail(daily, category, dailyDetailContent.getContent()));
-            }
-
-            daily.getDailyDetails().addAll(details);
-            System.out.println("details size = " + details.size());
-
         
-            dailyRepository.save(daily);
-        } catch (DataIntegrityViolationException e) {
-            System.err.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("status", "failed", "message", "日報の登録に失敗しました"));
+        for (com.daily_app.demo.Dto.Request.ContentDto dailyDetailContent : reportRequest.getContents()) {
+            Category category = categoryRepository.findById(dailyDetailContent.getCategoryId())
+                    .orElseThrow(
+                            () -> new RuntimeException("Category not found: " + dailyDetailContent.getCategoryId()));
+            details.add(new DailyDetail(daily, category, dailyDetailContent.getContent()));
         }
+
+        daily.getDailyDetails().addAll(details);
+        System.out.println("details size = " + details.size());
+
+    
+        // DBに登録処理
+        dailyRepository.save(daily);
+
         dailySummaryService.generateSummary(daily, reportRequest.getContents());
         eventPublisher.publishEvent(
                 new WeeklySummaryEvent(userId, reportRequest.getDate()));
@@ -167,32 +167,29 @@ public class DailyCrudService {
     // report=============================================================
     // #region
     @Transactional
-    public Map<String, String> updateDaily(User user, ReportUpdateRequestDto updateRequest) {
+    public Map<String, String> updateDaily(User user, ReportUpdateRequestDto updateRequest) throws DataIntegrityViolationException {
         Daily daily = dailyRepository.findById(updateRequest.getDailyId())
                 .orElseThrow(() -> new RuntimeException("Daily not found: " + updateRequest.getDailyId()));
         Integer userId = user.getUserId();
         LocalDate date = daily.getDailyDate();
         List<DailyDetail> details = daily.getDailyDetails();
 
-        try {
-            for (DailyDetail detail : details) {
-                for (com.daily_app.demo.Dto.Request.ContentDto content : updateRequest.getContents()) {
-                    if (detail.getCategory().getCategoryId() == content.getCategoryId()) {
-                        detail.setContent(content.getContent());
-                    }
+        for (DailyDetail detail : details) {
+            for (com.daily_app.demo.Dto.Request.ContentDto content : updateRequest.getContents()) {
+                if (detail.getCategory().getCategoryId() == content.getCategoryId()) {
+                    detail.setContent(content.getContent());
                 }
             }
-
-            daily.setDailyDetails(details);
-
-            if(!daily.getUser().getUserId().equals(userId)){
-                throw new Exception("違うユーザーの日報を更新しようとしています。");
-            }
-            dailyRepository.save(daily);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return Map.of("status", "failed", "message", "日報の更新に失敗しました");
         }
+
+        daily.setDailyDetails(details);
+
+        if(!daily.getUser().getUserId().equals(userId)){
+            return Map.of("status", "failed", "message", "違うユーザーの日報を更新しようとしています");
+        }
+
+        dailyRepository.save(daily);
+        
 
         dailySummaryService.generateSummary(daily, updateRequest.getContents());
         eventPublisher.publishEvent(
@@ -205,20 +202,17 @@ public class DailyCrudService {
     // report=============================================================
     // #region
     @Transactional
-    public Map<String, String> deleteDaily(User user, Integer dailyId) {
+    public Map<String, String> deleteDaily(User user, Integer dailyId) throws DataIntegrityViolationException {
         Daily daily = dailyRepository.findById(dailyId)
                 .orElseThrow(() -> new RuntimeException("Daily not found: " + dailyId));
         Integer userId = user.getUserId();
         LocalDate date = daily.getDailyDate();
-        try {
-            if(!daily.getUser().getUserId().equals(userId)){
-                throw new Exception("違うユーザーの日報を削除しようとしています。");
-            }
-            dailyRepository.deleteById(dailyId);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return Map.of("status", "failed", "message", "日報の削除に失敗しました");
+        if(!daily.getUser().getUserId().equals(userId)){
+            return Map.of("status", "failed", "message", "違うユーザーの日報を削除しようとしています");
         }
+           
+        dailyRepository.deleteById(dailyId);
+
         eventPublisher.publishEvent(
                 new WeeklySummaryEvent(userId, date));
         return Map.of("status", "success", "message", "日報の削除に成功しました");

@@ -20,6 +20,7 @@ public interface DailyRepository extends JpaRepository<Daily, Integer> {
 
     List<Daily> findByUser_UserIdAndDailyDateBetween(
             Integer userId, LocalDate startDate, LocalDate endDate);
+    boolean existsByUserAndDailyDate(User user, LocalDate starDate);
 
     //↓非同期処理でも安全にDaily + DailyDetailを扱うための必須対策らしい
     //↓これないと、LazyInitializationExceptionが出てなんか落ちる
