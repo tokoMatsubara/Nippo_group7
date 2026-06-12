@@ -7,7 +7,9 @@ export default function Profile() {
         localStorage.getItem("user_name") || ""
     );
 
-    const [mailAddress, setMailAddress] = useState("");
+    const [mailAddress, setMailAddress] = useState(
+        localStorage.getItem("email") || ""
+    );
     const [password, setPassword] = useState("");
 
     const handleSave = async () => {
