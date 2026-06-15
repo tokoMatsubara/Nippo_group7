@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Profile.css";
+import profileIcon from "../assets/Nippo_profile.png";
 
 export default function Profile() {
 
@@ -81,11 +82,12 @@ export default function Profile() {
     };
 
     return (
-        <div className="profileContainer">
+        <div className="container">
 
             <div className="header">
-                <div className="profileTitle">
-                    <h2 className="title">プロフィール編集</h2>
+                <div className="headerTitle">
+                    <h1 className="title">プロフィール編集</h1>
+                    <img src={profileIcon} alt="logo" className="logoIcon" />
                 </div>
             </div>
 
