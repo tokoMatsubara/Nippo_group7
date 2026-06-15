@@ -318,7 +318,7 @@ function CreateReport() {
         </div>
         <div className="section-card card">
           <h3>7. 明日の目標<span style={{ color: "red" }}>*</span></h3>
-          <textarea name="action" value={form.tomorrowGoal} onChange={handleChange} rows="5" />
+          <textarea name="tomorrowGoal" value={form.tomorrowGoal} onChange={handleChange} rows="5" />
         </div>
         <div className="section-card card">
           <h3>8. 体調・気持ち<span style={{ color: "red" }}>*</span></h3>
