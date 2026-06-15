@@ -1,3 +1,4 @@
+//トオコ編集中マジで難しい。いまはTransactionalのアノテーション付けたところ。
 package com.daily_app.demo.Service;
 
 import java.time.LocalTime;
@@ -8,30 +9,30 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.daily_app.demo.Dto.RemindSettingDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
-import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
+import com.daily_app.demo.Dto.Request.UserInfoRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Repository.UserRepository;
 
-@Controller
+@Service
 public class UserService {
 
-   
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     // ユーザー登録ロジック=================================================================
-
-    public ResponseEntity<Map<String, Object>> createUser(UserCreateRequestDto requestDto) {
+    @Transactional
+    public ResponseEntity<Map<String, Object>> createUser(UserInfoRequestDto requestDto) {
         Map<String, Object> response = new HashMap<>();
 
         // 【追加】同じメールアドレスが既に登録されていないかチェック
@@ -52,6 +53,11 @@ public class UserService {
                 requestDto.getMailAddress(),
                 false,
                 java.time.LocalTime.of(9, 0));
+
+        // 新規登録時に画面からテーマカラーが送られてきていたらEntityにセットする
+        if (requestDto.getUserTheme() != null && !requestDto.getUserTheme().isBlank()) {
+            newUser.setUserTheme(requestDto.getUserTheme());
+        }
 
         // 3. データベースに保存！
         // saveメソッドを実行すると、自動発番されたuserIdが含まれた状態のEntityが返ってきます
@@ -82,7 +88,9 @@ public class UserService {
                 LoginResponseDto response = new LoginResponseDto(
                         true,
                         "ログインに成功しました",
-                        user.getUserName());
+                        user.getUserName(),
+                        user.getUserTheme());
+
                 return ResponseEntity.ok(response);
             }
         }
@@ -96,7 +104,7 @@ public class UserService {
     }
 
     // リマインド設定ロジック=================================================================
-
+    @Transactional
     public ResponseEntity<Map<String, Object>> updateRemindSettings(User user, RemindSettingDto request) {
         System.out.println("ユーザーID: " + user.getUserId() + " のリマインド設定を更新します");
         Map<String, Object> response = new HashMap<>();
@@ -107,10 +115,10 @@ public class UserService {
 
             response.put("status", "success");
             response.put("message", "リマインド設定を登録しました");
-      
+
             return ResponseEntity.ok(response);
-            
-        }catch(Exception e){
+
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             response.put("status", "error");
             response.put("message", "リマインド設定が失敗しました");
@@ -126,44 +134,56 @@ public class UserService {
     }
 
     // ユーザーネーム・メアド・パスワードが画面上で変更できるようにする
-    public ResponseEntity<Map<String, Object>> updateProfile(User user, UserCreateRequestDto requestDto) {
-
+    @Transactional
+    public ResponseEntity<Map<String, Object>> updateProfile(User user, UserInfoRequestDto requestDto) {
 
         // ちゃんとデータ渡せてるか見るための
         System.out.println("=== updateProfile開始 ===");
         System.out.println("userId: " + user.getUserId());
         System.out.println("userName: " + requestDto.getUserName());
         System.out.println("mailAddress: " + requestDto.getMailAddress());
-
+        System.out.println("userTheme: " + requestDto.getUserTheme());
 
         Map<String, Object> response = new HashMap<>();
 
         try {
 
+            // 🟢 修正：安全のために、DBから最新のユーザーデータをIDで引き直します
+            User currentUser = userRepository.findById(user.getUserId())
+                    .orElseThrow(() -> new RuntimeException("ユーザーが見つかりません"));
+
             // メールアドレス重複チェック
-        if (requestDto.getMailAddress() != null &&
-            !requestDto.getMailAddress().isBlank()) {
+            if (requestDto.getMailAddress() != null &&
+                    !requestDto.getMailAddress().isBlank()) {
 
-            Optional<User> existingUser =
-                userRepository.findByMailAddress(requestDto.getMailAddress());
+                Optional<User> existingUser = userRepository.findByMailAddress(requestDto.getMailAddress());
 
-            if (existingUser.isPresent() &&
-                !existingUser.get().getUserId().equals(user.getUserId())) {
+                if (existingUser.isPresent() &&
+                        !existingUser.get().getUserId().equals(user.getUserId())) {
 
-                response.put("status", "error");
-                response.put("message", "このメールアドレスは既に使用されています。");
+                    response.put("status", "error");
+                    response.put("message", "このメールアドレスは既に使用されています。");
 
-                return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(response);
+                    return ResponseEntity
+                            .status(HttpStatus.BAD_REQUEST)
+                            .body(response);
+                }
             }
-        }
 
 
-            user.setUserName(requestDto.getUserName());
 
-            if (requestDto.getMailAddress() != null) {
-                user.setMailAddress(requestDto.getMailAddress());
+            if (requestDto.getMailAddress() != null && !requestDto.getUserName().isBlank()) {
+                currentUser.setMailAddress(requestDto.getMailAddress());
+            }
+
+            // ユーザー名が届いている（nullでもなく空文字でもない）ときだけ上書きする
+            if (requestDto.getUserName() != null && !requestDto.getUserName().isBlank()) {
+                currentUser.setUserName(requestDto.getUserName());
+            }
+
+            // メールアドレスが届いているときだけ上書きする（一応 .isBlank() も追加して安全に）
+            if (requestDto.getMailAddress() != null && !requestDto.getMailAddress().isBlank()) {
+                currentUser.setMailAddress(requestDto.getMailAddress());
             }
 
             if (requestDto.getPassword() != null &&
@@ -171,10 +191,22 @@ public class UserService {
 
                 String hashedPassword = passwordEncoder.encode(requestDto.getPassword());
 
-                user.setPassword(hashedPassword);
+                currentUser.setPassword(hashedPassword);
             }
-            
+
+            // Reactから新しいテーマカラーが届いていたらEntityに上書き保存する
+            if (requestDto.getUserTheme() != null && !requestDto.getUserTheme().isBlank()) {
+                currentUser.setUserTheme(requestDto.getUserTheme());
+            }
+
             System.out.println("保存前");
+
+            userRepository.save(currentUser);
+
+            user.setUserTheme(currentUser.getUserTheme());
+
+            System.out.println("保存成功！");
+
             System.out.println(user.getUserName());
             System.out.println(user.getMailAddress());
 
@@ -184,15 +216,14 @@ public class UserService {
             System.out.println(user.getUserName());
             System.out.println(user.getMailAddress());
 
-
-
             response.put("status", "success");
-            response.put("message", "ユーザー名を更新しました");
+            response.put("message", "ユーザー情報を更新しました");
 
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
 
+            e.printStackTrace();
             response.put("status", "error");
             response.put("message", "ユーザー名の更新に失敗しました");
 
@@ -200,7 +231,4 @@ public class UserService {
         }
     }
 
-  
-
-   
 }

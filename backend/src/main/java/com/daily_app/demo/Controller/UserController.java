@@ -1,7 +1,7 @@
 // 松原 編集
 package com.daily_app.demo.Controller;
 
-import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
+import com.daily_app.demo.Dto.Request.UserInfoRequestDto;
 import com.daily_app.demo.Dto.RemindSettingDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
@@ -47,7 +47,7 @@ public class UserController {
      * URL: POST /api/create
      */
     @PostMapping("/auth/create")
-    public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserCreateRequestDto requestDto) {
+    public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserInfoRequestDto requestDto) {
 
         System.out.println("--- ユーザー登録 本稼働 ---");
         return userService.createUser(requestDto);
@@ -106,7 +106,7 @@ public class UserController {
     @PutMapping("/user/profile")
     public ResponseEntity<Map<String, Object>> updateUserName(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestBody UserCreateRequestDto requestDto) {
+            @RequestBody UserInfoRequestDto requestDto) {
 
         System.out.println("=== /api/user/profile 到達 ===");
         System.out.println("ログインユーザーID: " + userDetails.getId());

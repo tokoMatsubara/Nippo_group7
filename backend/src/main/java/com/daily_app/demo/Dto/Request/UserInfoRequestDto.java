@@ -4,7 +4,7 @@ package com.daily_app.demo.Dto.Request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class UserCreateRequestDto {
+public class UserInfoRequestDto {
 
     /**
      * ユーザーの名前
@@ -23,10 +23,18 @@ public class UserCreateRequestDto {
      */
     private String password;
 
-    public UserCreateRequestDto() {
+    /**
+     * ユーザーのテーマカラー（追加項目）
+     */
+    @JsonProperty("user_theme")
+    private String userTheme;
+
+
+
+    public UserInfoRequestDto() {
     }
 
-    public UserCreateRequestDto(String userName,
+    public UserInfoRequestDto(String userName,
                                 String mailAddress,
                                 String password) {
         this.userName = userName;
@@ -57,4 +65,12 @@ public class UserCreateRequestDto {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getUserTheme() {
+        return userTheme;
+    }
+
+    public void setUserTheme(String userTheme) {
+        this.userTheme = userTheme;
+    } 
 }
