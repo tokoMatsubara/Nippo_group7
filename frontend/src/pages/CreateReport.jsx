@@ -187,8 +187,7 @@ function CreateReport() {
         !form.issue ||
         !form.issueReason ||
         !form.action ||
-        !form.tomorrowGoal ||
-        !form.condition
+        !form.tomorrowGoal 
       ) {
         setError("未入力の項目があります");
         return;
