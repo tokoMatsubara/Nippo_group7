@@ -20,6 +20,7 @@ import com.daily_app.demo.Dto.Request.ReportUpdateRequestDto;
 import com.daily_app.demo.Dto.Response.ContentDto;
 import com.daily_app.demo.Dto.Response.DailyDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
+import com.daily_app.demo.Dto.Response.PreviousGoalResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 import com.daily_app.demo.Entity.Category;
 import com.daily_app.demo.Entity.Daily;
@@ -41,17 +42,17 @@ public class DailyCrudService {
     private final ApplicationEventPublisher eventPublisher;
 
     public DailyCrudService(
-        DailyRepository dailyRepository,
-        WeeklySummaryRepository weeklySummaryRepository,
-        CategoryRepository categoryRepository,
-        DailySummaryService dailySummaryService,
-        ApplicationEventPublisher eventPublisher){
+            DailyRepository dailyRepository,
+            WeeklySummaryRepository weeklySummaryRepository,
+            CategoryRepository categoryRepository,
+            DailySummaryService dailySummaryService,
+            ApplicationEventPublisher eventPublisher) {
 
         this.dailyRepository = dailyRepository;
         this.weeklySummaryRepository = weeklySummaryRepository;
         this.categoryRepository = categoryRepository;
         this.dailySummaryService = dailySummaryService;
-        this.eventPublisher = eventPublisher; 
+        this.eventPublisher = eventPublisher;
     }
 
     // weekly response
@@ -121,20 +122,20 @@ public class DailyCrudService {
 
     @Transactional
     public ResponseEntity<Map<String, String>> reportDaily(User user, ReportRequestDto reportRequest)
-        throws DataIntegrityViolationException {
+            throws DataIntegrityViolationException {
         if (dailyRepository.existsByUserAndDailyDate(user, reportRequest.getDate())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("status", "failed", "message", "この日付の日報は既に登録されています"));
         }
-        
+
         LocalDate requestDay = reportRequest.getDate();
         LocalDate today = LocalDate.now();
-        if(requestDay.isAfter(today)){
+        if (requestDay.isAfter(today)) {
             throw new DataIntegrityViolationException("未来の日報を記述しようとしています");
         }
 
         DayOfWeek requestDow = requestDay.getDayOfWeek();
-        if(requestDow == DayOfWeek.SATURDAY || requestDow == DayOfWeek.SUNDAY){
+        if (requestDow == DayOfWeek.SATURDAY || requestDow == DayOfWeek.SUNDAY) {
             throw new DataIntegrityViolationException("休日の日報を記述しようとしています");
         }
 
@@ -143,8 +144,6 @@ public class DailyCrudService {
 
         List<DailyDetail> details = new ArrayList<DailyDetail>();
 
-    
-        
         for (com.daily_app.demo.Dto.Request.ContentDto dailyDetailContent : reportRequest.getContents()) {
             Category category = categoryRepository.findById(dailyDetailContent.getCategoryId())
                     .orElseThrow(
@@ -155,7 +154,6 @@ public class DailyCrudService {
         daily.getDailyDetails().addAll(details);
         System.out.println("details size = " + details.size());
 
-    
         // DBに登録処理
         dailyRepository.save(daily);
 
@@ -171,7 +169,8 @@ public class DailyCrudService {
     // report=============================================================
     // #region
     @Transactional
-    public Map<String, String> updateDaily(User user, ReportUpdateRequestDto updateRequest) throws DataIntegrityViolationException {
+    public Map<String, String> updateDaily(User user, ReportUpdateRequestDto updateRequest)
+            throws DataIntegrityViolationException {
         Daily daily = dailyRepository.findById(updateRequest.getDailyId())
                 .orElseThrow(() -> new RuntimeException("Daily not found: " + updateRequest.getDailyId()));
         Integer userId = user.getUserId();
@@ -188,12 +187,11 @@ public class DailyCrudService {
 
         daily.setDailyDetails(details);
 
-        if(!daily.getUser().getUserId().equals(userId)){
+        if (!daily.getUser().getUserId().equals(userId)) {
             return Map.of("status", "failed", "message", "違うユーザーの日報を更新しようとしています");
         }
 
         dailyRepository.save(daily);
-        
 
         dailySummaryService.generateSummary(daily, updateRequest.getContents());
         eventPublisher.publishEvent(
@@ -211,10 +209,10 @@ public class DailyCrudService {
                 .orElseThrow(() -> new RuntimeException("Daily not found: " + dailyId));
         Integer userId = user.getUserId();
         LocalDate date = daily.getDailyDate();
-        if(!daily.getUser().getUserId().equals(userId)){
+        if (!daily.getUser().getUserId().equals(userId)) {
             return Map.of("status", "failed", "message", "違うユーザーの日報を削除しようとしています");
         }
-           
+
         dailyRepository.deleteById(dailyId);
 
         eventPublisher.publishEvent(
@@ -222,4 +220,66 @@ public class DailyCrudService {
         return Map.of("status", "success", "message", "日報の削除に成功しました");
     }
     // #endregion
+
+    @Transactional(readOnly = true)
+    public PreviousGoalResponseDto previousGoal(User user) {
+
+        LocalDate previousDate = BusinessDayUtil.previousBusinessDay(
+                LocalDate.now());
+
+        System.out.println("前営業日 = " + previousDate);
+
+        Daily daily = dailyRepository
+                .findByUserAndDailyDate(
+                        user,
+                        previousDate)
+                .orElse(null);
+
+        if (daily == null) {
+
+            return new PreviousGoalResponseDto(
+                    "前日の日報はありません");
+        }
+
+        String goal = daily.getDailyDetails()
+                .stream()
+                .filter(detail -> detail.getCategory()
+                        .getCategoryId() == 7)
+                .map(DailyDetail::getContent)
+                .findFirst()
+                .orElse("前日の日報はありません");
+
+        return new PreviousGoalResponseDto(goal);
+    }
+
+    @Transactional(readOnly = true)
+    public PreviousGoalResponseDto previousGoal1(User user) {
+
+        LocalDate previousDate = BusinessDayUtil.previousBusinessDay(
+                LocalDate.now());
+
+        System.out.println("前営業日 = " + previousDate);
+
+        Daily daily = dailyRepository
+                .findByUserAndDailyDate(
+                        user,
+                        previousDate)
+                .orElse(null);
+
+        if (daily == null) {
+
+            return new PreviousGoalResponseDto(
+                    "前日の日報はありません");
+        }
+
+        String goal = daily.getDailyDetails()
+                .stream()
+                .filter(detail -> detail.getCategory()
+                        .getCategoryId() == 7)
+                .map(DailyDetail::getContent)
+                .findFirst()
+                .orElse("前日の日報はありません");
+
+        return new PreviousGoalResponseDto(goal);
+    }
 }
