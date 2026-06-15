@@ -234,3 +234,42 @@
     height: auto;
     display: block;
 }
+
+.dashboard-createButton {
+    min-width: 160px;
+    height: 52px;
+    color: #fff;
+    padding: 14px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border-radius: 6px;
+    z-index: 0;
+    background: var(--primary2);
+    overflow: hidden;
+    color: #333;
+}
+
+.dashboard-createButton:hover {
+    color: #fff;
+}
+
+.dashboard-createButton:hover:after {
+    width: 100%;
+}
+
+.dashboard-createButton:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    transition: all 0.3s ease;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: var(--primary1);
+}

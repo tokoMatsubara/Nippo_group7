@@ -147,7 +147,7 @@ export default function Dashboard() {
                                 date: new Date().toISOString().split("T")[0],
                                 returnPath: `/dashboard`,
                             },
-                        })} className="primaryButton">日報作成</button>
+                        })} className="dashboard-createButton">日報作成</button>
 
                     </div>
                 ) : (
