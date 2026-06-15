@@ -60,6 +60,12 @@ export default function Profile() {
                     userName
                 );
 
+                setIsSaved(true);
+
+                // パスワード欄だけリセット
+                setPassword("");
+                setConfirmPassword("");
+
                 alert("プロフィールを更新しました");
             } else {
 
@@ -85,7 +91,14 @@ export default function Profile() {
 
             <div className="profileBox profilecard">
 
-                <form className="profileForm">
+                <form
+                    className="profileForm"
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        handleSave();
+                    }}
+                >
+
                     <div>
                         <label>ユーザー名</label>
 
@@ -93,12 +106,12 @@ export default function Profile() {
                             className="profileInput"
                             placeholder="ユーザー名"
                             value={userName}
-                            onChange={(e) =>
-                                setUserName(e.target.value)
-                            }
+                            onChange={(e) => {
+                                setUserName(e.target.value);
+                                setIsSaved(false);
+                            }}
                         />
                     </div>
-
 
                     <div>
                         <label>メールアドレス</label>
@@ -106,9 +119,10 @@ export default function Profile() {
                             className="profileInput"
                             placeholder="メールアドレス"
                             value={mailAddress}
-                            onChange={(e) =>
-                                setMailAddress(e.target.value)
-                            }
+                            onChange={(e) => {
+                                setMailAddress(e.target.value);
+                                setIsSaved(false);
+                            }}
                         />
                     </div>
 
@@ -119,9 +133,10 @@ export default function Profile() {
                             type="password"
                             placeholder="パスワード"
                             value={password}
-                            onChange={(e) =>
-                                setPassword(e.target.value)
-                            }
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                setIsSaved(false);
+                            }}
                         />
                     </div>
                     <div>
@@ -130,21 +145,26 @@ export default function Profile() {
                             type="password"
                             placeholder="パスワード（確認）"
                             value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            onChange={(e) => {
+                                setConfirmPassword(e.target.value)
+                                setIsSaved(false);
+                            }}
                         />
                     </div>
 
 
+
+                    <br />
+                    <button
+                        type="submit"
+                        className={`primaryButton ${isSaved ? "saved" : ""}`}
+                        disabled={isSaved}
+                    >
+                        {isSaved ? "保存済み" : "保存"}
+                    </button>
                 </form>
-                <br />
-                <button
-                    className={`primaryButton ${isSaved ? "saved" : ""}`}
-                    onClick={handleSave}
-                    disabled={isSaved}
-                >
-                    {isSaved ? "保存済み" : "保存"}
-                </button>
             </div>
+
 
         </div>
     );
