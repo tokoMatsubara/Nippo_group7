@@ -1,6 +1,5 @@
 package com.daily_app.demo.config;
 
-
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -21,7 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class CustomAuthenticationFilter extends OncePerRequestFilter{
+public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -30,41 +29,51 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
 
     @Override
     protected void doFilterInternal(
-        HttpServletRequest request, HttpServletResponse response, FilterChain filterchain)
-        throws ServletException, IOException{
+            HttpServletRequest request, HttpServletResponse response, FilterChain filterchain)
+            throws ServletException, IOException {
 
-
-        String token = resolveToken(request);    
+        String token = resolveToken(request);
         // トークンが無い / 空ならここで認証処理せず次のフィルターへ
         if (StringUtils.hasText(token)) {
             try {
                 String mailAddress = jwtTokenProvider.getMailAddress(token);
                 // ... SecurityContext に Authentication をセット
                 CustomUserDetails userDetails = userDetailsService.loadUserByUsername(mailAddress);
-            
-                UsernamePasswordAuthenticationToken userToken = 
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                
+
+                UsernamePasswordAuthenticationToken userToken = new UsernamePasswordAuthenticationToken(userDetails,
+                        null, userDetails.getAuthorities());
+
                 SecurityContextHolder.getContext().setAuthentication(userToken);
             } catch (JwtException | IllegalArgumentException e) {
                 // 無効・期限切れトークンはログだけ残して未認証扱いにする
                 System.err.println("Invalid JWT: " + e.getMessage());
             }
         }
-        
 
         filterchain.doFilter(request, response);
     }
 
     private String resolveToken(HttpServletRequest request) {
-    if (request.getCookies() == null) {
-        return null;
+        if (request.getCookies() == null) {
+            return null;
+        }
+        return Arrays.stream(request.getCookies())
+                .filter(c -> "accessToken".equals(c.getName()))
+                .map(Cookie::getValue)
+                .filter(StringUtils::hasText)
+                .findFirst()
+                .orElse(null);
     }
-    return Arrays.stream(request.getCookies())
-            .filter(c -> "accessToken".equals(c.getName()))
-            .map(Cookie::getValue)
-            .filter(StringUtils::hasText)
-            .findFirst()
-            .orElse(null);
-}
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+
+        String path = request.getRequestURI();
+        System.out.println("FILTER PATH = " + request.getRequestURI());
+
+        return path.contains("/v3/api-docs")
+                || path.contains("/swagger-ui")
+                || path.contains("/swagger-resources")
+                || path.contains("/swagger-ui.html");
+    }
 }

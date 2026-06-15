@@ -32,21 +32,23 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(Customizer.withDefaults())
-            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // api/authから始まるものだけ開放
-                .anyRequest().authenticated() 
-            )
-            .exceptionHandling(ex -> 
-                ex.authenticationEntryPoint((request, response, authException) -> {
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll() // api/authから始まるものだけ開放
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
+                        .permitAll()
+                        .anyRequest().authenticated())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     response.setContentType("application/json;charset=UTF-8");
                     response.getWriter().write("{\"message\":\"認証が必要です\"}");
-                })
-            )
-            .addFilterBefore(customAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                }))
+                .addFilterBefore(customAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -65,13 +67,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(
-        AuthenticationConfiguration config) throws Exception{
+            AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 }
