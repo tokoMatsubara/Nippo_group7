@@ -73,3 +73,17 @@
     gap: 16px;
     margin-top: 20px;
 }
+
+.radio-group {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    /* 画面が狭い時に折り返す */
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

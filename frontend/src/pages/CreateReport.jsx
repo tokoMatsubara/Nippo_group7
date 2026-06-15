@@ -40,6 +40,12 @@ function CreateReport() {
   const returnPath = location.state?.returnPath ?? `/daily-list/${week.startDate}/${week.endDate}`;
   const [date, setDate] = useState(location.state?.date ?? editDaily?.date ?? toYmd(new Date()));
   const [dailyId, setDailyId] = useState(editDaily?.dailyId ?? null);
+
+  const [condition, setCondition] = useState({
+    health: "普通",
+    mood: "普通",
+  });
+
   const [form, setForm] = useState(() => {
     if (!editDaily?.contents) {
       return {
@@ -50,7 +56,6 @@ function CreateReport() {
         issueReason: "",
         action: "",
         tomorrowGoal: "",
-        condition: "普通",
         comment: "",
       };
     }
@@ -63,7 +68,6 @@ function CreateReport() {
       issueReason: "",
       action: "",
       tomorrowGoal: "",
-      condition: "普通",
       comment: "",
     };
 
@@ -90,9 +94,18 @@ function CreateReport() {
         case 7:
           mapped.tomorrowGoal = item.content;
           break;
-        case 8:
-          mapped.condition = item.content || "普通";
+        case 8: {
+          const text = item.content;
+
+          const health = text.match(/体調・・・(.+?)、/);
+          const mood = text.match(/気持ち・・・(.+)/);
+
+          setCondition({
+            health: health?.[1] || "普通",
+            mood: mood?.[1] || "普通",
+          });
           break;
+        }
         case 9:
           mapped.comment = item.content;
           break;
@@ -195,6 +208,7 @@ function CreateReport() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
+      const conditionText = `体　調・・・${condition.health}\n気持ち・・・${condition.mood}`;
       const contentsPayload = [
         { categoryId: 1, content: form.learned },
         { categoryId: 2, content: form.goodPoint },
@@ -203,7 +217,7 @@ function CreateReport() {
         { categoryId: 5, content: form.issueReason },
         { categoryId: 6, content: form.action },
         { categoryId: 7, content: form.tomorrowGoal },
-        { categoryId: 8, content: form.condition },
+        { categoryId: 8, content: conditionText },
         { categoryId: 9, content: form.comment },
       ];
 
@@ -309,14 +323,67 @@ function CreateReport() {
         <div className="section-card card">
           <h3>8. 体調・気持ち</h3>
           <div className="radio-group">
+            <p>体　調</p>
             <label>
-              <input type="radio" name="condition" value="良好" checked={form.condition === "良好"} onChange={handleChange} /> 良好
+              <input
+                type="radio"
+                name="condition"
+                value="良好"
+                checked={form.condition === "良好"}
+                onChange={handleChange}
+              /> 良好
             </label>
             <label>
-              <input type="radio" name="condition" value="普通" checked={form.condition === "普通"} onChange={handleChange} /> 普通
+              <input
+                type="radio"
+                name="condition"
+                value="普通"
+                checked={form.condition === "普通"}
+                onChange={handleChange}
+              /> 普通
             </label>
             <label>
-              <input type="radio" name="condition" value="不調" checked={form.condition === "不調"} onChange={handleChange} /> 不調
+              <input
+                type="radio"
+                name="condition"
+                value="不調"
+                checked={form.condition === "不調"}
+                onChange={handleChange}
+              /> 不調
+            </label>
+          </div>
+
+          <div className="radio-group" style={{ marginTop: "12px" }}>
+            <p>気持ち</p>
+            <label>
+              <input
+                type="radio"
+                name="mood"
+                value="良好"
+                checked={form.mood === "良好"}
+                onChange={handleChange}
+              />
+              良好
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="mood"
+                value="普通"
+                checked={form.mood === "普通"}
+                onChange={handleChange}
+              />
+              普通
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="mood"
+                value="不調"
+                checked={form.mood === "不調"}
+                onChange={handleChange}
+              />
+              不調
             </label>
           </div>
         </div>
