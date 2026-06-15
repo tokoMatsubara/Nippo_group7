@@ -12,7 +12,16 @@ export default function Profile() {
     );
     const [password, setPassword] = useState("");
 
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [isSaved, setIsSaved] = useState(false);
+
     const handleSave = async () => {
+
+        if (password !== confirmPassword) {
+            alert("パスワードが一致しません");
+            return;
+        }
 
         console.log("保存ボタン押下");
 
@@ -107,6 +116,7 @@ export default function Profile() {
                         <label>新しいパスワード</label>
                         <input
                             className="profileInput"
+                            type="password"
                             placeholder="パスワード"
                             value={password}
                             onChange={(e) =>
@@ -114,13 +124,25 @@ export default function Profile() {
                             }
                         />
                     </div>
+                    <div>
+                        <input
+                            className="profileInput"
+                            type="password"
+                            placeholder="パスワード（確認）"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                    </div>
+
 
                 </form>
                 <br />
                 <button
-                    className="primaryButton"
-                    onClick={handleSave}>
-                    保存
+                    className={`primaryButton ${isSaved ? "saved" : ""}`}
+                    onClick={handleSave}
+                    disabled={isSaved}
+                >
+                    {isSaved ? "保存済み" : "保存"}
                 </button>
             </div>
 
