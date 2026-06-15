@@ -208,7 +208,18 @@ function CreateReport() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const conditionText = `体　調・・・${condition.health}\n気持ち・・・${condition.mood}`;
+      const healthText =
+        condition.health === "その他"
+          ? condition.healthOther
+          : condition.health;
+
+      const moodText =
+        condition.mood === "その他"
+          ? condition.moodOther
+          : condition.mood;
+
+      const conditionText =
+        `体　調・・・${healthText}\n気持ち・・・${moodText}`;
       const contentsPayload = [
         { categoryId: 1, content: form.learned },
         { categoryId: 2, content: form.goodPoint },
@@ -322,69 +333,85 @@ function CreateReport() {
 
         <div className="section-card card">
           <h3>8. 体調・気持ち</h3>
+
+          {/* =========================
+      体調
+  ========================= */}
           <div className="radio-group">
-            <p>体　調</p>
-            <label>
+            <p style={{ width: "100%" }}>体　調</p>
+
+            {["良好", "普通", "不調", "その他"].map((v) => (
+              <label key={v}>
+                <input
+                  type="radio"
+                  name="health"
+                  value={v}
+                  checked={condition.health === v}
+                  onChange={(e) =>
+                    setCondition((prev) => ({
+                      ...prev,
+                      health: e.target.value,
+                    }))
+                  }
+                />
+                {v}
+              </label>
+            ))}
+
+            {/* その他入力（体調） */}
+            {condition.health === "その他" && (
               <input
-                type="radio"
-                name="condition"
-                value="良好"
-                checked={form.condition === "良好"}
-                onChange={handleChange}
-              /> 良好
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="condition"
-                value="普通"
-                checked={form.condition === "普通"}
-                onChange={handleChange}
-              /> 普通
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="condition"
-                value="不調"
-                checked={form.condition === "不調"}
-                onChange={handleChange}
-              /> 不調
-            </label>
+                type="text"
+                placeholder="体調を入力"
+                value={condition.healthOther || ""}
+                onChange={(e) =>
+                  setCondition((prev) => ({
+                    ...prev,
+                    healthOther: e.target.value,
+                  }))
+                }
+              />
+            )}
           </div>
 
+          {/* =========================
+      気持ち
+  ========================= */}
           <div className="radio-group" style={{ marginTop: "12px" }}>
-            <p>気持ち</p>
-            <label>
+            <p style={{ width: "100%" }}>気持ち</p>
+
+            {["良好", "普通", "不調", "その他"].map((v) => (
+              <label key={v}>
+                <input
+                  type="radio"
+                  name="mood"
+                  value={v}
+                  checked={condition.mood === v}
+                  onChange={(e) =>
+                    setCondition((prev) => ({
+                      ...prev,
+                      mood: e.target.value,
+                    }))
+                  }
+                />
+                {v}
+              </label>
+            ))}
+
+            {/* その他入力（気持ち） */}
+            {condition.mood === "その他" && (
               <input
-                type="radio"
-                name="mood"
-                value="良好"
-                checked={form.mood === "良好"}
-                onChange={handleChange}
+                type="text"
+                placeholder="気持ちを入力"
+                value={condition.moodOther || ""}
+                onChange={(e) =>
+                  setCondition((prev) => ({
+                    ...prev,
+                    moodOther: e.target.value,
+                  }))
+                }
               />
-              良好
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="mood"
-                value="普通"
-                checked={form.mood === "普通"}
-                onChange={handleChange}
-              />
-              普通
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="mood"
-                value="不調"
-                checked={form.mood === "不調"}
-                onChange={handleChange}
-              />
-              不調
-            </label>
+            )}
           </div>
         </div>
 
