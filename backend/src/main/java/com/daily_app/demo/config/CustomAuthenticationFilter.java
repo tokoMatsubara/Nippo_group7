@@ -7,6 +7,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -51,7 +52,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 
                 SecurityContextHolder.getContext().setAuthentication(userToken);
-            } catch (JwtException | IllegalArgumentException e) {
+            } catch (JwtException | IllegalArgumentException | UsernameNotFoundException e) {
                 // 無効・期限切れトークンはログだけ残して未認証扱いにする
                 System.err.println("Invalid JWT: " + e.getMessage());
             }
@@ -59,6 +60,11 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
         
 
         filterchain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getServletPath().startsWith("/api/auth/");
     }
 
     private String resolveToken(HttpServletRequest request) {

@@ -148,10 +148,6 @@ public class UserService {
 
         try {
 
-            // 🟢 修正：安全のために、DBから最新のユーザーデータをIDで引き直します
-            User currentUser = userRepository.findById(user.getUserId())
-                    .orElseThrow(() -> new RuntimeException("ユーザーが見つかりません"));
-
             // メールアドレス重複チェック
             if (requestDto.getMailAddress() != null &&
                     !requestDto.getMailAddress().isBlank()) {
@@ -173,17 +169,17 @@ public class UserService {
 
 
             if (requestDto.getMailAddress() != null && !requestDto.getUserName().isBlank()) {
-                currentUser.setMailAddress(requestDto.getMailAddress());
+                user.setMailAddress(requestDto.getMailAddress());
             }
 
             // ユーザー名が届いている（nullでもなく空文字でもない）ときだけ上書きする
             if (requestDto.getUserName() != null && !requestDto.getUserName().isBlank()) {
-                currentUser.setUserName(requestDto.getUserName());
+                user.setUserName(requestDto.getUserName());
             }
 
             // メールアドレスが届いているときだけ上書きする（一応 .isBlank() も追加して安全に）
             if (requestDto.getMailAddress() != null && !requestDto.getMailAddress().isBlank()) {
-                currentUser.setMailAddress(requestDto.getMailAddress());
+                user.setMailAddress(requestDto.getMailAddress());
             }
 
             if (requestDto.getPassword() != null &&
@@ -191,30 +187,19 @@ public class UserService {
 
                 String hashedPassword = passwordEncoder.encode(requestDto.getPassword());
 
-                currentUser.setPassword(hashedPassword);
+                user.setPassword(hashedPassword);
             }
 
             // Reactから新しいテーマカラーが届いていたらEntityに上書き保存する
             if (requestDto.getUserTheme() != null && !requestDto.getUserTheme().isBlank()) {
-                currentUser.setUserTheme(requestDto.getUserTheme());
+                user.setUserTheme(requestDto.getUserTheme());
             }
 
             System.out.println("保存前");
 
-            userRepository.save(currentUser);
-
-            user.setUserTheme(currentUser.getUserTheme());
-
-            System.out.println("保存成功！");
-
-            System.out.println(user.getUserName());
-            System.out.println(user.getMailAddress());
-
             userRepository.save(user);
 
-            System.out.println("保存後");
-            System.out.println(user.getUserName());
-            System.out.println(user.getMailAddress());
+            System.out.println("保存成功！");
 
             response.put("status", "success");
             response.put("message", "ユーザー情報を更新しました");
