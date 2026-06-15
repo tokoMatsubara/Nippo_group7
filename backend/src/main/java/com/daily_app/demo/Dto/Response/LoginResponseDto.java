@@ -15,6 +15,8 @@ public class LoginResponseDto {
     // private Integer userId;
     private String userName;
 
+    private String userTheme;
+
     // デフォルトコンストラクタ
     public LoginResponseDto() {
     }
@@ -31,6 +33,13 @@ public class LoginResponseDto {
         this.message = message;
         // this.userId = userId;
         this.userName = userName;
+    }
+
+    public LoginResponseDto(Boolean success, String message, String userName, String userTheme) {
+        this.success = success;
+        this.message = message;
+        this.userName = userName;
+        this.userTheme = userTheme;
     }
 
     // Getter / Setter
@@ -67,4 +76,13 @@ public class LoginResponseDto {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
+    public String getUserTheme() {
+        return userTheme;
+    }
+
+    public void setUserTheme(String userTheme) {
+        this.userTheme = userTheme;
+    }
+
 }
