@@ -40,6 +40,12 @@ function CreateReport() {
   const returnPath = location.state?.returnPath ?? `/daily-list/${week.startDate}/${week.endDate}`;
   const [date, setDate] = useState(location.state?.date ?? editDaily?.date ?? toYmd(new Date()));
   const [dailyId, setDailyId] = useState(editDaily?.dailyId ?? null);
+
+  const [condition, setCondition] = useState({
+    health: "普通",
+    mood: "普通",
+  });
+
   const [form, setForm] = useState(() => {
     if (!editDaily?.contents) {
       return {
@@ -50,7 +56,6 @@ function CreateReport() {
         issueReason: "",
         action: "",
         tomorrowGoal: "",
-        condition: "普通",
         comment: "",
       };
     }
@@ -63,7 +68,6 @@ function CreateReport() {
       issueReason: "",
       action: "",
       tomorrowGoal: "",
-      condition: "普通",
       comment: "",
     };
 
@@ -90,9 +94,18 @@ function CreateReport() {
         case 7:
           mapped.tomorrowGoal = item.content;
           break;
-        case 8:
-          mapped.condition = item.content || "普通";
+        case 8: {
+          const text = item.content;
+
+          const health = text.match(/体調・・・(.+?)、/);
+          const mood = text.match(/気持ち・・・(.+)/);
+
+          setCondition({
+            health: health?.[1] || "普通",
+            mood: mood?.[1] || "普通",
+          });
           break;
+        }
         case 9:
           mapped.comment = item.content;
           break;
@@ -195,6 +208,18 @@ function CreateReport() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
+      const healthText =
+        condition.health === "その他"
+          ? condition.healthOther
+          : condition.health;
+
+      const moodText =
+        condition.mood === "その他"
+          ? condition.moodOther
+          : condition.mood;
+
+      const conditionText =
+        `体　調・・・${healthText}\n気持ち・・・${moodText}`;
       const contentsPayload = [
         { categoryId: 1, content: form.learned },
         { categoryId: 2, content: form.goodPoint },
@@ -203,7 +228,7 @@ function CreateReport() {
         { categoryId: 5, content: form.issueReason },
         { categoryId: 6, content: form.action },
         { categoryId: 7, content: form.tomorrowGoal },
-        { categoryId: 8, content: form.condition },
+        { categoryId: 8, content: conditionText },
         { categoryId: 9, content: form.comment },
       ];
 
@@ -308,16 +333,85 @@ function CreateReport() {
 
         <div className="section-card card">
           <h3>8. 体調・気持ち</h3>
+
+          {/* =========================
+      体調
+  ========================= */}
           <div className="radio-group">
-            <label>
-              <input type="radio" name="condition" value="良好" checked={form.condition === "良好"} onChange={handleChange} /> 良好
-            </label>
-            <label>
-              <input type="radio" name="condition" value="普通" checked={form.condition === "普通"} onChange={handleChange} /> 普通
-            </label>
-            <label>
-              <input type="radio" name="condition" value="不調" checked={form.condition === "不調"} onChange={handleChange} /> 不調
-            </label>
+            <p style={{ width: "100%" }}>体　調</p>
+
+            {["良好", "普通", "不調", "その他"].map((v) => (
+              <label key={v}>
+                <input
+                  type="radio"
+                  name="health"
+                  value={v}
+                  checked={condition.health === v}
+                  onChange={(e) =>
+                    setCondition((prev) => ({
+                      ...prev,
+                      health: e.target.value,
+                    }))
+                  }
+                />
+                {v}
+              </label>
+            ))}
+
+            {/* その他入力（体調） */}
+            {condition.health === "その他" && (
+              <input
+                type="text"
+                placeholder="体調を入力"
+                value={condition.healthOther || ""}
+                onChange={(e) =>
+                  setCondition((prev) => ({
+                    ...prev,
+                    healthOther: e.target.value,
+                  }))
+                }
+              />
+            )}
+          </div>
+
+          {/* =========================
+      気持ち
+  ========================= */}
+          <div className="radio-group" style={{ marginTop: "12px" }}>
+            <p style={{ width: "100%" }}>気持ち</p>
+
+            {["良好", "普通", "不調", "その他"].map((v) => (
+              <label key={v}>
+                <input
+                  type="radio"
+                  name="mood"
+                  value={v}
+                  checked={condition.mood === v}
+                  onChange={(e) =>
+                    setCondition((prev) => ({
+                      ...prev,
+                      mood: e.target.value,
+                    }))
+                  }
+                />
+                {v}
+              </label>
+            ))}
+
+            {/* その他入力（気持ち） */}
+            {condition.mood === "その他" && (
+              <input
+                type="text"
+                placeholder="気持ちを入力"
+                value={condition.moodOther || ""}
+                onChange={(e) =>
+                  setCondition((prev) => ({
+                    ...prev,
+                    moodOther: e.target.value,
+                  }))
+                }
+              />
+            )}
           </div>
         </div>
 

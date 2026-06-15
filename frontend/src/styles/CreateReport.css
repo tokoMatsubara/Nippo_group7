@@ -73,3 +73,63 @@
     gap: 16px;
     margin-top: 20px;
 }
+
+.radio-group {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    /* 画面が狭い時に折り返す */
+}
+
+.radio-group input[type="text"] {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: black;
+    padding: 6px 8px;
+    margin-left: 8px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+input[type="radio"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--primary1);
+    border-radius: 50%;
+    background: #fff;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+input[type="radio"]:hover {
+    border-color: var(--primary1);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+input[type="radio"]:checked {
+    border-color: var(--primary1);
+}
+
+input[type="radio"]:checked::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--primary1);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
