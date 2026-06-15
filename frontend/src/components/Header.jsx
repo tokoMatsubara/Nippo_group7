@@ -61,7 +61,9 @@ export default function Header() {
                     )}
                 </NavLink>
                 <NavLink to="/profile">
-                    プロフィール
+                    <span className="userName">
+                        {userName || "ゲスト"}
+                    </span>
                 </NavLink>
 
                 {/* 日付付きルートは固定リンクにしにくいので例だけ */}
@@ -72,12 +74,6 @@ export default function Header() {
 
             <div className="headerRight">
                 <ThemeToggle />
-                <span className="userName">
-                    {userName || "ゲスト"}
-                </span>
-
-
-
                 <button className="logoutBtn" onClick={handleLogout}>
                     ログアウト
                 </button>
