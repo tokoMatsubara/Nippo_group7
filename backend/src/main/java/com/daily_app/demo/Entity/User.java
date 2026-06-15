@@ -15,13 +15,23 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+
+
+
 @Entity
 @Table(name = "users")
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Integer userId;
+    
+    @Column(name = "user_theme")
+    private String userThema = "blue";
+
+    @Column(name = "role")
+    private String role = "USER";
 
     @NotBlank
     @Column(name = "user_name")
@@ -65,6 +75,10 @@ public class User {
         return userId;
     }
 
+    public String getUserTheme(){
+        return userThema;
+    }
+
     public String getUserName() {
         return userName;
     }
@@ -75,6 +89,10 @@ public class User {
 
     public String getMailAddress() {
         return mailAddress;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public boolean getRemindStatus() {
@@ -91,12 +109,20 @@ public class User {
         this.userName = userName;
     }
 
+    public void setUserTheme(String userThema){
+        this.userThema = userThema;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setRemindStatus(boolean remindStatus) {

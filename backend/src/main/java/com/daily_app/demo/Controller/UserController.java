@@ -1,7 +1,7 @@
 // 松原 編集
 package com.daily_app.demo.Controller;
 
-import com.daily_app.demo.Dto.Request.UserCreateRequestDto;
+import com.daily_app.demo.Dto.Request.UserInfoRequestDto;
 import com.daily_app.demo.Dto.RemindSettingDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
@@ -11,6 +11,7 @@ import com.daily_app.demo.config.JwtTokenProvider;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -19,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -31,7 +33,7 @@ public class UserController {
     private UserService userService;
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider tokenProvider;
-
+    
     public UserController(
         UserService userService,
         AuthenticationManager authenticationManager,
@@ -47,7 +49,7 @@ public class UserController {
      * URL: POST /api/create
      */
     @PostMapping("/auth/create")
-    public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserCreateRequestDto requestDto) {
+    public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserInfoRequestDto requestDto) {
 
         System.out.println("--- ユーザー登録 本稼働 ---");
         return userService.createUser(requestDto);
@@ -63,20 +65,13 @@ public class UserController {
         System.out.println("--- ログイン認証 本稼働 ---");
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(requestDto.getMailAddress(), requestDto.getPassword()));
-
-            String token = tokenProvider.generateToken(authentication.getName());
-            System.out.println(token);
-
-            ResponseCookie cookie = ResponseCookie.from("accessToken", token)
-                    .httpOnly(true).secure(false).path("/")
-                    .maxAge(Duration.ofHours(20)).sameSite("Lax").build();
+                new UsernamePasswordAuthenticationToken(requestDto.getMailAddress(), requestDto.getPassword()));
+            ResponseCookie cookie = refleshAccessToken(authentication.getName());
 
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
             return userService.login(requestDto);
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            System.out.println("プリントしてます");
             LoginResponseDto loginResponse = new LoginResponseDto(false, "メールアドレスまたはパスワードが間違っています");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(loginResponse);
         }
@@ -106,15 +101,38 @@ public class UserController {
     @PutMapping("/user/profile")
     public ResponseEntity<Map<String, Object>> updateUserName(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestBody UserCreateRequestDto requestDto) {
+            @RequestBody UserInfoRequestDto requestDto,
+            HttpServletResponse response) {
 
         System.out.println("=== /api/user/profile 到達 ===");
         System.out.println("ログインユーザーID: " + userDetails.getId());
 
-
-        return userService.updateProfile(
+        try {
+            ResponseEntity<Map<String, Object>> profileResponse = userService.updateProfile(
                 userDetails.getUser(),
                 requestDto);
+            System.out.println("updateまで正常");
+            System.out.println(userDetails.getUsername() + userDetails.getPassword());
+            ResponseCookie cookie = refleshAccessToken(userDetails.getUsername());
+            System.out.println("cookieまで正常");
+
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+            return profileResponse;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            Map<String, Object> loginResponse = Map.of("status", "error", "message", "ユーザー情報の更新に失敗しました");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
+        }
+    }
+
+    private ResponseCookie refleshAccessToken(String mailAddress){
+        String token = tokenProvider.generateToken(mailAddress);
+        System.out.println(token);
+
+        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+                .httpOnly(true).secure(false).path("/")
+                .maxAge(Duration.ofHours(20)).sameSite("Lax").build();
+        return cookie;
     }
 
 

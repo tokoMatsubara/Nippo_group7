@@ -22,7 +22,7 @@ export default function Login() {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8080/api/auth/login", {
+            const res = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -47,6 +47,19 @@ export default function Login() {
 
             // localStorage.setItem("user_id", data.userId);
             localStorage.setItem("user_name", data.userName);
+
+
+            // DBから届いたテーマカラーを画面とlocalStorageに適用する
+            if (data.success && data.userTheme) {
+                // Javaから届くのは "blue", "orange" なので末尾に "Theme" を足す
+                const correctTheme = `${data.userTheme}Theme`; 
+                localStorage.setItem("theme", correctTheme);
+                
+                // bodyのクラスを書き換えて画面の色をその場で変える
+                document.body.className = ""; // 一旦クリア
+                document.body.classList.add(correctTheme);
+            }
+
 
             navigate("/dashboard");
 

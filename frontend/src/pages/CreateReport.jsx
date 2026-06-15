@@ -124,72 +124,43 @@ function CreateReport() {
   // 前日の日報を取得する処理
   useEffect(() => {
     const fetchYesterdayGoal = async () => {
-      if (!date) return;
-
-      // 前日の日付を計算
-      const currentDate = new Date(date);
-      const previousDate = new Date(currentDate);
-      previousDate.setDate(currentDate.getDate() - 1);
-      const previousDateStr = toYmd(previousDate);
-
-      // その日の週の範囲を計算
-      const day = previousDate.getDay();
-      const diffToMonday = day === 0 ? -6 : 1 - day;
-      const weekStart = new Date(previousDate);
-      weekStart.setDate(previousDate.getDate() + diffToMonday);
-      const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekStart.getDate() + 6);
-
-      const weekStartStr = toYmd(weekStart);
-      const weekEndStr = toYmd(weekEnd);
 
       try {
         // const userId = localStorage.getItem("user_id");
         const res = await fetch(
-          `${API_BASE}/daily/${weekStartStr}/${weekEndStr}`, {
+          `${API_BASE}/daily/previous-goal`, {
           method: "GET",
           credentials: "include"
         });
 
         if (!res.ok) {
           const error = new Error(`HTTP ${res.status}`);
-          error.status = res.status;   // ← これを足すのが肝
+          error.status = res.status;   
           throw error;
         }
 
         const data = await res.json();
 
-        // 前日の日報を探す
-        const previousDaily = data.days?.find(
-          (d) => d.date === previousDateStr
+        console.log("previous-goal", data);
+
+        setYesterdayGoal(
+          data.goal || "前営業日の日報はありません"
         );
 
-        if (previousDaily) {
-          const tomorrowGoalContent = previousDaily.contents?.find(
-            (c) => c.categoryId === 7
-          );
-          if (tomorrowGoalContent) {
-            setYesterdayGoal(tomorrowGoalContent.content);
-          } else {
-            setYesterdayGoal("前日の日報はありません");
-          }
-        } else {
-          setYesterdayGoal("前日の日報はありません");
-        }
       } catch (err) {
         if (err.status === 401) {
           console.log("401認証エラー");
           alert("認証エラーです。ログインしなおしてください");
           navigate("/login");
         } else {
-          console.error("Failed to fetch yesterday's goal:", err);
-          setYesterdayGoal("前日の日報はありません");
+          console.error(err);
+          setYesterdayGoal("前営業日の日報はありません");
         }
       }
     };
 
-    fetchYesterdayGoal();
-  }, [date]);
+  fetchYesterdayGoal();
+}, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
