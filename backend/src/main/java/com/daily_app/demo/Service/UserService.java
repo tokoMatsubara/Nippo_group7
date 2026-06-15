@@ -53,7 +53,13 @@ public class UserService {
                 hashedPassword, // ※将来的に暗号化推奨
                 requestDto.getMailAddress(),
                 false,
-                java.time.LocalTime.of(9, 0));
+                java.time.LocalTime.of(9, 0)
+            );
+        
+        // 新規登録時に画面からテーマカラーが送られてきていたらEntityにセットする
+        if (requestDto.getUserTheme() != null && !requestDto.getUserTheme().isBlank()) {
+            newUser.setUserTheme(requestDto.getUserTheme());
+        }
 
         // 3. データベースに保存！
         // saveメソッドを実行すると、自動発番されたuserIdが含まれた状態のEntityが返ってきます
@@ -84,7 +90,9 @@ public class UserService {
                 LoginResponseDto response = new LoginResponseDto(
                         true,
                         "ログインに成功しました",
-                        user.getUserName());
+                        user.getUserName(),
+                        user.getUserTheme());
+
                 return ResponseEntity.ok(response);
             }
         }
@@ -98,7 +106,7 @@ public class UserService {
     }
 
     // リマインド設定ロジック=================================================================
-
+    @Transactional
     public ResponseEntity<Map<String, Object>> updateRemindSettings(User user, RemindSettingDto request) {
         System.out.println("ユーザーID: " + user.getUserId() + " のリマインド設定を更新します");
         Map<String, Object> response = new HashMap<>();
@@ -128,6 +136,7 @@ public class UserService {
     }
 
     // ユーザーネーム・メアド・パスワードが画面上で変更できるようにする
+    @Transactional
     public ResponseEntity<Map<String, Object>> updateProfile(User user, UserInfoRequestDto requestDto) {
 
 
@@ -136,7 +145,7 @@ public class UserService {
         System.out.println("userId: " + user.getUserId());
         System.out.println("userName: " + requestDto.getUserName());
         System.out.println("mailAddress: " + requestDto.getMailAddress());
-
+        System.out.println("userTheme: " + requestDto.getUserTheme());
 
         Map<String, Object> response = new HashMap<>();
 
@@ -175,6 +184,11 @@ public class UserService {
 
                 user.setPassword(hashedPassword);
             }
+
+            // Reactから新しいテーマカラーが届いていたらEntityに上書き保存する
+            if (requestDto.getUserTheme() != null && !requestDto.getUserTheme().isBlank()) {
+                user.setUserTheme(requestDto.getUserTheme());
+            }
             
             System.out.println("保存前");
             System.out.println(user.getUserName());
@@ -189,7 +203,7 @@ public class UserService {
 
 
             response.put("status", "success");
-            response.put("message", "ユーザー名を更新しました");
+            response.put("message", "ユーザー情報を更新しました");
 
             return ResponseEntity.ok(response);
 
