@@ -40,17 +40,17 @@
     word-wrap: break-word;
     background-color: #fff;
     background-clip: border-box;
-    
-    
-    border: 2px solid #c2e0f5; 
+
+
+    border: 2px solid #c2e0f5;
     border-radius: 12px;
-    
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     color: #333;
     text-decoration: none;
-    
+
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    
+
     margin-bottom: 30px;
     user-select: none;
     cursor: pointer;
@@ -59,37 +59,60 @@
 }
 
 .weekCard:hover {
-    border-color: var(--primary2); 
-    transform: translateY(-4px); 
+    border-color: var(--primary2);
+    transform: translateY(-4px);
     box-shadow: 0 12px 28px rgba(0, 123, 255, 0.15),
-    inset 0 0 0 2px var(--primary2);
+        inset 0 0 0 2px var(--primary2);
 }
 
 
 .weekContent {
-    flex: 1; 
+    flex: 1;
     margin: 20px;
-    padding-right: 20px; 
+    padding-right: 20px;
 }
 
 .more-detail-tag {
     width: 110px;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #f0f7fd; 
-    border-left: 1px solid #e2f0fc; 
-    gap: 2px; 
-    transition: all 0.3s ease;
+
+    background: #f0f7fd;
+    border-left: 1px solid #e2f0fc;
+
+    gap: 2px;
+    transition: all 0.35s ease;
+
+    position: relative;
+    overflow: hidden;
 }
 
+.more-detail-tag::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+
+    background: var(--primary2);
+    z-index: 0;
+    transition: width 0.35s ease;
+}
+
+.weekCard:hover .more-detail-tag::before {
+    width: 100%;
+}
+
+
 .weekArrow {
-    font-size: 48px; 
-    font-family: "Segoe UI", sans-serif; 
+    font-size: 48px;
+    font-family: "Segoe UI", sans-serif;
     line-height: 1;
-    font-weight: 300; 
-    color: var(--primary2); 
+    font-weight: 300;
+    color: var(--primary2);
     transition: all 0.3s ease;
     display: inline-block;
 }
@@ -102,19 +125,21 @@
     color: var(--primary2);
     opacity: 0.7;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
 }
 
 .weekCard:hover .more-detail-tag {
-    background: var(--primary2); 
+    background: var(--primary2);
 }
 
 .weekCard:hover .weekArrow {
-    color: #ffffff; 
-    transform: scale(1.1) translateX(3px); 
+    color: #ffffff;
+    transform: scale(1.1) translateX(3px);
 }
 
 .weekCard:hover .more-detail-tag::after {
-    color: #ffffff; 
+    color: #ffffff;
     opacity: 1;
 }
 
@@ -208,4 +233,43 @@
     width: 60%;
     height: auto;
     display: block;
+}
+
+.primaryButton {
+    min-width: 160px;
+    height: 52px;
+    color: #fff;
+    padding: 14px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border-radius: 6px;
+    z-index: 0;
+    background: var(--primary2);
+    overflow: hidden;
+    color: #333;
+}
+
+.primaryButton:hover {
+    color: #fff;
+}
+
+.primaryButton:hover:after {
+    width: 100%;
+}
+
+.primaryButton:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    transition: all 0.3s ease;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: var(--primary1);
 }
