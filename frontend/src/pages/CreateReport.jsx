@@ -119,6 +119,7 @@ function CreateReport() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [yesterdayGoal, setYesterdayGoal] = useState("前日の日報はありません");
+  const [error, setError] = useState("");
 
   // 前日の日報を取得する処理
   useEffect(() => {
@@ -207,6 +208,20 @@ function CreateReport() {
 
   const handleSubmit = async () => {
     try {
+      if (
+        !date ||
+        !form.learned ||
+        !form.goodPoint ||
+        !form.goodReason ||
+        !form.issue ||
+        !form.issueReason ||
+        !form.action ||
+        !form.tomorrowGoal ||
+        !form.condition
+      ) {
+        setError("未入力の項目があります");
+        return;
+      }
       setLoading(true);
       const healthText =
         condition.health === "その他"
@@ -238,6 +253,7 @@ function CreateReport() {
           date,
           contents: contentsPayload,
         };
+
 
       const endpoint = editDaily ? "/update" : "/report";
       const method = editDaily ? "PUT" : "POST";
@@ -306,37 +322,35 @@ function CreateReport() {
         </div>
 
         <div className="section-card card">
-          <h3>1. 今日学んだこと</h3>
+          <h3>1. 今日学んだこと<span style={{ color: "red" }}>*</span></h3>
           <textarea name="learned" value={form.learned} onChange={handleChange} rows="5" />
         </div>
         <div className="section-card card">
-          <h3>2. よかった点・できたこと</h3>
+          <h3>2. よかった点・できたこと<span style={{ color: "red" }}>*</span></h3>
           <textarea name="goodPoint" value={form.goodPoint} onChange={handleChange} rows="5" />
         </div>
         <div className="section-card card">
-          <h3>3. その理由</h3>
+          <h3>3. その理由<span style={{ color: "red" }}>*</span></h3>
           <textarea name="goodReason" value={form.goodReason} onChange={handleChange} rows="5" />
         </div>
         <div className="section-card card">
-          <h3>4. 課題・改善点</h3>
+          <h3>4. 課題・改善点<span style={{ color: "red" }}>*</span></h3>
           <textarea name="issue" value={form.issue} onChange={handleChange} rows="5" />
         </div>
         <div className="section-card card">
-          <h3>5. その理由</h3>
+          <h3>5. その理由<span style={{ color: "red" }}>*</span></h3>
           <textarea name="issueReason" value={form.issueReason} onChange={handleChange} rows="5" />
         </div>
         <div className="section-card card">
-          <h3>6. 改善するための行動</h3>
+          <h3>6. 改善するための行動<span style={{ color: "red" }}>*</span></h3>
           <textarea name="action" value={form.action} onChange={handleChange} rows="5" />
         </div>
-        <Section title="7. 明日の目標" name="tomorrowGoal" value={form.tomorrowGoal} onChange={handleChange} />
-
         <div className="section-card card">
-          <h3>8. 体調・気持ち</h3>
-
-          {/* =========================
-      体調
-  ========================= */}
+          <h3>7. 明日の目標<span style={{ color: "red" }}>*</span></h3>
+          <textarea name="action" value={form.tomorrowGoal} onChange={handleChange} rows="5" />
+        </div>
+        <div className="section-card card">
+          <h3>8. 体調・気持ち<span style={{ color: "red" }}>*</span></h3>
           <div className="radio-group">
             <p style={{ width: "100%" }}>体　調</p>
 
@@ -418,6 +432,11 @@ function CreateReport() {
         <Section title="9. コメント" name="comment" value={form.comment} onChange={handleChange} />
 
         <div className="submit-area">
+          {error && (
+            <div style={{ color: "red", marginBottom: "10px" }}>
+              ⚠ {error}
+            </div>
+          )}
           <button className="primaryButton" type="button" onClick={handleSubmit}>
             保存
           </button>
