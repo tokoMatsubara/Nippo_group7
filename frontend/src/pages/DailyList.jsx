@@ -29,13 +29,13 @@ export default function DailyList() {
     // BackendへのAPI
     const fetchData = async () => {
         // const userId = localStorage.getItem("user_id");
-        try{
+        try {
             const res = await fetch(`http://localhost:8080/api/daily/${params.startDate}/${params.endDate}`, {
                 method: "GET",
                 credentials: "include"
             });
 
-            if(!res.ok){
+            if (!res.ok) {
                 const error = new Error(`HTTP ${res.status}`);
                 error.status = res.status;   // ← これを足すのが肝
                 throw error;
@@ -44,12 +44,12 @@ export default function DailyList() {
             const data = await res.json();
             setWeekData(data);
             console.log(data);
-        }catch(err){
-            if(err.status === 401){
+        } catch (err) {
+            if (err.status === 401) {
                 console.error("401認証エラー");
                 alert("認証エラーです。ログインしなおしてください");
                 navigate("/login");
-            }else{
+            } else {
                 alert("日報取得に失敗しました");
                 console.error("Failed to get daily list");
             }
@@ -94,16 +94,45 @@ export default function DailyList() {
             alert('削除しました');
             await fetchData();
         } catch (err) {
-            if(err.status === 401){
+            if (err.status === 401) {
                 console.error("401認証エラー");
                 alert("認証エラーです。ログインしなおしてください");
                 navigate("/login");
-            }else{
+            } else {
                 console.error("Failed to delete daily report");
                 alert('削除に失敗しました');
             }
         }
     };
+
+
+
+
+    // クリップボードへのコピー処理
+    const handleCopy = async () => {  // ← ここに async を追加！
+        if (!selectedDaily) return;
+
+        const sortedContents = selectedDaily.contents
+            .slice()
+            .sort((a, b) => a.categoryId - b.categoryId);
+
+        const textToCopy = sortedContents
+            .map((item) => `【${item.categoryName}】\n${item.content}`)
+            .join("\n\n");
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            alert("日報をクリップボードにコピーしました！");
+        } catch (err) {
+            console.error("Failed to copy text: ", err);
+            alert("コピーに失敗しました");
+        }
+    };
+
+
+
+
+
 
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
@@ -240,6 +269,10 @@ export default function DailyList() {
 
                             <button className="dangerButton" onClick={handleDelete}>
                                 削除
+                            </button>
+
+                            <button className="secondaryButton" onClick={handleCopy}>
+                                コピー
                             </button>
                         </div>
                     </>
