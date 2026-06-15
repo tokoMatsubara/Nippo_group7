@@ -135,7 +135,8 @@ public class UserService {
 
     // ユーザーネーム・メアド・パスワードが画面上で変更できるようにする
     @Transactional
-    public ResponseEntity<Map<String, Object>> updateProfile(User user, UserInfoRequestDto requestDto) {
+    public ResponseEntity<Map<String, Object>> updateProfile(User user, UserInfoRequestDto requestDto)
+        throws Exception {
 
         // ちゃんとデータ渡せてるか見るための
         System.out.println("=== updateProfile開始 ===");
@@ -146,74 +147,64 @@ public class UserService {
 
         Map<String, Object> response = new HashMap<>();
 
-        try {
 
-            // メールアドレス重複チェック
-            if (requestDto.getMailAddress() != null &&
-                    !requestDto.getMailAddress().isBlank()) {
+        // メールアドレス重複チェック
+        if (requestDto.getMailAddress() != null &&
+                !requestDto.getMailAddress().isBlank()) {
 
-                Optional<User> existingUser = userRepository.findByMailAddress(requestDto.getMailAddress());
+            Optional<User> existingUser = userRepository.findByMailAddress(requestDto.getMailAddress());
 
-                if (existingUser.isPresent() &&
-                        !existingUser.get().getUserId().equals(user.getUserId())) {
+            if (existingUser.isPresent() &&
+                    !existingUser.get().getUserId().equals(user.getUserId())) {
 
-                    response.put("status", "error");
-                    response.put("message", "このメールアドレスは既に使用されています。");
+                response.put("status", "error");
+                response.put("message", "このメールアドレスは既に使用されています。");
 
-                    return ResponseEntity
-                            .status(HttpStatus.BAD_REQUEST)
-                            .body(response);
-                }
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(response);
             }
-
-
-
-            if (requestDto.getMailAddress() != null && !requestDto.getUserName().isBlank()) {
-                user.setMailAddress(requestDto.getMailAddress());
-            }
-
-            // ユーザー名が届いている（nullでもなく空文字でもない）ときだけ上書きする
-            if (requestDto.getUserName() != null && !requestDto.getUserName().isBlank()) {
-                user.setUserName(requestDto.getUserName());
-            }
-
-            // メールアドレスが届いているときだけ上書きする（一応 .isBlank() も追加して安全に）
-            if (requestDto.getMailAddress() != null && !requestDto.getMailAddress().isBlank()) {
-                user.setMailAddress(requestDto.getMailAddress());
-            }
-
-            if (requestDto.getPassword() != null &&
-                    !requestDto.getPassword().isBlank()) {
-
-                String hashedPassword = passwordEncoder.encode(requestDto.getPassword());
-
-                user.setPassword(hashedPassword);
-            }
-
-            // Reactから新しいテーマカラーが届いていたらEntityに上書き保存する
-            if (requestDto.getUserTheme() != null && !requestDto.getUserTheme().isBlank()) {
-                user.setUserTheme(requestDto.getUserTheme());
-            }
-
-            System.out.println("保存前");
-
-            userRepository.save(user);
-
-            System.out.println("保存成功！");
-
-            response.put("status", "success");
-            response.put("message", "ユーザー情報を更新しました");
-
-            return ResponseEntity.ok(response);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-            response.put("status", "error");
-            response.put("message", "ユーザー名の更新に失敗しました");
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+
+
+
+        if (requestDto.getMailAddress() != null && !requestDto.getUserName().isBlank()) {
+            user.setMailAddress(requestDto.getMailAddress());
+        }
+
+        // ユーザー名が届いている（nullでもなく空文字でもない）ときだけ上書きする
+        if (requestDto.getUserName() != null && !requestDto.getUserName().isBlank()) {
+            user.setUserName(requestDto.getUserName());
+        }
+
+        // メールアドレスが届いているときだけ上書きする（一応 .isBlank() も追加して安全に）
+        if (requestDto.getMailAddress() != null && !requestDto.getMailAddress().isBlank()) {
+            user.setMailAddress(requestDto.getMailAddress());
+        }
+
+        if (requestDto.getPassword() != null &&
+                !requestDto.getPassword().isBlank()) {
+
+            String hashedPassword = passwordEncoder.encode(requestDto.getPassword());
+
+            user.setPassword(hashedPassword);
+        }
+
+        // Reactから新しいテーマカラーが届いていたらEntityに上書き保存する
+        if (requestDto.getUserTheme() != null && !requestDto.getUserTheme().isBlank()) {
+            user.setUserTheme(requestDto.getUserTheme());
+        }
+
+        System.out.println("保存前");
+
+        userRepository.save(user);
+
+        System.out.println("保存成功！");
+
+        response.put("status", "success");
+        response.put("message", "ユーザー情報を更新しました");
+
+        return ResponseEntity.ok(response);
     }
 
 }
