@@ -137,7 +137,7 @@ function CreateReport() {
           credentials: "include"
         });
 
-        if(!res.ok){
+        if (!res.ok) {
           const error = new Error(`HTTP ${res.status}`);
           error.status = res.status;   // ← これを足すのが肝
           throw error;
@@ -163,11 +163,11 @@ function CreateReport() {
           setYesterdayGoal("前日の日報はありません");
         }
       } catch (err) {
-        if(err.status === 401){
+        if (err.status === 401) {
           console.log("401認証エラー");
           alert("認証エラーです。ログインしなおしてください");
           navigate("/login");
-        }else{
+        } else {
           console.error("Failed to fetch yesterday's goal:", err);
           setYesterdayGoal("前日の日報はありません");
         }
@@ -223,7 +223,7 @@ function CreateReport() {
         credentials: "include"
       });
 
-      if(!res.ok){
+      if (!res.ok) {
         const error = new Error(`HTTP ${res.status}`);
         error.status = res.status;   // ← これを足すのが肝
         throw error;
@@ -235,11 +235,11 @@ function CreateReport() {
       navigate(-1);
 
     } catch (err) {
-      if(err.status === 401){
+      if (err.status === 401) {
         console.log("401認証エラー");
         alert("認証エラーです。ログインしなおしてください");
         navigate("/login");
-      }else{
+      } else {
         console.error("Failed to create report:", err);
         alert(editDaily ? "更新に失敗しました" : "保存に失敗しました");
       }
