@@ -235,7 +235,7 @@
     display: block;
 }
 
-.primaryButton {
+.dashboard-createButton {
     min-width: 160px;
     height: 52px;
     color: #fff;
@@ -254,15 +254,15 @@
     color: #333;
 }
 
-.primaryButton:hover {
+.dashboard-createButton:hover {
     color: #fff;
 }
 
-.primaryButton:hover:after {
+.dashboard-createButton:hover:after {
     width: 100%;
 }
 
-.primaryButton:after {
+.dashboard-createButton:after {
     content: "";
     position: absolute;
     z-index: -1;
