@@ -22,12 +22,19 @@
 .primaryButton {
     min-width: 130px;
     height: 40px;
-    padding: 10px 14px;
+    padding: 0 14px;
+
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
     outline: none;
     border-radius: 6px;
     z-index: 0;
@@ -78,20 +85,26 @@
 .backButton {
     min-width: 130px;
     height: 40px;
-    color: #fff;
-    padding: 10px 14px;
+    padding: 0 14px;
+
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     outline: none;
     border-radius: 6px;
     z-index: 0;
-    background: #9e9d9d;
     overflow: hidden;
+
+    background: #9e9d9d;
     color: #333;
-    margin-left: 50px;
+
+    margin-left: 20px;
 }
 
 .backButton:hover {
