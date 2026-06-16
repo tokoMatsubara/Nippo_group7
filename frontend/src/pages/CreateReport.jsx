@@ -135,7 +135,7 @@ function CreateReport() {
 
         if (!res.ok) {
           const error = new Error(`HTTP ${res.status}`);
-          error.status = res.status;   
+          error.status = res.status;
           throw error;
         }
 
@@ -159,8 +159,8 @@ function CreateReport() {
       }
     };
 
-  fetchYesterdayGoal();
-}, [date]);
+    fetchYesterdayGoal();
+  }, [date]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -187,7 +187,7 @@ function CreateReport() {
         !form.issue ||
         !form.issueReason ||
         !form.action ||
-        !form.tomorrowGoal 
+        !form.tomorrowGoal
       ) {
         setError("未入力の項目があります");
         return;
@@ -287,7 +287,7 @@ function CreateReport() {
         </div>
 
         <div className="goal-card card">
-          <h3>昨日立てた今日の目標</h3>
+          <h3>前日立てた今日の目標</h3>
           <p>{yesterdayGoal}</p>
         </div>
 
