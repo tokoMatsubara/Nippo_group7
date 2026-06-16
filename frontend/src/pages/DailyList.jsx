@@ -255,23 +255,26 @@ export default function DailyList() {
 
                         {/* 共通ボタン化 */}
                         <div className="actions">
-                            <button
-                                className="primaryButton"
-                                onClick={() => navigate("/create-report", {
-                                    state: {
-                                        daily: selectedDaily,
-                                        returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
-                                    },
-                                })}
-                            >
-                                編集
-                            </button>
+                            <div className="centeractions">
+                                <button
+                                    className="primaryButton"
+                                    onClick={() => navigate("/create-report", {
+                                        state: {
+                                            daily: selectedDaily,
+                                            returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
+                                        },
+                                    })}
+                                >
+                                    編集
+                                </button>
 
-                            <button className="dangerButton" onClick={handleDelete}>
-                                削除
-                            </button>
+                                <button className="dangerButton" onClick={handleDelete}>
+                                    削除
+                                </button>
+                            </div>
 
-                            <button className="secondaryButton" onClick={handleCopy}>
+
+                            <button className="backButton" onClick={handleCopy}>
                                 コピー
                             </button>
                         </div>
