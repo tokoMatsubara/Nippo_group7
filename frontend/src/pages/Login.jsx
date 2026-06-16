@@ -1,19 +1,28 @@
 // ログイン画面
-
+import logoIcon from "../assets/logo.png";
 import "../styles/Login.css";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const params = useParams();
+
+    useEffect(() => {
+
+        const registeredEmail = localStorage.getItem("email");
+        if(registeredEmail !== null){
+            setEmail(registeredEmail);
+        }
+    }, [])
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await fetch("http://localhost:8080/api/auth/login", {
+            const res = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -32,11 +41,25 @@ export default function Login() {
             }
 
             const data = await res.json();
+            localStorage.setItem("email", email);
 
             console.log("ログイン成功:", data);
 
             // localStorage.setItem("user_id", data.userId);
             localStorage.setItem("user_name", data.userName);
+
+
+            // DBから届いたテーマカラーを画面とlocalStorageに適用する
+            if (data.success && data.userTheme) {
+                // Javaから届くのは "blue", "orange" なので末尾に "Theme" を足す
+                const correctTheme = `${data.userTheme}Theme`; 
+                localStorage.setItem("theme", correctTheme);
+                
+                // bodyのクラスを書き換えて画面の色をその場で変える
+                document.body.className = ""; // 一旦クリア
+                document.body.classList.add(correctTheme);
+            }
+
 
             navigate("/dashboard");
 
@@ -50,7 +73,7 @@ export default function Login() {
 
             <div className="loginBox card">
 
-                <h1 className="loginTitle">日報ツール</h1>
+                <img src={logoIcon} alt="logo" className="loginIcon" />
 
                 <form className="loginForm" onSubmit={handleLogin}>
 

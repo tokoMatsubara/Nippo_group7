@@ -3,6 +3,8 @@ import blueBg from "../assets/blue.png";
 import orangeBg from "../assets/orange.png";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logoIcon from "../assets/nippo_dash.png";
+import cryIcon from "../assets/cry_nippo.png";
 
 export default function Dashboard() {
 
@@ -29,7 +31,7 @@ export default function Dashboard() {
     }, []);
 
     const fetchWeeklyData = async () => {
-        try{
+        try {
             setLoading(true);
             const res = await fetch(
                 `http://localhost:8080/api/weekly_list`, {
@@ -52,18 +54,18 @@ export default function Dashboard() {
             );
             setWeeks(uniqueWeeks);
 
-        }catch(err){
+        } catch (err) {
             console.error(err);
-            if(err.status === 401){
+            if (err.status === 401) {
                 console.error("401認証エラー");
                 alert("認証エラーです。ログインしなおしてください");
                 navigate("/login");
-            }else{
+            } else {
                 console.error("Failed to data");
                 alert('データの取得に失敗しました');
             }
 
-        }finally{
+        } finally {
             setLoading(false);
         }
     }
@@ -91,11 +93,11 @@ export default function Dashboard() {
 
         } catch (err) {
             console.error(err);
-            if(err.status === 401){
+            if (err.status === 401) {
                 console.error("401認証エラー");
                 alert("認証エラーです。ログインしなおしてください");
                 navigate("/login");
-            }else{
+            } else {
                 console.error("Failed to data");
                 alert('データの取得に失敗しました');
             }
@@ -128,43 +130,59 @@ export default function Dashboard() {
         <>
             {/* ヘッダー */}
             <div className="header">
-
-                <h1 className="title">ダッシュボード</h1>
-
+                <div className="headerTitle">
+                    <h1 className="title">ダッシュボード</h1>
+                    <div className="logoIcon-wrapper">
+                        <img src={logoIcon} alt="logo" className="dash-logoIcon" />
+                    </div>
+                </div>
             </div>
 
-            {/* リマインド */}
             <div className="body">
+                {weeks.length === 0 ? (
+                    <div className="cry">
+                        <img src={cryIcon} alt="logo" className="cryIcon" />
+                        <button onClick={() => navigate("/create-report", {
+                            state: {
+                                date: new Date().toISOString().split("T")[0],
+                                returnPath: `/dashboard`,
+                            },
+                        })} className="dashboard-createButton">日報作成</button>
 
-                {/* 週一覧 */}
-                <section className="section">
+                    </div>
+                ) : (
+                    <section className="section">
 
-                    <h2 className="weekTitle">週一覧</h2>
+                        <h2 className="weekList">Weekly List</h2>
 
-                    {weeks.map((week) => (
-                        <div
-                            key={week.startDate}
-                            className="button"
-                            onClick={() => handleWeekClick(week)}
-                        >
-                            <div className="weekContent">
+                        {weeks.map((week) => (
+                            <div
+                                key={week.startDate}
+                                className="weekCard"
+                                onClick={() => handleWeekClick(week)}
+                            >
+                                <div className="weekContent">
 
-                                <div className="weekTitle">
-                                    {formatDate(week.startDate)} ~ {formatDate(week.endDate)}
+                                    <div className="weekTitle">
+                                        {formatDate(week.startDate)} ~ {formatDate(week.endDate)}
+                                    </div>
+                                    <h4 className="summaryTitle">Weekly Summary</h4>
+                                    <div className="weekSummary">
+                                        {week.content}
+                                    </div>
                                 </div>
-                                <h4 className="summaryTitle">週次要約</h4>
-                                <div className="weekSummary">
-                                    {week.content}
+                                <div className="more-detail-tag">
+                                    <span className="weekArrow">›</span>
                                 </div>
-                            </div>
-                            <div className="weekArrow">
-                                ›
-                            </div>
 
-                        </div>
-                    ))}
-                </section>
-            </div>
+                            </div>
+                        ))}
+                    </section>
+                )
+                }
+
+
+            </div >
 
         </>
     );

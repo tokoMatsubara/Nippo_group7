@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
+
 const themes = [
     "blueTheme",
     "orangeTheme",
@@ -9,18 +10,42 @@ const themes = [
 
 export default function ThemeToggle() {
     const [theme, setTheme] = useState(() => {
-        return localStorage.getItem("theme") || "blueTheme";
+        return localStorage.getItem("theme");
     });
 
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
 
     // UI操作だけ（副作用削除）
-    const changeTheme = (t) => {
+    const changeTheme = async (t) => {
         setTheme(t);
         localStorage.setItem("theme", t);
         document.body.classList.remove(...themes);
         document.body.classList.add(t);
+
+        // バックエンドのDBにも保存するリクエスト
+        try {
+            const response = await fetch("/api/user/profile", {
+                
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                }, 
+                body: JSON.stringify({user_theme: t.replace("Theme", "").toLowerCase()}),
+                credentials: "include"
+            });
+
+            if (!response.ok) {
+                throw new Error("サーバーエラーが発生しました");
+            }
+            
+            const data = await response.json();
+            console.log("DB更新成功:", data.message);
+        } catch (error) {
+            console.error("テーマのDB更新に失敗しました:", error);
+        }
+      
+
     };
 
     useEffect(() => {

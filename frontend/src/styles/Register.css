@@ -91,6 +91,8 @@
     outline: none;
     background: white;
     color: black;
+    font-size: 16px;
+
 }
 
 .registerInput:focus {

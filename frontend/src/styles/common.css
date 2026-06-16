@@ -18,33 +18,42 @@
     /* background-color: var(--primary4); */
 }
 
-/* 共通ボタン（青統一） */
+/* ===== 共通ボタン ===== */
 .primaryButton {
     min-width: 130px;
     height: 40px;
-    color: #fff;
-    padding: 10px 14px;
+    padding: 0 14px;
+
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
     outline: none;
     border-radius: 6px;
     z-index: 0;
-    background: var(--primary2);
     overflow: hidden;
+
+    background: var(--primary2);
     color: #333;
 }
 
-.primaryButton:hover {
+/* ===== hoverアニメーション（通常時のみ） ===== */
+.primaryButton:not(.saved):hover {
     color: #fff;
 }
 
-.primaryButton:hover:after {
+.primaryButton:not(.saved):hover:after {
     width: 100%;
 }
 
+/* ===== 背景スライド用疑似要素 ===== */
 .primaryButton:after {
     content: "";
     position: absolute;
@@ -57,25 +66,45 @@
     background: var(--primary1);
 }
 
+/* ===== 保存済み状態 ===== */
+.primaryButton.saved {
+    background-color: #9aa0a6;
+    color: #fff;
+    opacity: 0.8;
+
+    cursor: default;
+}
+
+/* saved時はアニメーション完全停止 */
+.primaryButton.saved:after {
+    width: 0;
+}
+
 /* 戻るボタン（統一） */
 
 .backButton {
     min-width: 130px;
     height: 40px;
-    color: #fff;
-    padding: 10px 14px;
+    padding: 0 14px;
+
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
     outline: none;
     border-radius: 6px;
     z-index: 0;
-    background: #9e9d9d;
     overflow: hidden;
+
+    background: #9e9d9d;
     color: #333;
-    margin-left: 50px;
+
+    margin-left: 20px;
 }
 
 .backButton:hover {
@@ -197,6 +226,11 @@
     z-index: 1;
 }
 
+.headerTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
 body {
     background: linear-gradient(180deg,
@@ -280,6 +314,7 @@ body {
     margin-bottom: 30px;
     padding: 16px;
     user-select: none;
+    cursor: pointer;
 }
 
 .button-image {
@@ -305,4 +340,10 @@ body {
 .button:hover {
     box-shadow: 0px 30px 30px #999;
     transform: translateY(-2px);
+}
+
+.logoIcon {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
 }

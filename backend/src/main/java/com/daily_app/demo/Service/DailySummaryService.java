@@ -9,7 +9,6 @@ import com.daily_app.demo.Repository.DailySummaryRepository;
 
 import jakarta.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -20,15 +19,19 @@ import java.util.stream.Collectors;
 @Service
 public class DailySummaryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final CallLlmService callLlmService;
+    private final DailySummaryRepository dailySummaryRepository;
 
-    // 1. CallLlmServiceを利用するためにフィールドを定義
-    @Autowired
-    private CallLlmService callLlmService;
+    public DailySummaryService(
+        CategoryRepository categoryRepository,
+        DailySummaryRepository dailySummaryRepository,
+        CallLlmService callLlmService){
 
-    @Autowired
-    private DailySummaryRepository dailySummaryRepository;
+        this.categoryRepository = categoryRepository;
+        this.dailySummaryRepository = dailySummaryRepository;
+        this.callLlmService = callLlmService;
+    }
 
     /**
      * ReportRequestDtoを入力として受け取り、LLM用の要約を生成して返すメソッド
@@ -93,9 +96,20 @@ public class DailySummaryService {
                 .collect(Collectors.joining("\n・", "・", ""));
 
         // 3. LLMに送るためのプロンプト（命令文）を組み立てる
-        String prompt = "以下の日報内容を、簡潔に3行程度で要約してください。\n日報の要約内容以外を絶対に出力しないでください。\n絵文字を出力しないでください\n\n"
-                      + "[日報内容]\n" 
-                      + combinedContent;
+        String prompt = """
+                以下は一日分の日報です。
+                この内容を120文字以内、簡潔に3行程度で簡潔に要約してください。
+
+                ### 日報データ
+                %s
+
+                ### 出力ルール
+                ・日本語
+                ・簡潔
+                ・箇条書き禁止
+                ・絵文字禁止
+                ・日報要約の内容以外のコミュニケーション出力禁止
+                """.formatted(combinedContent);
         return prompt;
     }
 }

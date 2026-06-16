@@ -4,7 +4,6 @@ package com.daily_app.demo.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +17,13 @@ import com.daily_app.demo.Dto.Response.RemindResponseDto;
 @Service
 public class RemindService {
 
-    @Autowired
-    private RemindRepository remindRepository;
+    private final RemindRepository remindRepository;
+    private final RemindMessageGenerator remindMessageGenerator;
 
-    @Autowired
-    private RemindMessageGenerator remindMessageGenerator;
+    public RemindService(RemindRepository remindRepository, RemindMessageGenerator remindMessageGenerator){
+        this.remindRepository = remindRepository;
+        this.remindMessageGenerator = remindMessageGenerator;
+    }
 
     /**
      * 該当するユーザー全員分、リマインド保管箱にデータを詰めてクレーンで保存する

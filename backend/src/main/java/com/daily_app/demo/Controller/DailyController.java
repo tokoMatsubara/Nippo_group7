@@ -1,12 +1,13 @@
 package com.daily_app.demo.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
 import com.daily_app.demo.Dto.Request.ReportUpdateRequestDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
+import com.daily_app.demo.Dto.Response.PreviousGoalResponseDto;
 import com.daily_app.demo.Dto.Response.WeeklyListResponseDto;
 import com.daily_app.demo.Service.DailyCrudService;
 // import com.daily_app.demo.Service.DailySummaryService;
@@ -19,11 +20,11 @@ import java.util.Map;
 @RequestMapping("/api")
 public class DailyController {
 
-    @Autowired
-    private DailyCrudService dailyCrud;
+    private final DailyCrudService dailyCrud;
 
-    // @Autowired
-    // private DailySummaryService dailySummaryService;
+    public DailyController(DailyCrudService dailyCrudService) {
+        this.dailyCrud = dailyCrudService;
+    }
 
     @GetMapping("/weekly_list")
     public WeeklyListResponseDto getWeeklyList(@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -39,29 +40,29 @@ public class DailyController {
     }
 
     @PostMapping("/report")
-    public Map<String, String> createReport(
-        @AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ReportRequestDto request) {
+    public ResponseEntity<Map<String, String>> createReport(
+            @AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ReportRequestDto request) {
         return dailyCrud.reportDaily(userDetails.getUser(), request);
     }
 
     @PutMapping("/update")
     public Map<String, String> updateReport(
-        @AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ReportUpdateRequestDto request) {
+            @AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody ReportUpdateRequestDto request) {
         return dailyCrud.updateDaily(userDetails.getUser(), request);
     }
 
     @DeleteMapping("/delete/{daily_id}")
     public Map<String, String> deleteReport(
-        @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Integer daily_id) {
+            @AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Integer daily_id) {
         return dailyCrud.deleteDaily(userDetails.getUser(), daily_id);
     }
 
-    // @PostMapping("/summary")
-    // public Map<String, String> generateSummary(@RequestBody ReportRequestDto
-    // request) {
-    // String summary = dailySummaryService.generateSummary(request);
-    // // 他のメソッドに合わせて Map<String, String>（JSON形式）で返却します
-    // return Collections.singletonMap("summary", summary);
-    // }
+    @GetMapping("/daily/previous-goal")
+    public PreviousGoalResponseDto getPreviousGoal1(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        return dailyCrud.previousGoal(
+                userDetails.getUser());
+    }
 
 }
