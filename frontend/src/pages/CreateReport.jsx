@@ -128,7 +128,7 @@ function CreateReport() {
       try {
         // const userId = localStorage.getItem("user_id");
         const res = await fetch(
-          `${API_BASE}/daily/previous-goal`, {
+          `${API_BASE}/daily/previous-goal/${date}`, {
           method: "GET",
           credentials: "include"
         });
@@ -160,7 +160,7 @@ function CreateReport() {
     };
 
   fetchYesterdayGoal();
-}, []);
+}, [date]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

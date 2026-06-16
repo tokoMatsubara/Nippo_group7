@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import com.daily_app.demo.Dto.Request.PreviousGoalRequestDto;
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
 import com.daily_app.demo.Dto.Request.ReportUpdateRequestDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;
@@ -57,12 +58,14 @@ public class DailyController {
         return dailyCrud.deleteDaily(userDetails.getUser(), daily_id);
     }
 
-    @GetMapping("/daily/previous-goal")
+    @GetMapping("/daily/previous-goal/{targetDate}")
     public PreviousGoalResponseDto getPreviousGoal1(
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+            @AuthenticationPrincipal CustomUserDetails userDetails, 
+            @PathVariable LocalDate targetDate) {
+        System.out.println("previous-goalAPIに到達");
 
         return dailyCrud.previousGoal(
-                userDetails.getUser());
+                userDetails.getUser(), targetDate);
     }
 
 }
