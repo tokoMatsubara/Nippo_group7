@@ -135,7 +135,7 @@ public class UserService {
 
     // ユーザーネーム・メアド・パスワードが画面上で変更できるようにする
     @Transactional
-    public ResponseEntity<Map<String, Object>> updateProfile(User user, UserInfoRequestDto requestDto)
+    public ResponseEntity<LoginResponseDto> updateProfile(User user, UserInfoRequestDto requestDto)
         throws Exception {
 
         // ちゃんとデータ渡せてるか見るための
@@ -145,7 +145,7 @@ public class UserService {
         System.out.println("mailAddress: " + requestDto.getMailAddress());
         System.out.println("userTheme: " + requestDto.getUserTheme());
 
-        Map<String, Object> response = new HashMap<>();
+        LoginResponseDto response = new LoginResponseDto();
 
 
         // メールアドレス重複チェック
@@ -157,8 +157,8 @@ public class UserService {
             if (existingUser.isPresent() &&
                     !existingUser.get().getUserId().equals(user.getUserId())) {
 
-                response.put("status", "error");
-                response.put("message", "このメールアドレスは既に使用されています。");
+                response.setSuccess(false);
+                response.setMessage("このメールアドレスは既に使用されています。");
 
                 return ResponseEntity
                         .status(HttpStatus.BAD_REQUEST)
@@ -201,8 +201,10 @@ public class UserService {
 
         System.out.println("保存成功！");
 
-        response.put("status", "success");
-        response.put("message", "ユーザー情報を更新しました");
+        response.setSuccess(true);
+        response.setMessage("ユーザー情報を更新しました");
+        response.setUserName(user.getUserName());
+        response.setUserTheme(user.getUserTheme());
 
         return ResponseEntity.ok(response);
     }

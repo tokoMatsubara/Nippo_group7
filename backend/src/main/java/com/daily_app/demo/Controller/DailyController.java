@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import com.daily_app.demo.Dto.Request.PreviousGoalRequestDto;
 import com.daily_app.demo.Dto.Request.ReportRequestDto;
 import com.daily_app.demo.Dto.Request.ReportUpdateRequestDto;
 import com.daily_app.demo.Dto.Response.DailyResponseDto;

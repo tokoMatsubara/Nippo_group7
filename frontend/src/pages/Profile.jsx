@@ -54,11 +54,11 @@ export default function Profile() {
 
             console.log(data);
 
-            if (data.status === "success") {
+            if (data.success) {
 
                 localStorage.setItem(
                     "user_name",
-                    userName
+                    data.userName
                 );
 
                 setIsSaved(true);
