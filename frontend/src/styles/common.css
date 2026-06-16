@@ -168,6 +168,51 @@
     background: #c56060;
 }
 
+.copyButton {
+    min-width: 130px;
+    height: 40px;
+    padding: 0 14px;
+
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    outline: none;
+    border-radius: 6px;
+    z-index: 0;
+    overflow: hidden;
+
+    background: #9e9d9d;
+    color: #333;
+
+    margin-left: auto;
+}
+
+.copyButton:hover {
+    color: #fff;
+}
+
+.copyButton:hover:after {
+    width: 100%;
+}
+
+.copyButton:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    transition: all 0.3s ease;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: #8b909a;
+}
+
 /* 各画面のタイトル用 */
 .header {
     width: 100%;
