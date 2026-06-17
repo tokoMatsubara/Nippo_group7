@@ -153,8 +153,6 @@ export default function Dashboard() {
                 ) : (
                     <section className="section">
 
-                        <h2 className="weekList">Weekly List</h2>
-
                         {weeks.map((week) => (
                             <div
                                 key={week.startDate}
