@@ -11,75 +11,165 @@ export default function Profile() {
     const [mailAddress, setMailAddress] = useState(
         localStorage.getItem("email") || ""
     );
-    const [password, setPassword] = useState("");
 
+    // パスワード関連
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [isSaved, setIsSaved] = useState(false);
+    // ✔ 独立編集モード
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [isEditingEmail, setIsEditingEmail] = useState(false);
+    const [isEditingPassword, setIsEditingPassword] = useState(false);
 
-    const handleSave = async () => {
 
-        if (password !== confirmPassword) {
-            alert("パスワードが一致しません");
-            return;
-        }
-
-        console.log("保存ボタン押下");
-
-        console.log({
-            user_name: userName,
-            mail_address: mailAddress,
-            password: password
-        });
-
+    const handleUsernameUpdate = async () => {
         try {
-
             const response = await fetch(
-                "http://localhost:8080/api/user/profile",
+                `http://localhost:8080/api/user/username/${userName}`,
                 {
                     method: "PUT",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        user_name: userName,
-                        mail_address: mailAddress,
-                        password: password
-                    })
+                    credentials: "include"
                 }
             );
 
+            if(!response.ok){
+                const error = new Error(`HTTP ${response.status}`);
+                error.status = response.status;
+                throw error;
+            }
+
             const data = await response.json();
 
-            console.log(data);
+            if (data.success) {
 
-            if (data.status === "success") {
-
-                localStorage.setItem(
-                    "user_name",
-                    userName
-                );
-
-                setIsSaved(true);
-
-                // パスワード欄だけリセット
-                setPassword("");
-                setConfirmPassword("");
+                localStorage.setItem("user_name", userName);
 
                 alert("プロフィールを更新しました");
+
+                // ✔ 各編集モードをリセット
+                setIsEditingName(false);
+
             } else {
-
                 alert(data.message);
-
             }
 
         } catch (error) {
             console.error(error);
-            alert("通信エラーが発生しました。時間をおいて再度お試しください。");
-
+            if(error.status === 401){
+                console.log("401認証エラー");
+                alert("認証エラーです。ログインしなおしてください");
+                navigate("/login");
+            }else{
+                alert("ユーザーネームの変更に失敗しました");
+            }
         }
-    };
+    }
+
+    const handleEmailUpdate = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/user/email/${mailAddress}`,
+                {
+                    method: "PUT",
+                    credentials: "include"
+                }
+            );
+
+            if(!response.ok){
+                const error = new Error(`HTTP ${response.status}`);
+                error.status = response.status;
+                throw error;
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+
+                localStorage.setItem("email", mailAddress);
+
+                alert("プロフィールを更新しました");
+
+                // ✔ 各編集モードをリセット
+                setIsEditingEmail(false);
+
+                setCurrentPassword("");
+                setNewPassword("");
+                setConfirmPassword("");
+
+            } else {
+                alert(data.message);
+            }
+
+        } catch (error) {
+            console.error(error);
+            if(error.status === 401){
+                console.log("401認証エラー");
+                alert("認証エラーです。ログインしなおしてください");
+                navigate("/login");
+            }else{
+                alert("メールアドレスの変更に失敗しました");
+            }
+        }
+    }
+
+    const handlePasswordUpdate = async () => {
+        // パスワードチェック（入力されている場合のみ）
+        if (currentPassword || newPassword || confirmPassword) {
+
+            if (!currentPassword) {
+                alert("現在のパスワードを入力してください");
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert("新しいパスワードが一致しません");
+                return;
+            }
+        }
+
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/user/password/${currentPassword}/${newPassword}`,
+                {
+                    method: "PUT",
+                    credentials: "include"
+                }
+            );
+
+            if(!response.ok){
+                const error = new Error(`HTTP ${response.status}`);
+                error.status = response.status;
+                throw error;
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+
+                localStorage.setItem("email", mailAddress);
+
+                alert("プロフィールを更新しました");
+
+                // ✔ 各編集モードをリセット
+                setIsEditingPassword(false);
+
+            } else {
+                alert(data.message);
+            }
+
+        } catch (error) {
+            console.error(error);
+            if(error.status === 401){
+                console.log("401認証エラー");
+                alert("認証エラーです。ログインしなおしてください");
+                navigate("/login");
+            }else{
+                alert("パスワードの変更に失敗しました");
+            }
+        }
+    }
+
 
     return (
         <div className="container">
@@ -91,82 +181,124 @@ export default function Profile() {
                 </div>
             </div>
 
+            {/* =========================
+                ユーザー名・メール
+            ========================= */}
             <div className="profileBox profilecard">
 
-                <form
-                    className="profileForm"
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        handleSave();
-                    }}
-                >
-
-                    <div>
-                        <label>ユーザー名</label>
-
+                {/* ユーザー名 */}
+                <div>
+                    <label>ユーザー名</label>
+                    <div className="inputRow">
                         <input
                             className="profileInput"
-                            placeholder="ユーザー名"
                             value={userName}
-                            onChange={(e) => {
-                                setUserName(e.target.value);
-                                setIsSaved(false);
-                            }}
+                            onChange={(e) => setUserName(e.target.value)}
+                            disabled={!isEditingName}
                         />
-                    </div>
 
-                    <div>
-                        <label>メールアドレス</label>
+                        <button
+                            type="button"
+                            className="editButton"
+                            onClick={() => {
+                                if (isEditingName) {
+                                    handleUsernameUpdate();
+                                }
+                                setIsEditingName(!isEditingName);
+                            }}
+                        >
+                            {isEditingName ? "保存" : "編集"}
+                        </button>
+                    </div>
+                </div>
+
+                {/* メールアドレス */}
+                <div>
+                    <label>メールアドレス</label>
+                    <div className="inputRow">
                         <input
                             className="profileInput"
-                            placeholder="メールアドレス"
                             value={mailAddress}
-                            onChange={(e) => {
-                                setMailAddress(e.target.value);
-                                setIsSaved(false);
-                            }}
+                            onChange={(e) => setMailAddress(e.target.value)}
+                            disabled={!isEditingEmail}
                         />
-                    </div>
 
-                    <div>
-                        <label>新しいパスワード</label>
-                        <input
-                            className="profileInput"
-                            type="password"
-                            placeholder="パスワード"
-                            value={password}
-                            onChange={(e) => {
-                                setPassword(e.target.value);
-                                setIsSaved(false);
+                        <button
+                            type="button"
+                            className="editButton"
+                            onClick={() => {
+                                if (isEditingEmail) {
+                                    handleEmailUpdate();
+                                }
+                                setIsEditingEmail(!isEditingEmail);
                             }}
-                        />
+                        >
+                            {isEditingEmail ? "保存" : "編集"}
+                        </button>
                     </div>
-                    <div>
-                        <input
-                            className="profileInput"
-                            type="password"
-                            placeholder="パスワード（確認）"
-                            value={confirmPassword}
-                            onChange={(e) => {
-                                setConfirmPassword(e.target.value)
-                                setIsSaved(false);
-                            }}
-                        />
-                    </div>
+                </div>
 
-
-
-                    <br />
-                    <button
-                        type="submit"
-                        className={`primaryButton ${isSaved ? "saved" : ""}`}
-                        disabled={isSaved}
-                    >
-                        {isSaved ? "保存済み" : "保存"}
-                    </button>
-                </form>
             </div>
 
+            {/* =========================
+                パスワード
+            ========================= */}
+            <div className="profileBox profilecard">
+
+                {/* 現在のパスワード */}
+                <div>
+                    <label>パスワード</label>
+                    <input
+                        className="profileInput"
+                        type="password"
+                        placeholder="現在のパスワード"
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                        disabled={!isEditingPassword}
+                    />
+                </div>
+
+                {/* 新しいパスワード */}
+                <div>
+                    <input
+                        className="profileInput"
+                        type="password"
+                        placeholder="新しいパスワード"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        disabled={!isEditingPassword}
+                    />
+                </div>
+
+                {/* 確認パスワード */}
+                <div>
+                    <input
+                        className="profileInput"
+                        type="password"
+                        placeholder="新しいパスワード（確認）"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        disabled={!isEditingPassword}
+                    />
+                </div>
+
+                {/* 編集ボタン */}
+                <div>
+                    <button
+                        type="button"
+                        className="editButton"
+                        onClick={() => {
+                            if (isEditingPassword) {
+                                handlePasswordUpdate();
+                            }
+                            setIsEditingPassword(!isEditingPassword);
+                        }}
+                    >
+                        {isEditingPassword ? "保存" : "パスワードを変更する"}
+                    </button>
+                </div>
+
+            </div>
 
         </div>
     );

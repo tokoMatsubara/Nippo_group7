@@ -222,10 +222,10 @@ public class DailyCrudService {
     // #endregion
 
     @Transactional(readOnly = true)
-    public PreviousGoalResponseDto previousGoal(User user) {
+    public PreviousGoalResponseDto previousGoal(User user, LocalDate targetDate) {
 
         LocalDate previousDate = BusinessDayUtil.previousBusinessDay(
-                LocalDate.now());
+                targetDate);
 
         System.out.println("前営業日 = " + previousDate);
 

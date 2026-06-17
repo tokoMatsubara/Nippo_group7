@@ -57,12 +57,14 @@ public class DailyController {
         return dailyCrud.deleteDaily(userDetails.getUser(), daily_id);
     }
 
-    @GetMapping("/daily/previous-goal")
+    @GetMapping("/daily/previous-goal/{targetDate}")
     public PreviousGoalResponseDto getPreviousGoal1(
-            @AuthenticationPrincipal CustomUserDetails userDetails) {
+            @AuthenticationPrincipal CustomUserDetails userDetails, 
+            @PathVariable LocalDate targetDate) {
+        System.out.println("previous-goalAPIに到達");
 
         return dailyCrud.previousGoal(
-                userDetails.getUser());
+                userDetails.getUser(), targetDate);
     }
 
 }

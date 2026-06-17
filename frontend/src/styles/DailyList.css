@@ -106,6 +106,13 @@
     text-align: center;
 }
 
+.centeractions {
+    display: flex;
+    gap: 12px;
+
+    margin: 0 auto;
+}
+
 /* 詳細 */
 .section {
     margin-bottom: 14px;
