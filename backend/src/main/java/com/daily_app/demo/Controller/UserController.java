@@ -11,7 +11,6 @@ import com.daily_app.demo.config.JwtTokenProvider;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -20,7 +19,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -99,7 +97,7 @@ public class UserController {
 
     // ユーザーネームが画面上で変更できるようにする
     @PutMapping("/user/profile")
-    public ResponseEntity<Map<String, Object>> updateUserName(
+    public ResponseEntity<LoginResponseDto> updateUserName(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestBody UserInfoRequestDto requestDto,
             HttpServletResponse response) {
@@ -108,19 +106,18 @@ public class UserController {
         System.out.println("ログインユーザーID: " + userDetails.getId());
 
         try {
-            ResponseEntity<Map<String, Object>> profileResponse = userService.updateProfile(
+            ResponseEntity<LoginResponseDto> profileResponse = userService.updateProfile(
                 userDetails.getUser(),
                 requestDto);
-            System.out.println("updateまで正常");
             System.out.println(userDetails.getUsername() + userDetails.getPassword());
             ResponseCookie cookie = refleshAccessToken(userDetails.getUsername());
-            System.out.println("cookieまで正常");
 
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
             return profileResponse;
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            Map<String, Object> loginResponse = Map.of("status", "error", "message", "ユーザー情報の更新に失敗しました");
+
+            LoginResponseDto loginResponse = new LoginResponseDto(false, "ユーザー情報の更新に失敗しました");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
         }
     }
