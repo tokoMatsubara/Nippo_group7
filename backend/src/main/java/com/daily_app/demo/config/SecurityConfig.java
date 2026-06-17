@@ -39,7 +39,7 @@ public class SecurityConfig {
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll() // api/authから始まるものだけ開放
-                .anyRequest().authenticated() 
+                .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> 
                 ex.authenticationEntryPoint((request, response, authException) -> {

@@ -20,8 +20,6 @@ import com.daily_app.demo.Dto.Response.UserUpdateResponseDto;
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Repository.UserRepository;
 
-import io.micrometer.core.ipc.http.HttpSender.Response;
-
 @Service
 public class UserService {
 
