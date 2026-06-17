@@ -11,29 +11,32 @@ export default function Profile() {
     const [mailAddress, setMailAddress] = useState(
         localStorage.getItem("email") || ""
     );
-    const [password, setPassword] = useState("");
 
+    // パスワード関連
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [isSaved, setIsSaved] = useState(false);
+    // 編集モード（全体共通）
+    const [isEditing, setIsEditing] = useState(false);
 
-    const handleSave = async () => {
+    const handleUpdate = async () => {
 
-        if (password !== confirmPassword) {
-            alert("パスワードが一致しません");
-            return;
+        // パスワードチェック（入力されている場合のみ）
+        if (currentPassword || newPassword || confirmPassword) {
+
+            if (!currentPassword) {
+                alert("現在のパスワードを入力してください");
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert("新しいパスワードが一致しません");
+                return;
+            }
         }
 
-        console.log("保存ボタン押下");
-
-        console.log({
-            user_name: userName,
-            mail_address: mailAddress,
-            password: password
-        });
-
         try {
-
             const response = await fetch(
                 "http://localhost:8080/api/user/profile",
                 {
@@ -45,39 +48,33 @@ export default function Profile() {
                     body: JSON.stringify({
                         user_name: userName,
                         mail_address: mailAddress,
-                        password: password
+                        current_password: currentPassword || null,
+                        password: newPassword || null
                     })
                 }
             );
 
             const data = await response.json();
 
-            console.log(data);
+            if (data.status === "success") {
 
-            if (data.success) {
-
-                localStorage.setItem(
-                    "user_name",
-                    data.userName
-                );
-
-                setIsSaved(true);
-
-                // パスワード欄だけリセット
-                setPassword("");
-                setConfirmPassword("");
+                localStorage.setItem("user_name", userName);
 
                 alert("プロフィールを更新しました");
+
+                setIsEditing(false);
+
+                setCurrentPassword("");
+                setNewPassword("");
+                setConfirmPassword("");
+
             } else {
-
                 alert(data.message);
-
             }
 
         } catch (error) {
             console.error(error);
             alert("通信エラーが発生しました。時間をおいて再度お試しください。");
-
         }
     };
 
@@ -93,81 +90,83 @@ export default function Profile() {
 
             <div className="profileBox profilecard">
 
-                <form
-                    className="profileForm"
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        handleSave();
-                    }}
-                >
+                {/* ユーザー名 */}
+                <div>
+                    <label>ユーザー名</label>
+                    <input
+                        className="profileInput"
+                        value={userName}
+                        onChange={(e) => setUserName(e.target.value)}
+                        disabled={!isEditing}
+                    />
+                </div>
 
-                    <div>
-                        <label>ユーザー名</label>
+                {/* メールアドレス */}
+                <div>
+                    <label>メールアドレス</label>
+                    <input
+                        className="profileInput"
+                        value={mailAddress}
+                        onChange={(e) => setMailAddress(e.target.value)}
+                        disabled={!isEditing}
+                    />
+                </div>
 
-                        <input
-                            className="profileInput"
-                            placeholder="ユーザー名"
-                            value={userName}
-                            onChange={(e) => {
-                                setUserName(e.target.value);
-                                setIsSaved(false);
-                            }}
-                        />
-                    </div>
+                {/* 現在のパスワード */}
+                <div>
+                    <label>パスワード</label>
+                    <input
+                        className="profileInput"
+                        type="password"
+                        placeholder="現在のパスワード"
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                        disabled={!isEditing}
+                    />
+                </div>
 
-                    <div>
-                        <label>メールアドレス</label>
-                        <input
-                            className="profileInput"
-                            placeholder="メールアドレス"
-                            value={mailAddress}
-                            onChange={(e) => {
-                                setMailAddress(e.target.value);
-                                setIsSaved(false);
-                            }}
-                        />
-                    </div>
+                {/* 新しいパスワード */}
+                <div>
+                    <input
+                        className="profileInput"
+                        type="password"
+                        placeholder="新しいパスワード"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        disabled={!isEditing}
+                    />
+                </div>
 
-                    <div>
-                        <label>新しいパスワード</label>
-                        <input
-                            className="profileInput"
-                            type="password"
-                            placeholder="パスワード"
-                            value={password}
-                            onChange={(e) => {
-                                setPassword(e.target.value);
-                                setIsSaved(false);
-                            }}
-                        />
-                    </div>
-                    <div>
-                        <input
-                            className="profileInput"
-                            type="password"
-                            placeholder="パスワード（確認）"
-                            value={confirmPassword}
-                            onChange={(e) => {
-                                setConfirmPassword(e.target.value)
-                                setIsSaved(false);
-                            }}
-                        />
-                    </div>
+                {/* 確認パスワード */}
+                <div>
+                    <input
+                        className="profileInput"
+                        type="password"
+                        placeholder="新しいパスワード（確認）"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        disabled={!isEditing}
+                    />
+                </div>
 
-
-
-                    <br />
+                {/* 編集ボタン（1つだけ） */}
+                <div style={{ marginTop: "20px" }}>
                     <button
-                        type="submit"
-                        className={`primaryButton ${isSaved ? "saved" : ""}`}
-                        disabled={isSaved}
+                        type="button"
+                        className="editButton"
+                        onClick={() => {
+                            if (isEditing) {
+                                handleUpdate();
+                            } else {
+                                setIsEditing(true);
+                            }
+                        }}
                     >
-                        {isSaved ? "保存済み" : "保存"}
+                        {isEditing ? "保存" : "プロフィールを変更する"}
                     </button>
-                </form>
+                </div>
+
             </div>
-
-
         </div>
     );
 }

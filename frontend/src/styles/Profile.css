@@ -45,13 +45,14 @@
 .profileForm {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 20px;
 }
 
 .profileForm div {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-bottom: 6px;
 }
 
 /* 入力フィールド（最低限のみ） */
@@ -83,4 +84,29 @@
 
 .profileLink a:hover {
     text-decoration: underline;
+}
+
+.inputWithButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.editButton {
+    padding: 6px 12px;
+    border: 1px solid var(--primary1);
+    background: white;
+    color: var(--primary1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.editButton:hover {
+    background: var(--primary1);
+    color: white;
+}
+
+.editButton:active {
+    transform: scale(0.9);
 }
