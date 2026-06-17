@@ -17,8 +17,10 @@ export default function Profile() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    // 編集モード（全体共通）
-    const [isEditing, setIsEditing] = useState(false);
+    // ✔ 独立編集モード
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [isEditingEmail, setIsEditingEmail] = useState(false);
+    const [isEditingPassword, setIsEditingPassword] = useState(false);
 
     const handleUpdate = async () => {
 
@@ -62,7 +64,10 @@ export default function Profile() {
 
                 alert("プロフィールを更新しました");
 
-                setIsEditing(false);
+                // ✔ 各編集モードをリセット
+                setIsEditingName(false);
+                setIsEditingEmail(false);
+                setIsEditingPassword(false);
 
                 setCurrentPassword("");
                 setNewPassword("");
@@ -88,29 +93,69 @@ export default function Profile() {
                 </div>
             </div>
 
+            {/* =========================
+                ユーザー名・メール
+            ========================= */}
             <div className="profileBox profilecard">
 
                 {/* ユーザー名 */}
                 <div>
                     <label>ユーザー名</label>
-                    <input
-                        className="profileInput"
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        disabled={!isEditing}
-                    />
+                    <div className="inputRow">
+                        <input
+                            className="profileInput"
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
+                            disabled={!isEditingName}
+                        />
+
+                        <button
+                            type="button"
+                            className="editButton"
+                            onClick={() => {
+                                if (isEditingName) {
+                                    handleUpdate();
+                                }
+                                setIsEditingName(!isEditingName);
+                            }}
+                        >
+                            {isEditingName ? "保存" : "編集"}
+                        </button>
+                    </div>
                 </div>
 
                 {/* メールアドレス */}
                 <div>
                     <label>メールアドレス</label>
-                    <input
-                        className="profileInput"
-                        value={mailAddress}
-                        onChange={(e) => setMailAddress(e.target.value)}
-                        disabled={!isEditing}
-                    />
+                    <div className="inputRow">
+                        <input
+                            className="profileInput"
+                            value={mailAddress}
+                            onChange={(e) => setMailAddress(e.target.value)}
+                            disabled={!isEditingEmail}
+                        />
+
+                        <button
+                            type="button"
+                            className="editButton"
+                            onClick={() => {
+                                if (isEditingEmail) {
+                                    handleUpdate();
+                                }
+                                setIsEditingEmail(!isEditingEmail);
+                            }}
+                        >
+                            {isEditingEmail ? "保存" : "編集"}
+                        </button>
+                    </div>
                 </div>
+
+            </div>
+
+            {/* =========================
+                パスワード
+            ========================= */}
+            <div className="profileBox profilecard">
 
                 {/* 現在のパスワード */}
                 <div>
@@ -121,7 +166,7 @@ export default function Profile() {
                         placeholder="現在のパスワード"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
-                        disabled={!isEditing}
+                        disabled={!isEditingPassword}
                     />
                 </div>
 
@@ -133,7 +178,7 @@ export default function Profile() {
                         placeholder="新しいパスワード"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
-                        disabled={!isEditing}
+                        disabled={!isEditingPassword}
                     />
                 </div>
 
@@ -145,28 +190,28 @@ export default function Profile() {
                         placeholder="新しいパスワード（確認）"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        disabled={!isEditing}
+                        disabled={!isEditingPassword}
                     />
                 </div>
 
-                {/* 編集ボタン（1つだけ） */}
-                <div style={{ marginTop: "20px" }}>
+                {/* 編集ボタン */}
+                <div>
                     <button
                         type="button"
                         className="editButton"
                         onClick={() => {
-                            if (isEditing) {
+                            if (isEditingPassword) {
                                 handleUpdate();
-                            } else {
-                                setIsEditing(true);
                             }
+                            setIsEditingPassword(!isEditingPassword);
                         }}
                     >
-                        {isEditing ? "保存" : "プロフィールを変更する"}
+                        {isEditingPassword ? "保存" : "パスワードを変更する"}
                     </button>
                 </div>
 
             </div>
+
         </div>
     );
 }
