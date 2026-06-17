@@ -26,25 +26,25 @@ export default function ThemeToggle() {
         // バックエンドのDBにも保存するリクエスト
         try {
             const response = await fetch("/api/user/profile", {
-                
+
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                }, 
-                body: JSON.stringify({user_theme: t.replace("Theme", "").toLowerCase()}),
+                },
+                body: JSON.stringify({ user_theme: t.replace("Theme", "").toLowerCase() }),
                 credentials: "include"
             });
 
             if (!response.ok) {
                 throw new Error("サーバーエラーが発生しました");
             }
-            
+
             const data = await response.json();
             console.log("DB更新成功:", data.message);
         } catch (error) {
             console.error("テーマのDB更新に失敗しました:", error);
         }
-      
+
 
     };
 
@@ -65,7 +65,7 @@ export default function ThemeToggle() {
                 className="themeButton"
                 onClick={() => setOpen(!open)}
             >
-                Theme
+                テーマ
             </button>
 
             {open && (
