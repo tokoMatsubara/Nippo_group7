@@ -115,18 +115,18 @@ public class UserController {
         }
     }
 
-    @PutMapping("/user/email/{email}")
+    @PutMapping("/user/email/{newMailAddress}")
     public ResponseEntity<UserUpdateResponseDto> putMethodName(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable String newmailAddress,
+            @PathVariable String newMailAddress,
             HttpServletResponse response) {
 
         System.out.println("=== /api/user/email 到達 ===");
         System.out.println("ログインユーザーID: " + userDetails.getId());
         
         try{
-            ResponseEntity<UserUpdateResponseDto> responseData = userService.updateEmail(userDetails.getUser(), newmailAddress);
-            ResponseCookie token = refleshAccessToken(newmailAddress);
+            ResponseEntity<UserUpdateResponseDto> responseData = userService.updateEmail(userDetails.getUser(), newMailAddress);
+            ResponseCookie token = refleshAccessToken(newMailAddress);
             response.addHeader(HttpHeaders.SET_COOKIE, token.toString());
             return responseData;
         }catch(Exception e){

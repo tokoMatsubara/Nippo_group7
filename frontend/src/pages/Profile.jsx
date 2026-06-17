@@ -22,8 +22,98 @@ export default function Profile() {
     const [isEditingEmail, setIsEditingEmail] = useState(false);
     const [isEditingPassword, setIsEditingPassword] = useState(false);
 
-    const handleUpdate = async () => {
 
+    const handleUsernameUpdate = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/user/username/${userName}`,
+                {
+                    method: "PUT",
+                    credentials: "include"
+                }
+            );
+
+            if(!response.ok){
+                const error = new Error(`HTTP ${response.status}`);
+                error.status = response.status;
+                throw error;
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+
+                localStorage.setItem("user_name", userName);
+
+                alert("プロフィールを更新しました");
+
+                // ✔ 各編集モードをリセット
+                setIsEditingName(false);
+
+            } else {
+                alert(data.message);
+            }
+
+        } catch (error) {
+            console.error(error);
+            if(error.status === 401){
+                console.log("401認証エラー");
+                alert("認証エラーです。ログインしなおしてください");
+                navigate("/login");
+            }else{
+                alert("ユーザーネームの変更に失敗しました");
+            }
+        }
+    }
+
+    const handleEmailUpdate = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:8080/api/user/email/${mailAddress}`,
+                {
+                    method: "PUT",
+                    credentials: "include"
+                }
+            );
+
+            if(!response.ok){
+                const error = new Error(`HTTP ${response.status}`);
+                error.status = response.status;
+                throw error;
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+
+                localStorage.setItem("email", mailAddress);
+
+                alert("プロフィールを更新しました");
+
+                // ✔ 各編集モードをリセット
+                setIsEditingEmail(false);
+
+                setCurrentPassword("");
+                setNewPassword("");
+                setConfirmPassword("");
+
+            } else {
+                alert(data.message);
+            }
+
+        } catch (error) {
+            console.error(error);
+            if(error.status === 401){
+                console.log("401認証エラー");
+                alert("認証エラーです。ログインしなおしてください");
+                navigate("/login");
+            }else{
+                alert("メールアドレスの変更に失敗しました");
+            }
+        }
+    }
+
+    const handlePasswordUpdate = async () => {
         // パスワードチェック（入力されている場合のみ）
         if (currentPassword || newPassword || confirmPassword) {
 
@@ -40,38 +130,29 @@ export default function Profile() {
 
         try {
             const response = await fetch(
-                "http://localhost:8080/api/user/profile",
+                `http://localhost:8080/api/user/password/${currentPassword}/${newPassword}`,
                 {
                     method: "PUT",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        user_name: userName,
-                        mail_address: mailAddress,
-                        current_password: currentPassword || null,
-                        password: newPassword || null
-                    })
+                    credentials: "include"
                 }
             );
 
+            if(!response.ok){
+                const error = new Error(`HTTP ${response.status}`);
+                error.status = response.status;
+                throw error;
+            }
+
             const data = await response.json();
 
-            if (data.status === "success") {
+            if (data.success) {
 
-                localStorage.setItem("user_name", userName);
+                localStorage.setItem("email", mailAddress);
 
                 alert("プロフィールを更新しました");
 
                 // ✔ 各編集モードをリセット
-                setIsEditingName(false);
-                setIsEditingEmail(false);
                 setIsEditingPassword(false);
-
-                setCurrentPassword("");
-                setNewPassword("");
-                setConfirmPassword("");
 
             } else {
                 alert(data.message);
@@ -79,9 +160,16 @@ export default function Profile() {
 
         } catch (error) {
             console.error(error);
-            alert("通信エラーが発生しました。時間をおいて再度お試しください。");
+            if(error.status === 401){
+                console.log("401認証エラー");
+                alert("認証エラーです。ログインしなおしてください");
+                navigate("/login");
+            }else{
+                alert("パスワードの変更に失敗しました");
+            }
         }
-    };
+    }
+
 
     return (
         <div className="container">
@@ -114,7 +202,7 @@ export default function Profile() {
                             className="editButton"
                             onClick={() => {
                                 if (isEditingName) {
-                                    handleUpdate();
+                                    handleUsernameUpdate();
                                 }
                                 setIsEditingName(!isEditingName);
                             }}
@@ -140,7 +228,7 @@ export default function Profile() {
                             className="editButton"
                             onClick={() => {
                                 if (isEditingEmail) {
-                                    handleUpdate();
+                                    handleEmailUpdate();
                                 }
                                 setIsEditingEmail(!isEditingEmail);
                             }}
@@ -201,7 +289,7 @@ export default function Profile() {
                         className="editButton"
                         onClick={() => {
                             if (isEditingPassword) {
-                                handleUpdate();
+                                handlePasswordUpdate();
                             }
                             setIsEditingPassword(!isEditingPassword);
                         }}
