@@ -170,7 +170,6 @@ public class UserController {
 
     private ResponseCookie refleshAccessToken(String mailAddress){
         String token = tokenProvider.generateToken(mailAddress);
-        System.out.println(token);
 
         ResponseCookie cookie = ResponseCookie.from("accessToken", token)
                 .httpOnly(true).secure(false).path("/")
