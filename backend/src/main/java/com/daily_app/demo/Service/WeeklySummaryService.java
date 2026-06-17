@@ -184,6 +184,7 @@ public class WeeklySummaryService {
                 ・総文字数は書かないで
                 ・絵文字禁止
                 ・要約の内容以外のコミュニケーション出力禁止
+                ・文体は敬体
                 """.formatted(input);
     }
 
