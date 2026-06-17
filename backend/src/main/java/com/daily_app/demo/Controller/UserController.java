@@ -5,6 +5,7 @@ import com.daily_app.demo.Dto.Request.UserInfoRequestDto;
 import com.daily_app.demo.Dto.RemindSettingDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
+import com.daily_app.demo.Dto.Response.UserUpdateResponseDto;
 import com.daily_app.demo.Service.UserService;
 import com.daily_app.demo.config.CustomUserDetails;
 import com.daily_app.demo.config.JwtTokenProvider;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api")
@@ -96,31 +98,69 @@ public class UserController {
     }
 
     // ユーザーネームが画面上で変更できるようにする
-    @PutMapping("/user/profile")
-    public ResponseEntity<LoginResponseDto> updateUserName(
+    @PutMapping("/user/username/{newUsername}")
+    public ResponseEntity<UserUpdateResponseDto> updateUserName(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestBody UserInfoRequestDto requestDto,
-            HttpServletResponse response) {
+            @PathVariable String newUsername) {
 
-        System.out.println("=== /api/user/profile 到達 ===");
+        System.out.println("=== /api/user/username 到達 ===");
         System.out.println("ログインユーザーID: " + userDetails.getId());
 
-        try {
-            ResponseEntity<LoginResponseDto> profileResponse = userService.updateProfile(
-                userDetails.getUser(),
-                requestDto);
-            System.out.println(userDetails.getUsername() + userDetails.getPassword());
-            ResponseCookie cookie = refleshAccessToken(userDetails.getUsername());
-
-            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-            return profileResponse;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            LoginResponseDto loginResponse = new LoginResponseDto(false, "ユーザー情報の更新に失敗しました");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(loginResponse);
+        try{
+            ResponseEntity<UserUpdateResponseDto> response =  userService.updateUsername(userDetails.getUser(), newUsername);
+            return response;
+        }catch(Exception e){
+            UserUpdateResponseDto responseDto = new UserUpdateResponseDto(false, "ユーザーネームの変更に失敗しました");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
         }
     }
+
+    @PutMapping("/user/email/{newMailAddress}")
+    public ResponseEntity<UserUpdateResponseDto> putMethodName(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable String newMailAddress,
+            HttpServletResponse response) {
+
+        System.out.println("=== /api/user/email 到達 ===");
+        System.out.println("ログインユーザーID: " + userDetails.getId());
+        
+        try{
+            ResponseEntity<UserUpdateResponseDto> responseData = userService.updateEmail(userDetails.getUser(), newMailAddress);
+            ResponseCookie token = refleshAccessToken(newMailAddress);
+            response.addHeader(HttpHeaders.SET_COOKIE, token.toString());
+            return responseData;
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            UserUpdateResponseDto responseDto = new UserUpdateResponseDto(false, "メールアドレスの変更に失敗しました");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+        }
+    }
+
+    @PutMapping("/user/password/{currentPassword}/{newPassword}")
+    public ResponseEntity<UserUpdateResponseDto> putMethodName(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @PathVariable String currentPassword, 
+        @PathVariable String newPassword) {
+
+        System.out.println("=== /api/user/password 到達 ===");
+        System.out.println("ログインユーザーID: " + userDetails.getId());
+        
+        try{
+            ResponseEntity<UserUpdateResponseDto> response = 
+                userService.updatePassword(userDetails.getUser(), currentPassword, newPassword);
+            
+            return response;
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            UserUpdateResponseDto responseDto = new UserUpdateResponseDto(false, "パスワードの変更に失敗しました");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+        }
+    }
+
+
+
+
+
 
     private ResponseCookie refleshAccessToken(String mailAddress){
         String token = tokenProvider.generateToken(mailAddress);

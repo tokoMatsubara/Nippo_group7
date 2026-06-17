@@ -16,8 +16,11 @@ import com.daily_app.demo.Dto.RemindSettingDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
 import com.daily_app.demo.Dto.Request.UserInfoRequestDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
+import com.daily_app.demo.Dto.Response.UserUpdateResponseDto;
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Repository.UserRepository;
+
+import io.micrometer.core.ipc.http.HttpSender.Response;
 
 @Service
 public class UserService {
@@ -133,79 +136,65 @@ public class UserService {
         return ResponseEntity.ok(remindSettingDto);
     }
 
-    // ユーザーネーム・メアド・パスワードが画面上で変更できるようにする
+    // ユーザーネーム・メアド・パスワードが画面上で変更できるようにする==========================
     @Transactional
-    public ResponseEntity<LoginResponseDto> updateProfile(User user, UserInfoRequestDto requestDto)
-        throws Exception {
-
-        // ちゃんとデータ渡せてるか見るための
-        System.out.println("=== updateProfile開始 ===");
-        System.out.println("userId: " + user.getUserId());
-        System.out.println("userName: " + requestDto.getUserName());
-        System.out.println("mailAddress: " + requestDto.getMailAddress());
-        System.out.println("userTheme: " + requestDto.getUserTheme());
-
-        LoginResponseDto response = new LoginResponseDto();
-
-
-        // メールアドレス重複チェック
-        if (requestDto.getMailAddress() != null &&
-                !requestDto.getMailAddress().isBlank()) {
-
-            Optional<User> existingUser = userRepository.findByMailAddress(requestDto.getMailAddress());
-
-            if (existingUser.isPresent() &&
-                    !existingUser.get().getUserId().equals(user.getUserId())) {
-
-                response.setSuccess(false);
-                response.setMessage("このメールアドレスは既に使用されています。");
-
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body(response);
-            }
+    public ResponseEntity<UserUpdateResponseDto> updateUsername(User user, String newUsername) throws Exception{
+        
+        if(newUsername.isBlank()){
+            UserUpdateResponseDto response = new UserUpdateResponseDto(false, "空白の入力です");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
-
-
-        if (requestDto.getMailAddress() != null && !requestDto.getUserName().isBlank()) {
-            user.setMailAddress(requestDto.getMailAddress());
-        }
-
-        // ユーザー名が届いている（nullでもなく空文字でもない）ときだけ上書きする
-        if (requestDto.getUserName() != null && !requestDto.getUserName().isBlank()) {
-            user.setUserName(requestDto.getUserName());
-        }
-
-        // メールアドレスが届いているときだけ上書きする（一応 .isBlank() も追加して安全に）
-        if (requestDto.getMailAddress() != null && !requestDto.getMailAddress().isBlank()) {
-            user.setMailAddress(requestDto.getMailAddress());
-        }
-
-        if (requestDto.getPassword() != null &&
-                !requestDto.getPassword().isBlank()) {
-
-            String hashedPassword = passwordEncoder.encode(requestDto.getPassword());
-
-            user.setPassword(hashedPassword);
-        }
-
-        // Reactから新しいテーマカラーが届いていたらEntityに上書き保存する
-        if (requestDto.getUserTheme() != null && !requestDto.getUserTheme().isBlank()) {
-            user.setUserTheme(requestDto.getUserTheme());
-        }
-
-        System.out.println("保存前");
-
+        user.setUserName(newUsername);
         userRepository.save(user);
+        UserUpdateResponseDto response = new UserUpdateResponseDto(true, "ユーザーネームを更新しました", user.getUserName());
+        return ResponseEntity.ok(response);
 
-        System.out.println("保存成功！");
+    }
 
-        response.setSuccess(true);
-        response.setMessage("ユーザー情報を更新しました");
-        response.setUserName(user.getUserName());
-        response.setUserTheme(user.getUserTheme());
+    @Transactional
+    public ResponseEntity<UserUpdateResponseDto> updateEmail(User user, String newEmail) throws Exception{
+        if(newEmail.isBlank()){
+            UserUpdateResponseDto response = new UserUpdateResponseDto(false, "空白の入力です");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
 
+        Optional<User> existingUser = userRepository.findByMailAddress(newEmail);
+
+        if (existingUser.isPresent() &&
+                !existingUser.get().getUserId().equals(user.getUserId())) {
+            
+            UserUpdateResponseDto response = new UserUpdateResponseDto(false, "このメールアドレスは既に使用されています");
+
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(response);
+        }
+
+        user.setMailAddress(newEmail);
+        userRepository.save(user);
+        UserUpdateResponseDto response = new UserUpdateResponseDto(true, "メールアドレスを更新しました");
+        return ResponseEntity.ok(response);
+    }
+
+    @Transactional
+    public ResponseEntity<UserUpdateResponseDto> updatePassword(User user, String currentPassword, String newPassword)
+        throws Exception{
+        if(newPassword.isBlank()){
+            UserUpdateResponseDto response = new UserUpdateResponseDto(false, "空白の入力です");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        if(!passwordEncoder.matches(currentPassword, user.getPassword())){
+            UserUpdateResponseDto response = new UserUpdateResponseDto(false, "空白の入力です");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        String hashedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(hashedPassword);
+        userRepository.save(user);
+        UserUpdateResponseDto response = new UserUpdateResponseDto(true, "パスワードを変更しました");
         return ResponseEntity.ok(response);
     }
 
