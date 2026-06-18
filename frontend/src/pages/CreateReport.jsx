@@ -261,7 +261,7 @@ function CreateReport() {
   };
 
   return (
-    <div className="createContainer">
+    <div>
       <header className="header">
         <div className="headerTop">
           <div className="headerTitle">
