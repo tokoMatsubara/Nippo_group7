@@ -20,7 +20,7 @@
 .profilecard {
     width: 100%;
     max-width: 1126px;
-    margin: 0 auto;
+    margin: 24px auto;
     position: relative;
     word-wrap: break-word;
     background-color: #fff;

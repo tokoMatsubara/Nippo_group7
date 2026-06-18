@@ -213,15 +213,14 @@ export default function Profile() {
                         </button>
                     </div>
                 </div>
+                {/* PASSWORD */}
 
-            </div>
+                <br />
 
-            {/* PASSWORD */}
-            <div className="profileBox profilecard">
+                <hr />
 
                 <div>
                     <label>パスワード</label>
-                    <br />
                     <br />
                     <input
                         className="profileInput"
@@ -263,8 +262,11 @@ export default function Profile() {
                 >
                     パスワードを変更する
                 </button>
-
             </div>
+
+
+
+
 
         </div>
     );
