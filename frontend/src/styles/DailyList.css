@@ -158,3 +158,21 @@
     line-height: 1.6;
     white-space: pre-wrap;
 }
+
+.footer-actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-top: 1px solid #ddd;
+    padding: 12px 16px;
+    z-index: 1000;
+    background: var(--primary2);
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
