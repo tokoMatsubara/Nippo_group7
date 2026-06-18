@@ -35,7 +35,7 @@
 }
 
 .profileBox {
-    width: 360px;
+    width: 500px;
     max-width: 90vw;
     padding: 30px;
 }
@@ -55,11 +55,11 @@
 
 /* 入力フィールド（最低限のみ） */
 .profileInput {
-    width: 100%;
+    flex: 1;
+    min-width: 240px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
-    outline: none;
     background: white;
     color: black;
 }
@@ -67,6 +67,7 @@
 /* フォーカス */
 .profileInput:focus {
     border-color: var(--primary2);
+    outline: none;
 }
 
 /* リンク */
@@ -109,10 +110,27 @@
     transform: scale(0.9);
 }
 
+.editButton:disabled {
+    background: #f2f2f2;
+    color: #b5b5b5;
+    border: 1px solid #ddd;
+    opacity: 1;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* disabled時のhoverを完全無効化 */
+.editButton:disabled:hover {
+    background: #f2f2f2;
+    color: #b5b5b5;
+    border: 1px solid #ddd;
+}
+
 .inputRow {
     display: flex;
     align-items: center;
     gap: 8px;
+    width: 100%;
 }
 
 .inputRow .profileInput {

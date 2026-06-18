@@ -256,29 +256,31 @@ export default function DailyList() {
                         </div>
 
                         {/* 共通ボタン化 */}
-                        <div className="actions">
-                            <div className="centeractions">
-                                <button
-                                    className="primaryButton"
-                                    onClick={() => navigate("/create-report", {
-                                        state: {
-                                            daily: selectedDaily,
-                                            returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
-                                        },
-                                    })}
-                                >
-                                    編集
-                                </button>
+                        {/* フッター */}
+                        <div className="footer-actions">
+                            {selectedDaily && (
+                                <div className="footer-inner">
+                                    <button
+                                        className="primaryButton"
+                                        onClick={() => navigate("/create-report", {
+                                            state: {
+                                                daily: selectedDaily,
+                                                returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
+                                            },
+                                        })}
+                                    >
+                                        編集
+                                    </button>
 
-                                <button className="dangerButton" onClick={handleDelete}>
-                                    削除
-                                </button>
-                            </div>
+                                    <button className="dangerButton" onClick={handleDelete}>
+                                        削除
+                                    </button>
 
-
-                            <button className="backButton" onClick={handleCopy}>
-                                コピー
-                            </button>
+                                    <button className="backButton" onClick={handleCopy}>
+                                        コピー
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </>
                 )}
