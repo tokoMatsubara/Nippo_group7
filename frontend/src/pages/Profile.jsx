@@ -13,17 +13,20 @@ export default function Profile() {
         localStorage.getItem("email") || ""
     );
 
-    // パスワード関連
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    // ✔ 独立編集モード
     const [isEditingName, setIsEditingName] = useState(false);
     const [isEditingEmail, setIsEditingEmail] = useState(false);
 
     const navigate = useNavigate();
 
+    const isNameOrEmailEditing = isEditingName || isEditingEmail;
+
+    /* =========================
+        USERNAME UPDATE
+    ========================= */
     const handleUsernameUpdate = async () => {
         try {
             const response = await fetch(
@@ -31,44 +34,38 @@ export default function Profile() {
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({userName}),
+                    body: JSON.stringify({ userName }),
                     credentials: "include"
                 }
             );
 
-            if (!response.ok) {
-                const error = new Error(`HTTP ${response.status}`);
-                error.status = response.status;
-                throw error;
-            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
             const data = await response.json();
 
             if (data.success) {
-
                 localStorage.setItem("user_name", userName);
-
-                alert("プロフィールを更新しました");
-
-                // ✔ 各編集モードをリセット
+                alert("ユーザー名を更新しました");
                 setIsEditingName(false);
-
             } else {
                 alert(data.message);
+
+                // ★ 失敗時リセット
+                setUserName(localStorage.getItem("user_name") || "");
             }
 
         } catch (error) {
             console.error(error);
-            if (error.status === 401) {
-                console.log("401認証エラー");
-                alert("認証エラーです。ログインしなおしてください");
-                navigate("/login");
-            } else {
-                alert("ユーザーネームの変更に失敗しました");
-            }
-        }
-    }
+            alert("ユーザー名の変更に失敗しました");
 
+            // ★ 失敗時リセット
+            setUserName(localStorage.getItem("user_name") || "");
+        }
+    };
+
+    /* =========================
+        EMAIL UPDATE
+    ========================= */
     const handleEmailUpdate = async () => {
         try {
             const response = await fetch(
@@ -76,61 +73,48 @@ export default function Profile() {
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({mailAddress}),
+                    body: JSON.stringify({ mailAddress }),
                     credentials: "include"
                 }
             );
 
-            if (!response.ok) {
-                const error = new Error(`HTTP ${response.status}`);
-                error.status = response.status;
-                throw error;
-            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
             const data = await response.json();
 
             if (data.success) {
-
                 localStorage.setItem("email", mailAddress);
-
-                alert("プロフィールを更新しました");
-
-                // ✔ 各編集モードをリセット
+                alert("メールアドレスを更新しました");
                 setIsEditingEmail(false);
-
-                setCurrentPassword("");
-                setNewPassword("");
-                setConfirmPassword("");
-
             } else {
                 alert(data.message);
+
+                // ★ 失敗時リセット
+                setMailAddress(localStorage.getItem("email") || "");
             }
 
         } catch (error) {
             console.error(error);
-            if (error.status === 401) {
-                console.log("401認証エラー");
-                alert("認証エラーです。ログインしなおしてください");
-                navigate("/login");
-            } else {
-                alert("メールアドレスの変更に失敗しました");
-            }
+            alert("メールアドレスの変更に失敗しました");
+
+            // ★ 失敗時リセット
+            setMailAddress(localStorage.getItem("email") || "");
         }
-    }
+    };
 
+    /* =========================
+        PASSWORD UPDATE
+    ========================= */
     const handlePasswordUpdate = async () => {
-        // パスワードチェック（入力されている場合のみ）
-        if (currentPassword || newPassword || confirmPassword) {
 
-            if (!currentPassword) {
-                alert("現在のパスワードを入力してください");
-                return;
-            }
+        if (!currentPassword) {
+            alert("現在のパスワードを入力してください");
+            return;
+        }
 
-            if (newPassword !== confirmPassword) {
-                alert("新しいパスワードが一致しません");
-                return;
-            }
+        if (newPassword !== confirmPassword) {
+            alert("新しいパスワードが一致しません");
+            return;
         }
 
         try {
@@ -139,43 +123,32 @@ export default function Profile() {
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({currentPassword, newPassword}),
+                    body: JSON.stringify({
+                        currentPassword,
+                        newPassword
+                    }),
                     credentials: "include"
                 }
             );
 
-            if (!response.ok) {
-                const error = new Error(`HTTP ${response.status}`);
-                error.status = response.status;
-                throw error;
-            }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
             const data = await response.json();
 
             if (data.success) {
-
-                localStorage.setItem("email", mailAddress);
-
-                alert("プロフィールを更新しました");
-
-                // ✔ 各編集モードをリセット
-                setIsEditingPassword(false);
-
+                alert("パスワードを更新しました");
+                setCurrentPassword("");
+                setNewPassword("");
+                setConfirmPassword("");
             } else {
                 alert(data.message);
             }
 
         } catch (error) {
             console.error(error);
-            if (error.status === 401) {
-                console.log("401認証エラー");
-                alert("認証エラーです。ログインしなおしてください");
-                navigate("/login");
-            } else {
-                alert("パスワードの変更に失敗しました");
-            }
+            alert("パスワードの変更に失敗しました");
         }
-    }
+    };
 
 
     return (
@@ -188,14 +161,12 @@ export default function Profile() {
                 </div>
             </div>
 
-            {/* =========================
-                ユーザー名・メール
-            ========================= */}
+            {/* USER / EMAIL */}
             <div className="profileBox profilecard">
 
-                {/* ユーザー名 */}
                 <div>
                     <label>ユーザー名</label>
+                    <br />
                     <div className="inputRow">
                         <input
                             className="profileInput"
@@ -207,10 +178,9 @@ export default function Profile() {
                         <button
                             type="button"
                             className="editButton"
+                            disabled={isNameOrEmailEditing && !isEditingName}
                             onClick={() => {
-                                if (isEditingName) {
-                                    handleUsernameUpdate();
-                                }
+                                if (isEditingName) handleUsernameUpdate();
                                 setIsEditingName(!isEditingName);
                             }}
                         >
@@ -219,9 +189,9 @@ export default function Profile() {
                     </div>
                 </div>
 
-                {/* メールアドレス */}
                 <div>
                     <label>メールアドレス</label>
+                    <br />
                     <div className="inputRow">
                         <input
                             className="profileInput"
@@ -233,10 +203,9 @@ export default function Profile() {
                         <button
                             type="button"
                             className="editButton"
+                            disabled={isNameOrEmailEditing && !isEditingEmail}
                             onClick={() => {
-                                if (isEditingEmail) {
-                                    handleEmailUpdate();
-                                }
+                                if (isEditingEmail) handleEmailUpdate();
                                 setIsEditingEmail(!isEditingEmail);
                             }}
                         >
@@ -247,14 +216,12 @@ export default function Profile() {
 
             </div>
 
-            {/* =========================
-                パスワード
-            ========================= */}
+            {/* PASSWORD */}
             <div className="profileBox profilecard">
 
-                {/* 現在のパスワード */}
                 <div>
                     <label>パスワード</label>
+                    <br />
                     <br />
                     <input
                         className="profileInput"
@@ -262,10 +229,10 @@ export default function Profile() {
                         placeholder="現在のパスワード"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
+                        disabled={isNameOrEmailEditing}
                     />
                 </div>
-
-                {/* 新しいパスワード */}
+                <br />
                 <div>
                     <input
                         className="profileInput"
@@ -273,10 +240,10 @@ export default function Profile() {
                         placeholder="新しいパスワード"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
+                        disabled={isNameOrEmailEditing}
                     />
                 </div>
-
-                {/* 確認パスワード */}
+                <br />
                 <div>
                     <input
                         className="profileInput"
@@ -284,19 +251,18 @@ export default function Profile() {
                         placeholder="新しいパスワード（確認）"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
+                        disabled={isNameOrEmailEditing}
                     />
                 </div>
-
-                {/* 編集ボタン */}
-                <div>
-                    <button
-                        type="button"
-                        className="editButton"
-                        onClick={handlePasswordUpdate}
-                    >
-                        パスワードを変更する
-                    </button>
-                </div>
+                <br />
+                <button
+                    type="button"
+                    className="editButton"
+                    onClick={handlePasswordUpdate}
+                    disabled={isNameOrEmailEditing}
+                >
+                    パスワードを変更する
+                </button>
 
             </div>
 

@@ -57,7 +57,7 @@
 /* 入力フィールド（最低限のみ） */
 .profileInput {
     flex: 1;
-    min-width: 0;
+    min-width: 240px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
@@ -68,6 +68,7 @@
 /* フォーカス */
 .profileInput:focus {
     border-color: var(--primary2);
+    outline: none;
 }
 
 /* リンク */
@@ -108,6 +109,22 @@
 
 .editButton:active {
     transform: scale(0.9);
+}
+
+.editButton:disabled {
+    background: #f2f2f2;
+    color: #b5b5b5;
+    border: 1px solid #ddd;
+    opacity: 1;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* disabled時のhoverを完全無効化 */
+.editButton:disabled:hover {
+    background: #f2f2f2;
+    color: #b5b5b5;
+    border: 1px solid #ddd;
 }
 
 .inputRow {
