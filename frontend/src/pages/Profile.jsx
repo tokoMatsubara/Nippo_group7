@@ -152,7 +152,7 @@ export default function Profile() {
 
 
     return (
-        <div className="container">
+        <div className="pageContainer">
 
             <div className="header">
                 <div className="headerTitle">
@@ -162,6 +162,7 @@ export default function Profile() {
             </div>
 
             {/* USER / EMAIL */}
+
             <div className="profileBox profilecard">
 
                 <div>
@@ -213,15 +214,14 @@ export default function Profile() {
                         </button>
                     </div>
                 </div>
+                {/* PASSWORD */}
 
-            </div>
+                <br />
 
-            {/* PASSWORD */}
-            <div className="profileBox profilecard">
+                <hr />
 
                 <div>
                     <label>パスワード</label>
-                    <br />
                     <br />
                     <input
                         className="profileInput"
@@ -263,8 +263,11 @@ export default function Profile() {
                 >
                     パスワードを変更する
                 </button>
-
             </div>
+
+
+
+
 
         </div>
     );
