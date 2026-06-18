@@ -1,19 +1,5 @@
 /* 全体レイアウト共通 */
 
-/* フッターあり画面用コンテナ */
-.pageContainer {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.pageContent {
-    flex: 1;
-    overflow-y: auto;
-    padding-bottom: 80px;
-    /* ← フッター分だけ確保 */
-}
-
 .appWrapper {
     min-height: 100vh;
     background: white;
@@ -28,7 +14,7 @@
     padding-left: 0px;
     padding-right: 0px;
     padding-bottom: 0px;
-    margin-bottom: 0px;
+    margin-bottom: 30px;
     /* background-color: var(--primary4); */
 }
 
@@ -182,67 +168,18 @@
     background: #c56060;
 }
 
-.copyButton {
-    min-width: 130px;
-    height: 40px;
-    padding: 0 14px;
-
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    outline: none;
-    border-radius: 6px;
-    z-index: 0;
-    overflow: hidden;
-
-    background: #9e9d9d;
-    color: #333;
-
-    margin-left: auto;
-}
-
-.copyButton:hover {
-    color: #fff;
-}
-
-.copyButton:hover:after {
-    width: 100%;
-}
-
-.copyButton:after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    transition: all 0.3s ease;
-    left: 0;
-    top: 0;
-    width: 0;
-    height: 100%;
-    background: #8b909a;
-}
-
 /* 各画面のタイトル用 */
 .header {
     width: 100%;
-    min-height: 160px;
-    padding: 32px 32px;
+    min-height: 180px;
+    padding: 40px 32px;
 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 
     position: relative;
-
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(10px);
-
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    overflow: hidden;
 
     /* 🎨 ベースは primary2 */
     background: linear-gradient(180deg,
@@ -253,15 +190,12 @@
 .header::before {
     content: "";
     position: absolute;
-    inset: -300%;                 
-    background: radial-gradient(
-        circle,
-        rgba(255, 255, 255, 0.7) 2px,
-        transparent 3px
-    );
-    background-size: 40px 40px;
-    transform: rotate(45deg);    
-    opacity: 0.75;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.9) 0%, transparent 55%),
+        radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.7) 0%, transparent 50%),
+        radial-gradient(circle at 90% 40%, rgba(255, 255, 255, 0.5) 0%, transparent 45%);
 
     z-index: 0;
 }
@@ -272,14 +206,17 @@
     inset: 0;
 
     background:
-        repeating-linear-gradient(140deg,
-            rgba(255, 255, 255, 1) 0px,
-            rgba(255, 255, 255, 1) 350px,
-            rgba(255, 255, 255, 0.5) 350px,
-            rgba(255, 255, 255, 0.5) 10000px);
+        repeating-linear-gradient(135deg,
+            rgba(255, 255, 255, 0.45) 0px,
+            rgba(255, 255, 255, 0.45) 2px,
+            transparent 2px,
+            transparent 10px),
+        radial-gradient(circle,
+            rgba(255, 255, 255, 0.7) 2px,
+            transparent 2px);
 
-    background-size: auto, 40px 40px;
-    opacity: 0.8;
+    background-size: auto, 18px 18px;
+    opacity: 0.75;
 
     z-index: 0;
 }
@@ -334,7 +271,6 @@ body {
     color: #333;
     text-decoration: none;
     transition: 0.5s;
-    margin-top: 30px;
     margin-bottom: 30px;
     padding: 16px;
 }
@@ -410,22 +346,4 @@ body {
     width: 100px;
     height: 100px;
     object-fit: contain;
-}
-
-.footer-actions {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: white;
-    border-top: 1px solid #ddd;
-    padding: 12px 16px;
-    z-index: 1000;
-    background: var(--primary2);
-}
-
-.footer-inner {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
 }
