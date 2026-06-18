@@ -235,14 +235,14 @@
 .header::before {
     content: "";
     position: absolute;
-    inset: -300%;                 /* 回転で角が欠けないよう大きめに */
+    inset: -300%;                 
     background: radial-gradient(
         circle,
-        rgba(255, 255, 255, 0.7) 3px,
+        rgba(255, 255, 255, 0.7) 2px,
         transparent 3px
     );
     background-size: 40px 40px;
-    transform: rotate(45deg);    /* ドットだけ45度傾ける */
+    transform: rotate(45deg);    
     opacity: 0.75;
 
     z-index: 0;
