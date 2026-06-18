@@ -108,6 +108,7 @@ public class DailySummaryService {
                 ・簡潔
                 ・箇条書き禁止
                 ・絵文字禁止
+                ・文体は敬体
                 ・日報要約の内容以外のコミュニケーション出力禁止
                 """.formatted(combinedContent);
         return prompt;

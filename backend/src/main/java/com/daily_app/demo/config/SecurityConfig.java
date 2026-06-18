@@ -38,8 +38,8 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // api/authから始まるものだけ開放
-                .anyRequest().authenticated() 
+                .requestMatchers("/api/auth/**", "/error").permitAll() // api/authから始まるものだけ開放
+                .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> 
                 ex.authenticationEntryPoint((request, response, authException) -> {

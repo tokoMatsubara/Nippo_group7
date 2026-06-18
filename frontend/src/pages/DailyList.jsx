@@ -147,9 +147,9 @@ export default function DailyList() {
     today.setHours(0, 0, 0, 0);
 
     return (
-        <>
+        <div className="pageContainer">
             <div className="header">
-                <h1 className="title">日報一覧（{formatDate(weekData.weekStartDate)} ～ {formatDate(weekData.weekEndDate)}）</h1>
+                <h1 className="title">Daily List（{formatDate(weekData.weekStartDate)} ～ {formatDate(weekData.weekEndDate)}）</h1>
 
                 {/* 週表示 */}
                 {/* <h2 className="title">
@@ -157,127 +157,138 @@ export default function DailyList() {
                 </h2> */}
 
                 {/* 曜日 */}
-                <div className="dayButtons">
-                    {days.map((day, index) => {
-                        const date = new Date(weekData.weekStartDate);
-                        date.setDate(date.getDate() + index);
-                        date.setHours(0, 0, 0, 0);
 
-                        const dayNumber = date.getDate();
-                        const dayLabel = day;
+            </div>
 
-                        const isToday =
-                            today.getTime() === date.getTime();
-                        const isFuture =
-                            date.getTime() > today.getTime();
+            <div className="pageContent">
+                {/* カード */}
+                <div className="card">
+                    <div className="dayButtons">
+                        {days.map((day, index) => {
+                            const date = new Date(weekData.weekStartDate);
+                            date.setDate(date.getDate() + index);
+                            date.setHours(0, 0, 0, 0);
 
-                        return (
-                            <button
-                                key={day}
-                                className={`dayButton 
+                            const dayNumber = date.getDate();
+                            const dayLabel = day;
+
+                            const isToday =
+                                today.getTime() === date.getTime();
+                            const isFuture =
+                                date.getTime() > today.getTime();
+
+                            return (
+                                <button
+                                    key={day}
+                                    className={`dayButton 
                             ${selectedDay === day ? "active" : ""} 
                             ${isToday ? "today" : ""} 
                             ${isFuture ? "future" : ""}`}
-                                onClick={() => {
-                                    if (isFuture) return;   // ← ここで無効化
-                                    setSelectedDay(day);
-                                }}
-                            >
-                                <span className="dayTop">
-                                    {dayNumber} ({dayLabel})
-                                </span>
+                                    onClick={() => {
+                                        if (isFuture) return;   // ← ここで無効化
+                                        setSelectedDay(day);
+                                    }}
+                                >
+                                    <span className="dayTop">
+                                        {dayNumber} ({dayLabel})
+                                    </span>
 
-                                <span className="dayMark">
-                                    {hasDaily(day) ? "●" : "○"}
-                                </span>
-                            </button>
-                        );
-                    })}
+                                    <span className="dayMark">
+                                        {hasDaily(day) ? "●" : "○"}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+
+                    {!selectedDaily ? (
+                        <>
+                            <div className="dayName">
+                                <h3>{formatDate(getSelectedDate())}</h3>
+                            </div>
+                            <p>日報はありません</p>
+                            <div className="actions" style={{ justifyContent: 'center' }}>
+                                <button
+                                    className="primaryButton"
+                                    onClick={() => navigate("/create-report", {
+                                        state: {
+                                            date: getSelectedDate(),
+                                            returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
+                                        },
+                                    })}
+                                >
+                                    新規作成
+                                </button>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="dayName">
+                                <h3>{formatDate(selectedDaily.date)}</h3>
+                            </div>
+
+                            <div className="section">
+                                <div className="sectionItem">
+                                    <div className="sectionTitle">要約
+                                        <div className="sectionValue">
+                                            {selectedDaily.summary}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                {/* 詳細 */}
+                                {selectedDaily.contents
+                                    .slice()
+                                    .sort((a, b) => a.categoryId - b.categoryId)
+                                    .map((item, index) => (
+                                        <div key={item.categoryId} className="sectionItem">
+                                            <strong className="sectionTitle">
+                                                {item.categoryName}
+                                            </strong>
+
+                                            <p className="sectionValue">
+                                                {item.content}
+                                            </p>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
 
-            {/* カード */}
-            <div className="card">
-
-                {!selectedDaily ? (
-                    <>
-                        <div className="dayName">
-                            <h3>{formatDate(getSelectedDate())}</h3>
-                        </div>
-                        <p>日報はありません</p>
-                        <div className="actions" style={{ justifyContent: 'center' }}>
-                            <button
-                                className="primaryButton"
-                                onClick={() => navigate("/create-report", {
-                                    state: {
-                                        date: getSelectedDate(),
-                                        returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
-                                    },
-                                })}
-                            >
-                                新規作成
-                            </button>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div className="dayName">
-                            <h3>{formatDate(selectedDaily.date)}</h3>
-                        </div>
-
-                        <div className="section">
-                            <div className="sectionItem">
-                                <div className="sectionTitle">要約
-                                    <div className="sectionValue">
-                                        {selectedDaily.summary}
-                                    </div>
-                                </div>
-                            </div>
 
 
-                            {/* 詳細 */}
-                            {selectedDaily.contents
-                                .slice()
-                                .sort((a, b) => a.categoryId - b.categoryId)
-                                .map((item, index) => (
-                                    <div key={item.categoryId} className="sectionItem">
-                                        <strong className="sectionTitle">
-                                            {item.categoryName}
-                                        </strong>
+            {/* 共通ボタン化 */}
+            {/* フッター */}
+            <div className="footer-actions">
+                {selectedDaily && (
+                    <div className="footer-inner">
+                        <button
+                            className="primaryButton"
+                            onClick={() => navigate("/create-report", {
+                                state: {
+                                    daily: selectedDaily,
+                                    returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
+                                },
+                            })}
+                        >
+                            編集
+                        </button>
 
-                                        <p className="sectionValue">
-                                            {item.content}
-                                        </p>
-                                    </div>
-                                ))
-                            }
-                        </div>
+                        <button className="dangerButton" onClick={handleDelete}>
+                            削除
+                        </button>
 
-                        {/* 共通ボタン化 */}
-                        <div className="actions">
-                            <button
-                                className="primaryButton"
-                                onClick={() => navigate("/create-report", {
-                                    state: {
-                                        daily: selectedDaily,
-                                        returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
-                                    },
-                                })}
-                            >
-                                編集
-                            </button>
-
-                            <button className="dangerButton" onClick={handleDelete}>
-                                削除
-                            </button>
-
-                            <button className="secondaryButton" onClick={handleCopy}>
-                                コピー
-                            </button>
-                        </div>
-                    </>
+                        <button className="backButton" onClick={handleCopy}>
+                            コピー
+                        </button>
+                    </div>
                 )}
             </div>
-        </>
+        </div>
     );
 }

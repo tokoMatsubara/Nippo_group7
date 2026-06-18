@@ -106,10 +106,17 @@
     text-align: center;
 }
 
+.centeractions {
+    display: flex;
+    gap: 12px;
+
+    margin: 0 auto;
+}
+
 /* 詳細 */
 .section {
-    margin-bottom: 14px;
-    padding-bottom: 10px;
+    /* margin-bottom: 14px;
+    padding-bottom: 10px; */
     border-bottom: 1px solid #eee;
 }
 

@@ -48,6 +48,7 @@ public class WeeklySummaryService {
 
         LocalDate startOfWeek = date.with(DayOfWeek.MONDAY);
         LocalDate endOfWeek = date.with(DayOfWeek.FRIDAY);
+        System.out.println(endOfWeek.toString());
 
         Optional<WeeklySummary> existing = weeklySummaryRepository.findByUserIdAndWeekStartDate(userId, startOfWeek);
 
@@ -78,7 +79,7 @@ public class WeeklySummaryService {
         System.out.println("★★ updateWeeklySummary CALLED ★★ userId=" + userId);
 
         LocalDate startOfWeek = targetDate.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = targetDate.with(DayOfWeek.SUNDAY);
+        LocalDate endOfWeek = targetDate.with(DayOfWeek.FRIDAY);
 
         // ① 日報データのリスト取得
         List<Daily> dailyList = dailyRepository.findWeeklyWithDetails(userId, startOfWeek, endOfWeek);
@@ -183,6 +184,7 @@ public class WeeklySummaryService {
                 ・総文字数は書かないで
                 ・絵文字禁止
                 ・要約の内容以外のコミュニケーション出力禁止
+                ・文体は敬体
                 """.formatted(input);
     }
 

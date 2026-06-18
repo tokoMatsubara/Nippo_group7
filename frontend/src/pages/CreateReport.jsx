@@ -128,14 +128,14 @@ function CreateReport() {
       try {
         // const userId = localStorage.getItem("user_id");
         const res = await fetch(
-          `${API_BASE}/daily/previous-goal`, {
+          `${API_BASE}/daily/previous-goal/${date}`, {
           method: "GET",
           credentials: "include"
         });
 
         if (!res.ok) {
           const error = new Error(`HTTP ${res.status}`);
-          error.status = res.status;   
+          error.status = res.status;
           throw error;
         }
 
@@ -159,8 +159,8 @@ function CreateReport() {
       }
     };
 
-  fetchYesterdayGoal();
-}, []);
+    fetchYesterdayGoal();
+  }, [date]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -187,7 +187,7 @@ function CreateReport() {
         !form.issue ||
         !form.issueReason ||
         !form.action ||
-        !form.tomorrowGoal 
+        !form.tomorrowGoal
       ) {
         setError("未入力の項目があります");
         return;
@@ -261,20 +261,17 @@ function CreateReport() {
   };
 
   return (
-    <div className="daily-page">
+    <div>
       <header className="header">
         <div className="headerTop">
           <div className="headerTitle">
             <h1 className="title">日報{editDaily ? "編集" : "作成"}</h1>
             <img src={logoIcon} alt="logo" className="logoIcon" />
-            <button className="backButton" type="button" onClick={() => navigate(-1)}>
-              キャンセル
-            </button>
           </div>
         </div>
       </header>
 
-      <div>
+      <div className="createContent">
 
         <div className="section-card card">
           <h3>日付</h3>
@@ -287,7 +284,7 @@ function CreateReport() {
         </div>
 
         <div className="goal-card card">
-          <h3>昨日立てた今日の目標</h3>
+          <h3>前日立てた今日の目標</h3>
           <p>{yesterdayGoal}</p>
         </div>
 
@@ -400,26 +397,27 @@ function CreateReport() {
         </div>
 
         <Section title="9. コメント" name="comment" value={form.comment} onChange={handleChange} />
+        <div className="footer-actions">
+          <div className="submit-area">
+            {error && (
+              <div style={{ color: "red", marginBottom: "10px" }}>
+                ⚠ {error}
+              </div>
+            )}
+            <button className="primaryButton" type="button" onClick={handleSubmit}>
+              保存
+            </button>
 
-        <div className="submit-area">
-          {error && (
-            <div style={{ color: "red", marginBottom: "10px" }}>
-              ⚠ {error}
-            </div>
-          )}
-          <button className="primaryButton" type="button" onClick={handleSubmit}>
-            保存
-          </button>
-
-          <button className="backButton" type="button" onClick={() => navigate(-1)}>
-            キャンセル
-          </button>
+            <button className="backButton" type="button" onClick={() => navigate(-1)}>
+              キャンセル
+            </button>
+          </div>
         </div>
-
       </div>
     </div>
   );
 }
+
 
 function Section({ title, name, value, onChange }) {
   return (

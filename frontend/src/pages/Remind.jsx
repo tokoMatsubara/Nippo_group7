@@ -171,89 +171,91 @@ function Remind() {
 
 
       </div>
-
-      {/* カード */}
-      <div className="card">
-        <h2 className="remindTitle">前日に立てた今日の目標</h2>
-        <p>{yesterdayGoal}</p>
-      </div>
-
-      {/* カード これは、過去のリマインド履歴を出力するためのやつ*/}
-      <div className="card">
-        <h2 className="remindTitle">過去の目標</h2>
-        <div className="pastGoalsContainer">
-          {pastGoals.length > 0 ? (
-            pastGoals.map((goals, index) => (
-              <p key={index}>{goals}</p>
-            ))
-          ) : (
-            <p>過去の目標はありません</p>
-          )}
-        </div>
-      </div>
-
-
-
-
-      <div className="card">
-
-        <h2 className="remindTitle">リマインド通知設定</h2>
-
-        <label>
-          <input
-            type="checkbox"
-            checked={notificationEnabled}
-            onChange={() => {
-              setNotificationEnabled(!notificationEnabled);
-              setIsSaved(false);
-            }}
-          />
-          通知を有効にする
-        </label>
-
-
-        <div className="timeGroup">
-
-          <select
-            className="timeSelect"
-            value={alarm.hour}
-            onChange={(e) =>
-              updateAlarm("hour", Number(e.target.value))
-            }
-          >
-            {[...Array(24)].map((_, i) => (
-              <option key={i} value={i}>{i}</option>
-            ))}
-          </select>
-
-          <span>時</span>
-
-          <select
-            className="timeSelect"
-            value={alarm.minute}
-            onChange={(e) =>
-              updateAlarm("minute", Number(e.target.value))
-            }
-          >
-            {[...Array(60)].map((_, i) => (
-              <option key={i} value={i}>{i}</option>
-            ))}
-          </select>
-
-          <span>分</span>
+      <section className="remindsection">
+        {/* カード */}
+        <div className="card">
+          <h2 className="remindTitle">前日に立てた今日の目標</h2>
+          <p>{yesterdayGoal}</p>
         </div>
 
-        {' '}
+        {/* カード これは、過去のリマインド履歴を出力するためのやつ*/}
+        <div className="card">
+          <h2 className="remindTitle">過去の目標</h2>
+          <div className="pastGoalsContainer">
+            {pastGoals.length > 0 ? (
+              pastGoals.map((goals, index) => (
+                <p key={index}>{goals}</p>
+              ))
+            ) : (
+              <p>過去の目標はありません</p>
+            )}
+          </div>
+        </div>
 
-        <button
-          className={`primaryButton ${isSaved ? "saved" : ""}`}
-          onClick={handleSave}
-          disabled={isSaved}
-        >
-          {isSaved ? "保存済み" : "保存"}
-        </button>
 
-      </div>
+
+
+        <div className="card">
+
+          <h2 className="remindTitle">リマインド通知設定</h2>
+
+          <label>
+            <input
+              type="checkbox"
+              checked={notificationEnabled}
+              onChange={() => {
+                setNotificationEnabled(!notificationEnabled);
+                setIsSaved(false);
+              }}
+            />
+            通知を有効にする
+          </label>
+
+
+          <div className="timeGroup">
+
+            <select
+              className="timeSelect"
+              value={alarm.hour}
+              onChange={(e) =>
+                updateAlarm("hour", Number(e.target.value))
+              }
+            >
+              {[...Array(24)].map((_, i) => (
+                <option key={i} value={i}>{i}</option>
+              ))}
+            </select>
+
+            <span>時</span>
+
+            <select
+              className="timeSelect"
+              value={alarm.minute}
+              onChange={(e) =>
+                updateAlarm("minute", Number(e.target.value))
+              }
+            >
+              {[...Array(60)].map((_, i) => (
+                <option key={i} value={i}>{i}</option>
+              ))}
+            </select>
+
+            <span>分</span>
+          </div>
+
+          {' '}
+
+          <button
+            className={`primaryButton ${isSaved ? "saved" : ""}`}
+            onClick={handleSave}
+            disabled={isSaved}
+          >
+            {isSaved ? "保存済み" : "保存"}
+          </button>
+
+        </div>
+      </section>
+
     </div>
   );
 }

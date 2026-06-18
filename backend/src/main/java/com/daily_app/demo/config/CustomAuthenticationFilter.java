@@ -39,6 +39,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
         HttpServletRequest request, HttpServletResponse response, FilterChain filterchain)
         throws ServletException, IOException{
 
+        System.out.println("カスタムフィルターに到達した");
 
         String token = resolveToken(request);    
         // トークンが無い / 空ならここで認証処理せず次のフィルターへ
@@ -52,6 +53,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 
                 SecurityContextHolder.getContext().setAuthentication(userToken);
+                System.out.println("authenticationにセットした");
             } catch (JwtException | IllegalArgumentException | UsernameNotFoundException e) {
                 // 無効・期限切れトークンはログだけ残して未認証扱いにする
                 System.err.println("Invalid JWT: " + e.getMessage());
@@ -60,6 +62,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter{
         
 
         filterchain.doFilter(request, response);
+        System.out.println("次のフィルターに行った");
     }
 
     @Override

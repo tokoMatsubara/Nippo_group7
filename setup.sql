@@ -22,7 +22,9 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     mail_address VARCHAR(255) UNIQUE NOT NULL,
     remind_status BOOLEAN NOT NULL DEFAULT TRUE,
-    remind_time TIME NOT NULL DEFAULT '09:30'
+    remind_time TIME NOT NULL DEFAULT '09:30',
+    role VARCHAR(15) NOT NULL DEFAULT 'USER',
+    user_theme VARCHAR(15) NOT NULL DEFAULT 'blue'
 );
 
 CREATE TABLE reminds (

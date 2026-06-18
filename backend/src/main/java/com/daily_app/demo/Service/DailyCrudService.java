@@ -174,6 +174,11 @@ public class DailyCrudService {
         Daily daily = dailyRepository.findById(updateRequest.getDailyId())
                 .orElseThrow(() -> new RuntimeException("Daily not found: " + updateRequest.getDailyId()));
         Integer userId = user.getUserId();
+        
+        if (!daily.getUser().getUserId().equals(userId)) {
+            return Map.of("status", "failed", "message", "違うユーザーの日報を更新しようとしています");
+        }
+    
         LocalDate date = daily.getDailyDate();
         List<DailyDetail> details = daily.getDailyDetails();
 
@@ -186,10 +191,6 @@ public class DailyCrudService {
         }
 
         daily.setDailyDetails(details);
-
-        if (!daily.getUser().getUserId().equals(userId)) {
-            return Map.of("status", "failed", "message", "違うユーザーの日報を更新しようとしています");
-        }
 
         dailyRepository.save(daily);
 
@@ -222,10 +223,10 @@ public class DailyCrudService {
     // #endregion
 
     @Transactional(readOnly = true)
-    public PreviousGoalResponseDto previousGoal(User user) {
+    public PreviousGoalResponseDto previousGoal(User user, LocalDate targetDate) {
 
         LocalDate previousDate = BusinessDayUtil.previousBusinessDay(
-                LocalDate.now());
+                targetDate);
 
         System.out.println("前営業日 = " + previousDate);
 
