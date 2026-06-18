@@ -235,12 +235,15 @@
 .header::before {
     content: "";
     position: absolute;
-    inset: 0;
-
-    background:
-        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.9) 0%, transparent 55%),
-        radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.7) 0%, transparent 50%),
-        radial-gradient(circle at 90% 40%, rgba(255, 255, 255, 0.5) 0%, transparent 45%);
+    inset: -300%;                 /* 回転で角が欠けないよう大きめに */
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.7) 3px,
+        transparent 3px
+    );
+    background-size: 40px 40px;
+    transform: rotate(45deg);    /* ドットだけ45度傾ける */
+    opacity: 0.75;
 
     z-index: 0;
 }
@@ -251,17 +254,14 @@
     inset: 0;
 
     background:
-        repeating-linear-gradient(135deg,
-            rgba(255, 255, 255, 0.45) 0px,
-            rgba(255, 255, 255, 0.45) 2px,
-            transparent 2px,
-            transparent 10px),
-        radial-gradient(circle,
-            rgba(255, 255, 255, 0.7) 2px,
-            transparent 2px);
+        repeating-linear-gradient(140deg,
+            rgba(255, 255, 255, 1) 0px,
+            rgba(255, 255, 255, 1) 295px,
+            rgba(255, 255, 255, 0.5) 350px,
+            rgba(255, 255, 255, 0.5) 10000px);
 
-    background-size: auto, 18px 18px;
-    opacity: 0.75;
+    background-size: auto, 40px 40px;
+    opacity: 0.8;
 
     z-index: 0;
 }

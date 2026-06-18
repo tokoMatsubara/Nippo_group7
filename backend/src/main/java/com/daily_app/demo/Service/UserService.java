@@ -208,7 +208,7 @@ public class UserService {
 
         user.setUserTheme(theme);
         userRepository.save(user);
-        UserUpdateResponseDto response = new UserUpdateResponseDto(true, "テーマカラーを変更しました");
+        UserUpdateResponseDto response = new UserUpdateResponseDto(true, "テーマカラーを変更しました", theme);
         return ResponseEntity.ok(response);
     }
 
