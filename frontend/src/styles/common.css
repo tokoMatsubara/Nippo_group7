@@ -1,5 +1,19 @@
 /* 全体レイアウト共通 */
 
+/* フッターあり画面用コンテナ */
+.pageContainer {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.pageContent {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 80px;
+    /* ← フッター分だけ確保 */
+}
+
 .appWrapper {
     min-height: 100vh;
     background: white;
