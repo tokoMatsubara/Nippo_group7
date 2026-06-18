@@ -115,8 +115,8 @@
 
 /* 詳細 */
 .section {
-    margin-bottom: 14px;
-    padding-bottom: 10px;
+    /* margin-bottom: 14px;
+    padding-bottom: 10px; */
     border-bottom: 1px solid #eee;
 }
 

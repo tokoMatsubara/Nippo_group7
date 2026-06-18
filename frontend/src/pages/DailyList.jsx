@@ -149,7 +149,7 @@ export default function DailyList() {
     return (
         <>
             <div className="header">
-                <h1 className="title">日報一覧（{formatDate(weekData.weekStartDate)} ～ {formatDate(weekData.weekEndDate)}）</h1>
+                <h1 className="title">Daily List（{formatDate(weekData.weekStartDate)} ～ {formatDate(weekData.weekEndDate)}）</h1>
 
                 {/* 週表示 */}
                 {/* <h2 className="title">
@@ -157,6 +157,11 @@ export default function DailyList() {
                 </h2> */}
 
                 {/* 曜日 */}
+
+            </div>
+
+            {/* カード */}
+            <div className="card">
                 <div className="dayButtons">
                     {days.map((day, index) => {
                         const date = new Date(weekData.weekStartDate);
@@ -194,10 +199,7 @@ export default function DailyList() {
                         );
                     })}
                 </div>
-            </div>
 
-            {/* カード */}
-            <div className="card">
 
                 {!selectedDaily ? (
                     <>

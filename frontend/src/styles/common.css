@@ -14,8 +14,8 @@
     padding-left: 0px;
     padding-right: 0px;
     padding-bottom: 0px;
-    margin-bottom: 30px;
-    /* background-color: var(--primary4); */
+    margin-bottom: 0px;
+    background-color: var(--primary4); 
 }
 
 /* ===== 共通ボタン ===== */
@@ -216,23 +216,27 @@
 /* 各画面のタイトル用 */
 .header {
     width: 100%;
-    min-height: 180px;
-    padding: 40px 32px;
+    min-height: 160px;
+    padding: 32px 32px;
 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 
     position: relative;
-    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(10px);
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 
     /* 🎨 ベースは primary2 */
-    background: linear-gradient(180deg,
+    /* background: linear-gradient(180deg,
             var(--primary2),
-            var(--primary2));
+            var(--primary2)); */
 }
 
-.header::before {
+/* .header::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -269,7 +273,7 @@
 .header>* {
     position: relative;
     z-index: 1;
-}
+} */
 
 .headerTitle {
     display: flex;
@@ -316,6 +320,7 @@ body {
     color: #333;
     text-decoration: none;
     transition: 0.5s;
+    margin-top: 30px;
     margin-bottom: 30px;
     padding: 16px;
 }
