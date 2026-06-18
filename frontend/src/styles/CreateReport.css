@@ -2,7 +2,19 @@
    CreateReport Layout Only
 ========================= */
 
+.createContainer {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
+/* ここがポイント */
+.createContent {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 80px;
+    /* ← フッター分だけ確保 */
+}
 
 /* 目標カード（card前提） */
 .goal-card {
@@ -71,7 +83,6 @@
     display: flex;
     justify-content: center;
     gap: 16px;
-    margin-top: 20px;
 }
 
 .radio-group {
