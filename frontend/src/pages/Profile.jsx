@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Profile.css";
 import profileIcon from "../assets/Nippo_profile.png";
 
@@ -21,13 +22,16 @@ export default function Profile() {
     const [isEditingName, setIsEditingName] = useState(false);
     const [isEditingEmail, setIsEditingEmail] = useState(false);
 
+    const navigate = useNavigate();
 
     const handleUsernameUpdate = async () => {
         try {
             const response = await fetch(
-                `http://localhost:8080/api/user/username/${userName}`,
+                "http://localhost:8080/api/user/username",
                 {
                     method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({userName}),
                     credentials: "include"
                 }
             );
@@ -68,9 +72,11 @@ export default function Profile() {
     const handleEmailUpdate = async () => {
         try {
             const response = await fetch(
-                `http://localhost:8080/api/user/email/${mailAddress}`,
+                "http://localhost:8080/api/user/email",
                 {
                     method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({mailAddress}),
                     credentials: "include"
                 }
             );
@@ -129,9 +135,11 @@ export default function Profile() {
 
         try {
             const response = await fetch(
-                `http://localhost:8080/api/user/password/${currentPassword}/${newPassword}`,
+                "http://localhost:8080/api/user/password",
                 {
                     method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({currentPassword, newPassword}),
                     credentials: "include"
                 }
             );

@@ -25,13 +25,13 @@ export default function ThemeToggle() {
 
         // バックエンドのDBにも保存するリクエスト
         try {
-            const response = await fetch("/api/user/profile", {
+            const response = await fetch("/api/user/theme", {
 
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ user_theme: t.replace("Theme", "").toLowerCase() }),
+                body: JSON.stringify({ userTheme: t.replace("Theme", "").toLowerCase() }),
                 credentials: "include"
             });
 

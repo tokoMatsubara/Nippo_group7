@@ -198,4 +198,18 @@ public class UserService {
         return ResponseEntity.ok(response);
     }
 
+    //ユーザーのテーマカラーを変更する=============================================
+    @Transactional
+    public ResponseEntity<UserUpdateResponseDto> updateUserTheme(User user, String theme) throws Exception{
+        if(theme.isBlank()){
+            UserUpdateResponseDto response = new UserUpdateResponseDto(false, "空白の入力です");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        user.setUserTheme(theme);
+        userRepository.save(user);
+        UserUpdateResponseDto response = new UserUpdateResponseDto(true, "テーマカラーを変更しました");
+        return ResponseEntity.ok(response);
+    }
+
 }

@@ -2,8 +2,13 @@
 package com.daily_app.demo.Controller;
 
 import com.daily_app.demo.Dto.Request.UserInfoRequestDto;
+import com.daily_app.demo.Dto.Request.UserThemeUpdateRequestDto;
+import com.daily_app.demo.Dto.Request.UsernameUpdateRequestDto;
 import com.daily_app.demo.Dto.RemindSettingDto;
+import com.daily_app.demo.Dto.Request.EmailUpdateRequestDto;
+import com.daily_app.demo.Dto.Request.EmailUpdateRequestDto;
 import com.daily_app.demo.Dto.Request.LoginRequestDto;
+import com.daily_app.demo.Dto.Request.PasswordUpdateReqeustDto;
 import com.daily_app.demo.Dto.Response.LoginResponseDto;
 import com.daily_app.demo.Dto.Response.UserUpdateResponseDto;
 import com.daily_app.demo.Service.UserService;
@@ -24,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.util.Map;
+
 
 
 @RestController
@@ -98,16 +104,16 @@ public class UserController {
     }
 
     // ユーザーネームが画面上で変更できるようにする
-    @PutMapping("/user/username/{newUsername}")
+    @PutMapping("/user/username")
     public ResponseEntity<UserUpdateResponseDto> updateUserName(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable String newUsername) {
+            @RequestBody UsernameUpdateRequestDto request) {
 
         System.out.println("=== /api/user/username 到達 ===");
         System.out.println("ログインユーザーID: " + userDetails.getId());
 
         try{
-            ResponseEntity<UserUpdateResponseDto> response =  userService.updateUsername(userDetails.getUser(), newUsername);
+            ResponseEntity<UserUpdateResponseDto> response =  userService.updateUsername(userDetails.getUser(), request.getUserName());
             return response;
         }catch(Exception e){
             UserUpdateResponseDto responseDto = new UserUpdateResponseDto(false, "ユーザーネームの変更に失敗しました");
@@ -115,18 +121,18 @@ public class UserController {
         }
     }
 
-    @PutMapping("/user/email/{newMailAddress}")
+    @PutMapping("/user/email")
     public ResponseEntity<UserUpdateResponseDto> putMethodName(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable String newMailAddress,
+            @RequestBody EmailUpdateRequestDto request,
             HttpServletResponse response) {
 
         System.out.println("=== /api/user/email 到達 ===");
         System.out.println("ログインユーザーID: " + userDetails.getId());
         
         try{
-            ResponseEntity<UserUpdateResponseDto> responseData = userService.updateEmail(userDetails.getUser(), newMailAddress);
-            ResponseCookie token = refleshAccessToken(newMailAddress);
+            ResponseEntity<UserUpdateResponseDto> responseData = userService.updateEmail(userDetails.getUser(), request.getMailAddress());
+            ResponseCookie token = refleshAccessToken(userDetails.getUsername());
             response.addHeader(HttpHeaders.SET_COOKIE, token.toString());
             return responseData;
         }catch(Exception e){
@@ -136,24 +142,42 @@ public class UserController {
         }
     }
 
-    @PutMapping("/user/password/{currentPassword}/{newPassword}")
+    @PutMapping("/user/password")
     public ResponseEntity<UserUpdateResponseDto> putMethodName(
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @PathVariable String currentPassword, 
-        @PathVariable String newPassword) {
+        @RequestBody PasswordUpdateReqeustDto request) {
 
         System.out.println("=== /api/user/password 到達 ===");
         System.out.println("ログインユーザーID: " + userDetails.getId());
         
         try{
             ResponseEntity<UserUpdateResponseDto> response = 
-                userService.updatePassword(userDetails.getUser(), currentPassword, newPassword);
+                userService.updatePassword(
+                    userDetails.getUser(), 
+                    request.getCurrentPassword(), 
+                    request.getNewPassword());
             
             return response;
         }catch(Exception e){
             System.err.println(e.getMessage());
             UserUpdateResponseDto responseDto = new UserUpdateResponseDto(false, "パスワードの変更に失敗しました");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+        }
+    }
+
+    @PutMapping("/user/theme")
+    public ResponseEntity<UserUpdateResponseDto> updateUserTheme(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestBody UserThemeUpdateRequestDto request) {
+        
+        try{
+            ResponseEntity<UserUpdateResponseDto> response = 
+                userService.updateUserTheme(userDetails.getUser(), request.getUserTheme());
+            return response;
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            UserUpdateResponseDto response = new UserUpdateResponseDto(false, "テーマカラーの変更に失敗しました");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
 
@@ -164,7 +188,6 @@ public class UserController {
 
     private ResponseCookie refleshAccessToken(String mailAddress){
         String token = tokenProvider.generateToken(mailAddress);
-        System.out.println(token);
 
         ResponseCookie cookie = ResponseCookie.from("accessToken", token)
                 .httpOnly(true).secure(false).path("/")
