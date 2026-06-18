@@ -231,12 +231,12 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 
     /* 🎨 ベースは primary2 */
-    /* background: linear-gradient(180deg,
+    background: linear-gradient(180deg,
             var(--primary2),
-            var(--primary2)); */
+            var(--primary2));
 }
 
-/* .header::before {
+.header::before {
     content: "";
     position: absolute;
     inset: -300%;                 
@@ -273,7 +273,7 @@
 .header>* {
     position: relative;
     z-index: 1;
-} */
+}
 
 .headerTitle {
     display: flex;
