@@ -20,6 +20,8 @@ import com.daily_app.demo.Dto.Response.UserUpdateResponseDto;
 import com.daily_app.demo.Entity.User;
 import com.daily_app.demo.Repository.UserRepository;
 
+import io.micrometer.core.ipc.http.HttpSender.Response;
+
 @Service
 public class UserService {
 
@@ -193,6 +195,20 @@ public class UserService {
         user.setPassword(hashedPassword);
         userRepository.save(user);
         UserUpdateResponseDto response = new UserUpdateResponseDto(true, "パスワードを変更しました");
+        return ResponseEntity.ok(response);
+    }
+
+    //ユーザーのテーマカラーを変更する=============================================
+    @Transactional
+    public ResponseEntity<UserUpdateResponseDto> updateUserTheme(User user, String theme) throws Exception{
+        if(theme.isBlank()){
+            UserUpdateResponseDto response = new UserUpdateResponseDto(false, "空白の入力です");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        user.setUserTheme(theme);
+        userRepository.save(user);
+        UserUpdateResponseDto response = new UserUpdateResponseDto(true, "テーマカラーを変更しました");
         return ResponseEntity.ok(response);
     }
 

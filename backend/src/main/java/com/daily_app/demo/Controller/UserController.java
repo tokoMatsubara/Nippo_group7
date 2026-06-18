@@ -2,6 +2,7 @@
 package com.daily_app.demo.Controller;
 
 import com.daily_app.demo.Dto.Request.UserInfoRequestDto;
+import com.daily_app.demo.Dto.Request.UserThemeUpdateRequestDto;
 import com.daily_app.demo.Dto.Request.UsernameUpdateRequestDto;
 import com.daily_app.demo.Dto.RemindSettingDto;
 import com.daily_app.demo.Dto.Request.EmailUpdateRequestDto;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
 import java.util.Map;
+
 
 
 @RestController
@@ -160,6 +162,22 @@ public class UserController {
             System.err.println(e.getMessage());
             UserUpdateResponseDto responseDto = new UserUpdateResponseDto(false, "パスワードの変更に失敗しました");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+        }
+    }
+
+    @PutMapping("/user/theme")
+    public ResponseEntity<UserUpdateResponseDto> updateUserTheme(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestBody UserThemeUpdateRequestDto request) {
+        
+        try{
+            ResponseEntity<UserUpdateResponseDto> response = 
+                userService.updateUserTheme(userDetails.getUser(), request.getUserTheme());
+            return response;
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+            UserUpdateResponseDto response = new UserUpdateResponseDto(false, "テーマカラーの変更に失敗しました");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
 
