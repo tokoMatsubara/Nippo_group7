@@ -36,7 +36,7 @@
 }
 
 .profileBox {
-    width: 360px;
+    width: 500px;
     max-width: 90vw;
     padding: 30px;
 }
@@ -56,11 +56,11 @@
 
 /* 入力フィールド（最低限のみ） */
 .profileInput {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
-    outline: none;
     background: white;
     color: black;
 }
@@ -114,6 +114,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    width: 100%;
 }
 
 .inputRow .profileInput {

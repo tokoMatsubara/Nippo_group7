@@ -20,7 +20,6 @@ export default function Profile() {
     // ✔ 独立編集モード
     const [isEditingName, setIsEditingName] = useState(false);
     const [isEditingEmail, setIsEditingEmail] = useState(false);
-    const [isEditingPassword, setIsEditingPassword] = useState(false);
 
 
     const handleUsernameUpdate = async () => {
@@ -33,7 +32,7 @@ export default function Profile() {
                 }
             );
 
-            if(!response.ok){
+            if (!response.ok) {
                 const error = new Error(`HTTP ${response.status}`);
                 error.status = response.status;
                 throw error;
@@ -56,11 +55,11 @@ export default function Profile() {
 
         } catch (error) {
             console.error(error);
-            if(error.status === 401){
+            if (error.status === 401) {
                 console.log("401認証エラー");
                 alert("認証エラーです。ログインしなおしてください");
                 navigate("/login");
-            }else{
+            } else {
                 alert("ユーザーネームの変更に失敗しました");
             }
         }
@@ -76,7 +75,7 @@ export default function Profile() {
                 }
             );
 
-            if(!response.ok){
+            if (!response.ok) {
                 const error = new Error(`HTTP ${response.status}`);
                 error.status = response.status;
                 throw error;
@@ -103,11 +102,11 @@ export default function Profile() {
 
         } catch (error) {
             console.error(error);
-            if(error.status === 401){
+            if (error.status === 401) {
                 console.log("401認証エラー");
                 alert("認証エラーです。ログインしなおしてください");
                 navigate("/login");
-            }else{
+            } else {
                 alert("メールアドレスの変更に失敗しました");
             }
         }
@@ -137,7 +136,7 @@ export default function Profile() {
                 }
             );
 
-            if(!response.ok){
+            if (!response.ok) {
                 const error = new Error(`HTTP ${response.status}`);
                 error.status = response.status;
                 throw error;
@@ -160,11 +159,11 @@ export default function Profile() {
 
         } catch (error) {
             console.error(error);
-            if(error.status === 401){
+            if (error.status === 401) {
                 console.log("401認証エラー");
                 alert("認証エラーです。ログインしなおしてください");
                 navigate("/login");
-            }else{
+            } else {
                 alert("パスワードの変更に失敗しました");
             }
         }
@@ -207,7 +206,7 @@ export default function Profile() {
                                 setIsEditingName(!isEditingName);
                             }}
                         >
-                            {isEditingName ? "保存" : "編集"}
+                            {isEditingName ? "保存" : "🖋"}
                         </button>
                     </div>
                 </div>
@@ -233,7 +232,7 @@ export default function Profile() {
                                 setIsEditingEmail(!isEditingEmail);
                             }}
                         >
-                            {isEditingEmail ? "保存" : "編集"}
+                            {isEditingEmail ? "保存" : "🖋"}
                         </button>
                     </div>
                 </div>
@@ -248,13 +247,13 @@ export default function Profile() {
                 {/* 現在のパスワード */}
                 <div>
                     <label>パスワード</label>
+                    <br />
                     <input
                         className="profileInput"
                         type="password"
                         placeholder="現在のパスワード"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
-                        disabled={!isEditingPassword}
                     />
                 </div>
 
@@ -266,7 +265,6 @@ export default function Profile() {
                         placeholder="新しいパスワード"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
-                        disabled={!isEditingPassword}
                     />
                 </div>
 
@@ -278,7 +276,6 @@ export default function Profile() {
                         placeholder="新しいパスワード（確認）"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        disabled={!isEditingPassword}
                     />
                 </div>
 
@@ -287,14 +284,9 @@ export default function Profile() {
                     <button
                         type="button"
                         className="editButton"
-                        onClick={() => {
-                            if (isEditingPassword) {
-                                handlePasswordUpdate();
-                            }
-                            setIsEditingPassword(!isEditingPassword);
-                        }}
+                        onClick={handlePasswordUpdate}
                     >
-                        {isEditingPassword ? "保存" : "パスワードを変更する"}
+                        パスワードを変更する
                     </button>
                 </div>
 
