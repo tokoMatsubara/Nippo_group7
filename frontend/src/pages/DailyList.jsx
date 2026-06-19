@@ -11,7 +11,6 @@ export default function DailyList() {
     const navigate = useNavigate();
     const params = useParams();
 
-    // const weekData = mockWeekData;
     const [weekData, setWeekData] = useState({
         weekStartDate: "",
         weekEndDate: "",
@@ -20,41 +19,34 @@ export default function DailyList() {
 
     useEffect(() => {
         fetchData();
-        const interval = setInterval(() => {
-            fetchData();
-        }, 60000);
+        const interval = setInterval(fetchData, 60000);
         return () => clearInterval(interval);
     }, []);
 
-    // BackendへのAPI
     const fetchData = async () => {
-        // const userId = localStorage.getItem("user_id");
         try {
-            const res = await fetch(`http://localhost:8080/api/daily/${params.startDate}/${params.endDate}`, {
-                method: "GET",
-                credentials: "include"
-            });
+            const res = await fetch(
+                `http://localhost:8080/api/daily/${params.startDate}/${params.endDate}`,
+                { method: "GET", credentials: "include" }
+            );
 
             if (!res.ok) {
                 const error = new Error(`HTTP ${res.status}`);
-                error.status = res.status;   // ← これを足すのが肝
+                error.status = res.status;
                 throw error;
             }
 
             const data = await res.json();
             setWeekData(data);
-            console.log(data);
         } catch (err) {
             if (err.status === 401) {
-                console.error("401認証エラー");
                 alert("認証エラーです。ログインしなおしてください");
                 navigate("/login");
             } else {
                 alert("日報取得に失敗しました");
-                console.error("Failed to get daily list");
             }
         }
-    }
+    };
 
     const selectedDaily = weekData.days.find(
         (d) => week[new Date(d.date).getDay()] === selectedDay
@@ -65,82 +57,56 @@ export default function DailyList() {
             (d) => week[new Date(d.date).getDay()] === day
         );
 
-    // 選択された曜日の日付を計算
     const getSelectedDate = () => {
         if (!weekData.weekStartDate) return null;
         const startDate = new Date(weekData.weekStartDate);
         const dayIndex = days.indexOf(selectedDay);
         const selectedDate = new Date(startDate);
         selectedDate.setDate(startDate.getDate() + dayIndex);
-        return selectedDate.toISOString().split('T')[0];
+        return selectedDate.toISOString().split("T")[0];
     };
 
     const handleDelete = async () => {
         if (!selectedDaily) return;
-        const ok = window.confirm("本当にこの日報を削除しますか？");
-        if (!ok) return;
+        if (!window.confirm("本当にこの日報を削除しますか？")) return;
 
         try {
-            const res = await fetch(`http://localhost:8080/api/delete/${selectedDaily.dailyId}`, {
-                method: 'DELETE',
-                credentials: "include"
-            });
+            const res = await fetch(
+                `http://localhost:8080/api/delete/${selectedDaily.dailyId}`,
+                { method: "DELETE", credentials: "include" }
+            );
 
-            if (!res.ok) {
-                const error = new Error(`HTTP ${res.status}`);
-                error.status = res.status;   // ← これを足すのが肝
-                throw error;
-            }
-            alert('削除しました');
-            await fetchData();
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            alert("削除しました");
+            fetchData();
         } catch (err) {
-            if (err.status === 401) {
-                console.error("401認証エラー");
-                alert("認証エラーです。ログインしなおしてください");
-                navigate("/login");
-            } else {
-                console.error("Failed to delete daily report");
-                alert('削除に失敗しました');
-            }
+            alert("削除に失敗しました");
         }
     };
 
-
-
-
-    // クリップボードへのコピー処理
-    const handleCopy = async () => {  // ← ここに async を追加！
+    const handleCopy = async () => {
         if (!selectedDaily) return;
 
-        const sortedContents = selectedDaily.contents
+        const sorted = selectedDaily.contents
             .slice()
             .sort((a, b) => a.categoryId - b.categoryId);
 
-        const textToCopy = sortedContents
-            .map((item) => `【${item.categoryName}】\n${item.content}`)
+        const text = sorted
+            .map((i) => `【${i.categoryName}】\n${i.content}`)
             .join("\n\n");
 
         try {
-            await navigator.clipboard.writeText(textToCopy);
-            alert("日報をクリップボードにコピーしました！");
-        } catch (err) {
-            console.error("Failed to copy text: ", err);
-            alert("コピーに失敗しました");
+            await navigator.clipboard.writeText(text);
+            alert("コピーしました");
+        } catch {
+            alert("コピー失敗");
         }
     };
 
-
-
-
-
-
     const formatDate = (dateStr) => {
-        const date = new Date(dateStr);
-
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-
-        return `${month}月${day}日`;
+        const d = new Date(dateStr);
+        return `${d.getMonth() + 1}月${d.getDate()}日`;
     };
 
     const today = new Date();
@@ -148,75 +114,89 @@ export default function DailyList() {
 
     return (
         <div className="pageContainer">
+
             <div className="header">
-                <h1 className="title">Daily List（{formatDate(weekData.weekStartDate)} ～ {formatDate(weekData.weekEndDate)}）</h1>
-
-                {/* 週表示 */}
-                {/* <h2 className="title">
-                    {formatDate(weekData.weekStartDate)} ～ {formatDate(weekData.weekEndDate)}
-                </h2> */}
-
-                {/* 曜日 */}
-
+                <h1 className="title">
+                    Daily List（{formatDate(weekData.weekStartDate)} ～ {formatDate(weekData.weekEndDate)}）
+                </h1>
             </div>
 
             <div className="pageContent">
-                {/* カード */}
                 <div className="card">
-                    <div className="dayButtons">
-                        {days.map((day, index) => {
-                            const date = new Date(weekData.weekStartDate);
-                            date.setDate(date.getDate() + index);
-                            date.setHours(0, 0, 0, 0);
 
-                            const dayNumber = date.getDate();
-                            const dayLabel = day;
+                    {/* 週ボタン + コピー（見た目維持版） */}
+                    <div style={{ display: "flex", alignItems: "center" }}>
 
-                            const isToday =
-                                today.getTime() === date.getTime();
-                            const isFuture =
-                                date.getTime() > today.getTime();
+                        <div className="dayButtons">
+                            {days.map((day, index) => {
+                                const date = new Date(weekData.weekStartDate);
+                                date.setDate(date.getDate() + index);
+                                date.setHours(0, 0, 0, 0);
 
-                            return (
-                                <button
-                                    key={day}
-                                    className={`dayButton 
-                            ${selectedDay === day ? "active" : ""} 
-                            ${isToday ? "today" : ""} 
-                            ${isFuture ? "future" : ""}`}
-                                    onClick={() => {
-                                        if (isFuture) return;   // ← ここで無効化
-                                        setSelectedDay(day);
-                                    }}
+                                const isToday = today.getTime() === date.getTime();
+                                const isFuture = date.getTime() > today.getTime();
+
+                                return (
+                                    <button
+                                        key={day}
+                                        className={`dayButton 
+                                            ${selectedDay === day ? "active" : ""} 
+                                            ${isToday ? "today" : ""} 
+                                            ${isFuture ? "future" : ""}`}
+                                        onClick={() => {
+                                            if (!isFuture) setSelectedDay(day);
+                                        }}
+                                    >
+                                        <span className="dayTop">
+                                            {date.getDate()} ({day})
+                                        </span>
+
+                                        <span className="dayMark">
+                                            {hasDaily(day) ? "●" : "○"}
+                                        </span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {selectedDaily && (
+                            <button className="iconButton copyButton" onClick={handleCopy}>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="18"
+                                    height="18"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                 >
-                                    <span className="dayTop">
-                                        {dayNumber} ({dayLabel})
-                                    </span>
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        )}
 
-                                    <span className="dayMark">
-                                        {hasDaily(day) ? "●" : "○"}
-                                    </span>
-                                </button>
-                            );
-                        })}
                     </div>
 
-
+                    {/* 内容 */}
                     {!selectedDaily ? (
                         <>
-                            <div className="dayName">
-                                <h3>{formatDate(getSelectedDate())}</h3>
-                            </div>
+                            <h3>{formatDate(getSelectedDate())}</h3>
                             <p>日報はありません</p>
-                            <div className="actions" style={{ justifyContent: 'center' }}>
+
+                            <div style={{ textAlign: "center" }}>
                                 <button
                                     className="primaryButton"
-                                    onClick={() => navigate("/create-report", {
-                                        state: {
-                                            date: getSelectedDate(),
-                                            returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
-                                        },
-                                    })}
+                                    onClick={() =>
+                                        navigate("/create-report", {
+                                            state: {
+                                                date: getSelectedDate(),
+                                                returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
+                                            },
+                                        })
+                                    }
                                 >
                                     新規作成
                                 </button>
@@ -224,71 +204,69 @@ export default function DailyList() {
                         </>
                     ) : (
                         <>
-                            <div className="dayName">
-                                <h3>{formatDate(selectedDaily.date)}</h3>
-                            </div>
+                            <h3>{formatDate(selectedDaily.date)}</h3>
 
                             <div className="section">
                                 <div className="sectionItem">
-                                    <div className="sectionTitle">要約
+                                    <div className="sectionTitle">
+                                        要約
                                         <div className="sectionValue">
                                             {selectedDaily.summary}
                                         </div>
                                     </div>
                                 </div>
 
-
-                                {/* 詳細 */}
                                 {selectedDaily.contents
                                     .slice()
                                     .sort((a, b) => a.categoryId - b.categoryId)
-                                    .map((item, index) => (
+                                    .map((item) => (
                                         <div key={item.categoryId} className="sectionItem">
                                             <strong className="sectionTitle">
                                                 {item.categoryName}
                                             </strong>
-
                                             <p className="sectionValue">
                                                 {item.content}
                                             </p>
                                         </div>
-                                    ))
-                                }
+                                    ))}
                             </div>
                         </>
                     )}
                 </div>
             </div>
 
-
-
-            {/* 共通ボタン化 */}
             {/* フッター */}
             <div className="footer-actions">
                 {selectedDaily && (
                     <div className="footer-inner">
-                        <button
-                            className="primaryButton"
-                            onClick={() => navigate("/create-report", {
-                                state: {
-                                    daily: selectedDaily,
-                                    returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
-                                },
-                            })}
-                        >
-                            編集
-                        </button>
 
-                        <button className="dangerButton" onClick={handleDelete}>
-                            削除
-                        </button>
+                        <div className="footer-center">
+                            <button
+                                className="primaryButton"
+                                onClick={() =>
+                                    navigate("/create-report", {
+                                        state: {
+                                            daily: selectedDaily,
+                                            returnPath: `/daily-list/${params.startDate}/${params.endDate}`,
+                                        },
+                                    })
+                                }
+                            >
+                                編集
+                            </button>
 
-                        <button className="backButton" onClick={handleCopy}>
-                            コピー
-                        </button>
+                            <button
+                                className="dangerButton"
+                                onClick={handleDelete}
+                            >
+                                削除
+                            </button>
+                        </div>
+
                     </div>
                 )}
             </div>
+
         </div>
     );
 }
