@@ -16,6 +16,7 @@ import com.daily_app.demo.config.CustomUserDetails;
 import com.daily_app.demo.config.JwtTokenProvider;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class UserController {
      * URL: POST /api/create
      */
     @PostMapping("/auth/create")
-    public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserInfoRequestDto requestDto) {
+    public ResponseEntity<Map<String, Object>> createUser(@Valid @RequestBody UserInfoRequestDto requestDto) {
 
         System.out.println("--- ユーザー登録 本稼働 ---");
         return userService.createUser(requestDto);
@@ -145,7 +146,7 @@ public class UserController {
     @PutMapping("/user/password")
     public ResponseEntity<UserUpdateResponseDto> putMethodName(
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestBody PasswordUpdateReqeustDto request) {
+        @Valid @RequestBody PasswordUpdateReqeustDto request) {
 
         System.out.println("=== /api/user/password 到達 ===");
         System.out.println("ログインユーザーID: " + userDetails.getId());

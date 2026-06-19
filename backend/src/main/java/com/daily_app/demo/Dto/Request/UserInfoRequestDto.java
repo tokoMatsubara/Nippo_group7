@@ -3,6 +3,9 @@ package com.daily_app.demo.Dto.Request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 
 public class UserInfoRequestDto {
 
@@ -21,6 +24,8 @@ public class UserInfoRequestDto {
     /**
      * ユーザーのパスワード
      */
+    @NotBlank
+    @Size(min = 8, max = 20, message = "パスワードは8~20文字です")
     private String password;
 
     /**
