@@ -4,6 +4,7 @@ package com.daily_app.demo.Entity;
 import java.time.LocalTime;
 import java.util.List;
 
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 
 
@@ -38,6 +40,7 @@ public class User {
     private String userName;
 
     @NotBlank
+    @Size(min = 8, max = 20, message = "パスワードは8~20文字です")
     @Column(name = "password")
     private String password;
 
